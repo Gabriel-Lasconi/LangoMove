@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="update of login and registration">
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/website/management/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/website/management/commands/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/website/management/commands/generate_pronunciation_audio.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/website/views/pronunciation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/pronunciation_studio.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/LangoMove.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LangoMove.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/LangoMove.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/integrations/airtable/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/integrations/airtable/client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/integrations/airtable/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/integrations/airtable/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/forms/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/forms/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/forms/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/forms/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/views/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/views/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/views/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/views/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/views/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/views/dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/views/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/views/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/config/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/config/settings/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/static/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/static/css/site.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/website/session_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/website/session_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/conf/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/conf/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/conf/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/conf/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/admin/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/admin/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/admin/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/admin/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/admindocs/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/admindocs/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/admindocs/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/admindocs/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/auth/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/auth/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/auth/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/auth/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/contenttypes/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/contenttypes/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/contenttypes/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/contenttypes/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/flatpages/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/flatpages/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/flatpages/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/flatpages/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/gis/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/gis/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/gis/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/gis/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/humanize/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/humanize/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/humanize/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/humanize/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/postgres/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/postgres/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/postgres/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/postgres/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/redirects/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/redirects/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/redirects/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/redirects/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/sessions/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/sessions/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/sessions/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/sessions/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/sites/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/sites/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/sites/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/venv/lib/python3.12/site-packages/django/contrib/sites/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Gabriel-Lasconi&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Gabriel-Lasconi/LangoMove.git&quot;,
+    &quot;accountId&quot;: &quot;5faeb7a6-b064-4922-8f9a-164d6f375d74&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3Akz7dLnOAkMAD4U92kj0m2HFcJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "django.template.preview.state": "SHOW_EDITOR",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.intellij.python.django.customization.DjangoModulesConfigurable",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Django Server.LangoMove">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="LangoMove" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (LangoMove)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="LangoMove" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="LangoMove" type="Python.DjangoServer" factoryName="Django server">
+      <module name="LangoMove" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (LangoMove)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <module name="LangoMove" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (LangoMove)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-3bd3a6803838-JavaScript-PY-261.22158.41" />
+        <option value="bundled-python-sdk-8c3867224628-b61e75351b1f-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.22158.41" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="" />
+      <created>1773151189724</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1773151189724</updated>
+      <workItem from="1773151190726" duration="21352000" />
+      <workItem from="1773218640957" duration="12649000" />
+      <workItem from="1773251498513" duration="7508000" />
+    </task>
+    <task id="LOCAL-00001" summary="update of login and registration">
+      <option name="closed" value="true" />
+      <created>1773234984200</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1773234984200</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="update of login and registration" />
+    <option name="LAST_COMMIT_MESSAGE" value="update of login and registration" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/LangoMove$main.coverage" NAME="main Coverage Results" MODIFIED="1773159705124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

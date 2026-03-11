@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Register | LangoMove" %}{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="container">
+        <div class="auth-layout">
+            <div class="auth-side">
+                <span class="auth-kicker">{% trans "Get started" %}</span>
+                <h1>{% trans "Create your LangoMove account" %}</h1>
+                <p>
+                    {% blocktrans %}
+                    Register as a guest, teacher, or volunteer. For now, all logged-in users can
+                    access the same platform features, while admins manage the admin panel separately.
+                    {% endblocktrans %}
+                </p>
+
+                <div class="auth-side-pills">
+                    <span class="tag">{% trans "Guest" %}</span>
+                    <span class="tag">{% trans "Teacher" %}</span>
+                    <span class="tag">{% trans "Volunteer" %}</span>
+                </div>
+            </div>
+
+            <div class="auth-card card">
+                <div class="card-body">
+                    <div class="auth-card-header">
+                        <h2>{% trans "Register" %}</h2>
+                        <p>{% trans "Create an account and choose how you use the platform." %}</p>
+                    </div>
+
+                    <form method="post" class="auth-form">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="auth-alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="auth-field">
+                            <label for="{{ form.username.id_for_label }}">{% trans "Username" %}</label>
+                            {{ form.username }}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.email.id_for_label }}">{% trans "Email" %}</label>
+                            {{ form.email }}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.role.id_for_label }}">{% trans "Role" %}</label>
+                            {{ form.role }}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.password1.id_for_label }}">{% trans "Password" %}</label>
+                            {{ form.password1 }}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.password2.id_for_label }}">{% trans "Confirm password" %}</label>
+                            {{ form.password2 }}
+                        </div>
+
+                        <button class="button auth-submit" type="submit">{% trans "Create account" %}</button>
+                    </form>
+
+                    <div class="auth-footer">
+                        <p>
+                            {% trans "Already have an account?" %}
+                            <a href="{% url 'login' %}">{% trans "Login here" %}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
