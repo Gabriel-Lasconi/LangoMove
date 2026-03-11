@@ -1,9 +1,14 @@
+import base64
+import mimetypes
+from pathlib import Path
+
 import requests
 from django.conf import settings
 
 
 class AirtableClient:
     BASE_URL = "https://api.airtable.com/v0"
+    CONTENT_BASE_URL = "https://content.airtable.com/v0"
 
     def __init__(self) -> None:
         self.base_id = settings.AIRTABLE_BASE_ID
@@ -64,6 +69,55 @@ class AirtableClient:
         if not response.ok:
             print("Airtable update failed")
             print("Payload:", payload)
+            print("Status:", response.status_code)
+            print("Response:", response.text)
+
+        response.raise_for_status()
+        return response.json()
+
+    def upload_attachment(
+        self,
+        table_name: str,
+        record_id: str,
+        field_name: str,
+        file_path: str,
+    ) -> dict:
+        """
+        Upload file bytes directly to an Airtable attachment field.
+        Returns the JSON response from Airtable's upload-attachment endpoint.
+        """
+        path = Path(file_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Attachment file not found: {file_path}")
+
+        mime_type, _ = mimetypes.guess_type(str(path))
+        mime_type = mime_type or "application/octet-stream"
+
+        file_bytes = path.read_bytes()
+        encoded = base64.b64encode(file_bytes).decode("utf-8")
+
+        url = (
+            f"{self.CONTENT_BASE_URL}/{self.base_id}/"
+            f"{record_id}/{field_name}/uploadAttachment"
+        )
+
+        payload = {
+            "filename": path.name,
+            "contentType": mime_type,
+            "file": encoded,
+        }
+
+        response = requests.post(
+            url,
+            headers=self.headers,
+            json=payload,
+            timeout=90,
+        )
+
+        if not response.ok:
+            print("Airtable attachment upload failed")
+            print("URL:", url)
+            print("Payload filename:", payload["filename"])
             print("Status:", response.status_code)
             print("Response:", response.text)
 

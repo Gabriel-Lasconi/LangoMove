@@ -23,6 +23,22 @@ class AirtableContentService:
         records = self.client.list_records(settings.AIRTABLE_TABLES["phrases"])
         return self._records_to_dict(records)
 
+    def get_languages_map(self) -> dict:
+        records = self.client.list_records(settings.AIRTABLE_TABLES["languages"])
+        return self._records_to_dict(records)
+
+    def get_age_groups_map(self) -> dict:
+        records = self.client.list_records(settings.AIRTABLE_TABLES["age_groups"])
+        return self._records_to_dict(records)
+
+    def get_topics_map(self) -> dict:
+        records = self.client.list_records(settings.AIRTABLE_TABLES["topics"])
+        return self._records_to_dict(records)
+
+    def get_games_map(self) -> dict:
+        records = self.client.list_records(settings.AIRTABLE_TABLES["games"])
+        return self._records_to_dict(records)
+
     def get_game_by_slug(self, slug: str) -> dict | None:
         records = self.client.list_records(settings.AIRTABLE_TABLES["games"])
 
@@ -48,6 +64,7 @@ class AirtableContentService:
 
     def get_vocabulary_for_game(self, game_airtable_id: str) -> list[dict]:
         vocabulary_map = self.get_vocabulary_map()
+        languages_map = self.get_languages_map()
         records = self.client.list_records(settings.AIRTABLE_TABLES["game_vocabulary"])
 
         result = []
@@ -60,15 +77,19 @@ class AirtableContentService:
             vocabulary_ids = fields.get("vocabulary", [])
             vocabulary = vocabulary_map.get(vocabulary_ids[0], {}) if vocabulary_ids else {}
 
+            language_ids = vocabulary.get("language-code", [])
+            language = languages_map.get(language_ids[0], {}) if language_ids else {}
+
             result.append({
                 "word": vocabulary.get("word", ""),
                 "word_fr": vocabulary.get("word-fr", ""),
                 "category": vocabulary.get("category", ""),
                 "part_of_speech": vocabulary.get("part-of-speech", ""),
                 "phonetic": vocabulary.get("phonetic", ""),
-                "audio_url": vocabulary.get("audio-url", ""),
+                "audio_file": vocabulary.get("audio-file", []),
                 "audio_status": vocabulary.get("audio-status", ""),
-                "language_code": vocabulary.get("language-code", ""),
+                "language_code": language.get("code", ""),
+                "language_name": language.get("name", ""),
                 "flashcard_pdf": vocabulary.get("flashcard-pdf", []),
                 "importance": fields.get("importance", ""),
                 "display_order": fields.get("display-order", 9999),
@@ -79,6 +100,7 @@ class AirtableContentService:
 
     def get_phrases_for_game(self, game_airtable_id: str) -> list[dict]:
         phrases_map = self.get_phrases_map()
+        languages_map = self.get_languages_map()
         records = self.client.list_records(settings.AIRTABLE_TABLES["game_phrases"])
 
         result = []
@@ -91,14 +113,18 @@ class AirtableContentService:
             phrase_ids = fields.get("phrase", [])
             phrase = phrases_map.get(phrase_ids[0], {}) if phrase_ids else {}
 
+            language_ids = phrase.get("language-code", [])
+            language = languages_map.get(language_ids[0], {}) if language_ids else {}
+
             result.append({
                 "text": phrase.get("text", ""),
                 "text_fr": phrase.get("text-fr", ""),
                 "phrase_type": phrase.get("phrase-type", ""),
                 "phonetic": phrase.get("phonetic", ""),
-                "audio_url": phrase.get("audio-url", ""),
+                "audio_file": phrase.get("audio-file", []),
                 "audio_status": phrase.get("audio-status", ""),
-                "language_code": phrase.get("language-code", ""),
+                "language_code": language.get("code", ""),
+                "language_name": language.get("name", ""),
                 "importance": fields.get("importance", ""),
                 "display_order": fields.get("display-order", 9999),
                 "notes": fields.get("notes", ""),
@@ -120,76 +146,57 @@ class AirtableContentService:
             "phrases": phrases,
         }
 
-
     def get_all_vocabulary(self) -> list[dict]:
         records = self.client.list_records(settings.AIRTABLE_TABLES["vocabulary"])
+        languages_map = self.get_languages_map()
         result = []
 
         for record in records:
             fields = record.get("fields", {})
+
+            language_ids = fields.get("language-code", [])
+            language = languages_map.get(language_ids[0], {}) if language_ids else {}
+
             result.append({
                 "airtable_id": record["id"],
                 "word": fields.get("word", ""),
-                "audio_url": fields.get("audio-url", ""),
-                "audio_status": fields.get("audio-status", ""),
-                "language_code": fields.get("language-code", "") or "en",
+                "word_fr": fields.get("word-fr", ""),
+                "category": fields.get("category", ""),
+                "part_of_speech": fields.get("part-of-speech", ""),
                 "phonetic": fields.get("phonetic", ""),
+                "audio_file": fields.get("audio-file", []),
+                "audio_status": fields.get("audio-status", ""),
+                "language_code": language.get("code", ""),
+                "language_name": language.get("name", ""),
+                "flashcard_pdf": fields.get("flashcard-pdf", []),
             })
 
         return result
 
     def get_all_phrases(self) -> list[dict]:
         records = self.client.list_records(settings.AIRTABLE_TABLES["phrases"])
+        languages_map = self.get_languages_map()
         result = []
 
         for record in records:
             fields = record.get("fields", {})
+
+            language_ids = fields.get("language-code", [])
+            language = languages_map.get(language_ids[0], {}) if language_ids else {}
+
             result.append({
                 "airtable_id": record["id"],
                 "text": fields.get("text", ""),
-                "audio_url": fields.get("audio-url", ""),
-                "audio_status": fields.get("audio-status", ""),
-                "language_code": fields.get("language-code", "") or "en",
+                "text_fr": fields.get("text-fr", ""),
+                "phrase_type": fields.get("phrase-type", ""),
                 "phonetic": fields.get("phonetic", ""),
+                "audio_file": fields.get("audio-file", []),
+                "audio_status": fields.get("audio-status", ""),
+                "language_code": language.get("code", ""),
+                "language_name": language.get("name", ""),
             })
 
         return result
-
-    def update_vocabulary_audio(self, record_id: str, audio_url: str, audio_status: str) -> dict:
-        return self.client.update_record(
-            settings.AIRTABLE_TABLES["vocabulary"],
-            record_id,
-            {
-                "audio-url": audio_url,
-                "audio-status": audio_status,
-            },
-        )
-
-    def update_phrase_audio(self, record_id: str, audio_url: str, audio_status: str) -> dict:
-        return self.client.update_record(
-            settings.AIRTABLE_TABLES["phrases"],
-            record_id,
-            {
-                "audio-url": audio_url,
-                "audio-status": audio_status,
-            },
-        )
-
-    def get_languages_map(self) -> dict:
-        records = self.client.list_records(settings.AIRTABLE_TABLES["languages"])
-        return self._records_to_dict(records)
-
-    def get_age_groups_map(self) -> dict:
-        records = self.client.list_records(settings.AIRTABLE_TABLES["age_groups"])
-        return self._records_to_dict(records)
-
-    def get_topics_map(self) -> dict:
-        records = self.client.list_records(settings.AIRTABLE_TABLES["topics"])
-        return self._records_to_dict(records)
-
-    def get_games_map(self) -> dict:
-        records = self.client.list_records(settings.AIRTABLE_TABLES["games"])
-        return self._records_to_dict(records)
 
     def get_published_courses(self) -> list[dict]:
         language_map = self.get_languages_map()

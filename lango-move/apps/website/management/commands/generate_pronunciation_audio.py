@@ -1,5 +1,6 @@
 import asyncio
 import os
+import tempfile
 
 import edge_tts
 from django.conf import settings
@@ -9,7 +10,7 @@ from apps.integrations.airtable.client import AirtableClient
 
 
 class Command(BaseCommand):
-    help = "Generate pronunciation audio for words and phrases using edge-tts and save as MP3"
+    help = "Generate pronunciation audio for words and phrases using edge-tts and upload to Airtable attachment field"
 
     LANG_MAP = {
         "english": "en",
@@ -40,39 +41,36 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         airtable = AirtableClient()
 
-        self.stdout.write("🎤 Generating pronunciation audio...")
+        self.stdout.write("🎤 Generating pronunciation audio and uploading to Airtable...")
 
         self.process_table(
             airtable=airtable,
             table_name=settings.AIRTABLE_TABLES["vocabulary"],
             text_field="word",
-            folder="words",
             language_code_field="language-code",
+            attachment_field="audio-file",
         )
 
         self.process_table(
             airtable=airtable,
             table_name=settings.AIRTABLE_TABLES["phrases"],
             text_field="text",
-            folder="phrases",
             language_code_field="language-code",
+            attachment_field="audio-file",
         )
 
         self.stdout.write(self.style.SUCCESS("✅ Done."))
 
-    def process_table(self, airtable, table_name, text_field, folder, language_code_field):
+    def process_table(self, airtable, table_name, text_field, language_code_field, attachment_field):
         records = airtable.list_records(table_name)
-
-        save_dir = os.path.join(settings.MEDIA_ROOT, "pronunciation", folder)
-        os.makedirs(save_dir, exist_ok=True)
 
         for record in records:
             fields = record.get("fields", {})
             text = (fields.get(text_field) or "").strip()
             audio_status = fields.get("audio-status")
+            existing_attachment = fields.get(attachment_field)
 
             raw_lang = fields.get(language_code_field)
-
             if isinstance(raw_lang, list) and raw_lang:
                 raw_lang = raw_lang[0]
 
@@ -81,40 +79,54 @@ class Command(BaseCommand):
                 "en"
             )
 
-            if not text or audio_status == "ready":
+            # Skip already ready records that already have an attachment
+            if not text:
+                continue
+            if audio_status == "ready" and existing_attachment:
                 continue
 
-            filename = record["id"] + ".mp3"
-            mp3_path = os.path.join(save_dir, filename)
-
             self.stdout.write(f"🔊 {text}")
+
+            temp_file = None
 
             try:
                 voice = self.pick_voice(language_code)
 
-                if os.path.exists(mp3_path):
-                    os.remove(mp3_path)
+                with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
+                    temp_file = tmp.name
 
                 asyncio.run(
                     self.generate_mp3(
                         text=text,
                         voice=voice,
-                        output_path=mp3_path,
+                        output_path=temp_file,
                     )
                 )
 
-                if not os.path.exists(mp3_path) or os.path.getsize(mp3_path) < 1000:
+                if not os.path.exists(temp_file) or os.path.getsize(temp_file) < 1000:
                     raise RuntimeError("MP3 file was not created correctly.")
 
-                audio_url = f"http://127.0.0.1:8000{settings.MEDIA_URL}pronunciation/{folder}/{filename}"
+                upload_response = airtable.upload_attachment(
+                    table_name=table_name,
+                    record_id=record["id"],
+                    field_name=attachment_field,
+                    file_path=temp_file,
+                )
 
+                # The upload endpoint stores the file directly in the cell.
+                # Then we only need to update the status.
                 airtable.update_record(
                     table_name,
                     record["id"],
                     {
-                        "audio-url": audio_url,
                         "audio-status": "ready",
                     },
+                )
+
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"✅ Uploaded audio for '{text}'"
+                    )
                 )
 
             except Exception as exc:
@@ -132,6 +144,10 @@ class Command(BaseCommand):
                     self.stderr.write(
                         f"⚠️ Could not update Airtable status for '{text}': {update_exc}"
                     )
+
+            finally:
+                if temp_file and os.path.exists(temp_file):
+                    os.remove(temp_file)
 
     async def generate_mp3(self, text: str, voice: str, output_path: str):
         communicate = edge_tts.Communicate(text=text, voice=voice)

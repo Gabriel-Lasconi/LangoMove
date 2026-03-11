@@ -38,7 +38,7 @@
                             </div>
 
                             <div class="modal-pill-row">
-                                {% if item.audio_url %}
+                                {% if item.audio_file and item.audio_file.0.url %}
                                     <span class="modal-pill">audio ready</span>
                                 {% else %}
                                     <span class="modal-pill">missing audio</span>
@@ -55,9 +55,10 @@
                             <div class="modal-muted">{{ item.phonetic }}</div>
                         {% endif %}
 
-                        {% if item.audio_url %}
+                        {% if item.audio_file and item.audio_file.0.url %}
                             <audio controls style="margin-top: 12px; width: 100%;">
-                                <source src="{{ item.audio_url }}">
+                                <source src="{{ item.audio_file.0.url }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
                             </audio>
                         {% endif %}
                     </article>
@@ -82,7 +83,7 @@
                             </div>
 
                             <div class="modal-pill-row">
-                                {% if item.audio_url %}
+                                {% if item.audio_file and item.audio_file.0.url %}
                                     <span class="modal-pill">audio ready</span>
                                 {% else %}
                                     <span class="modal-pill">missing audio</span>
@@ -99,9 +100,10 @@
                             <div class="modal-muted">{{ item.phonetic }}</div>
                         {% endif %}
 
-                        {% if item.audio_url %}
+                        {% if item.audio_file and item.audio_file.0.url %}
                             <audio controls style="margin-top: 12px; width: 100%;">
-                                <source src="{{ item.audio_url }}">
+                                <source src="{{ item.audio_file.0.url }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
                             </audio>
                         {% endif %}
                     </article>

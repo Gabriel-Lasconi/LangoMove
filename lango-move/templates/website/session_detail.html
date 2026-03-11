@@ -108,11 +108,12 @@ document.addEventListener("DOMContentLoaded", function () {
         return `<a class="modal-link" href="${file.url}" target="_blank" rel="noopener">Open flashcard PDF</a>`;
     }
 
-    function renderAudioPlayer(audioUrl) {
-        if (!audioUrl) return "";
+    function renderAttachmentAudio(audioFile) {
+        if (!audioFile || !audioFile.length || !audioFile[0].url) return "";
         return `
             <audio controls style="margin-top: 12px; width: 100%;">
-                <source src="${audioUrl}">
+                <source src="${audioFile[0].url}" type="audio/mpeg">
+                Your browser does not support the audio element.
             </audio>
         `;
     }
@@ -143,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     ${item.phonetic ? `<div class="modal-muted">${item.phonetic}</div>` : ""}
                     ${item.notes ? `<div class="modal-muted">${item.notes}</div>` : ""}
-                    ${renderAudioPlayer(item.audio_url)}
+                    ${renderAttachmentAudio(item.audio_file)}
                     ${renderFlashcardLink(item.flashcard_pdf)}
                 </div>
             `).join("")
@@ -167,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     ${item.phonetic ? `<div class="modal-muted">${item.phonetic}</div>` : ""}
                     ${item.notes ? `<div class="modal-muted">${item.notes}</div>` : ""}
-                    ${renderAudioPlayer(item.audio_url)}
+                    ${renderAttachmentAudio(item.audio_file)}
                 </div>
             `).join("")
             : `<div class="modal-empty">No phrases linked to this game yet.</div>`;
