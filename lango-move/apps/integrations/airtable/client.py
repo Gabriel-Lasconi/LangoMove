@@ -29,10 +29,16 @@ class AirtableClient:
         offset = None
 
         while True:
+            current_params = params.copy()
             if offset:
-                params["offset"] = offset
+                current_params["offset"] = offset
 
-            response = requests.get(url, headers=self.headers, params=params, timeout=30)
+            response = requests.get(
+                url,
+                headers=self.headers,
+                params=current_params,
+                timeout=90,
+            )
             response.raise_for_status()
             data = response.json()
 
@@ -43,3 +49,23 @@ class AirtableClient:
                 break
 
         return all_records
+
+    def update_record(self, table_name: str, record_id: str, fields: dict) -> dict:
+        url = f"{self.BASE_URL}/{self.base_id}/{table_name}/{record_id}"
+        payload = {"fields": fields}
+
+        response = requests.patch(
+            url,
+            headers=self.headers,
+            json=payload,
+            timeout=90,
+        )
+
+        if not response.ok:
+            print("Airtable update failed")
+            print("Payload:", payload)
+            print("Status:", response.status_code)
+            print("Response:", response.text)
+
+        response.raise_for_status()
+        return response.json()

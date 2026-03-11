@@ -108,6 +108,15 @@ document.addEventListener("DOMContentLoaded", function () {
         return `<a class="modal-link" href="${file.url}" target="_blank" rel="noopener">Open flashcard PDF</a>`;
     }
 
+    function renderAudioPlayer(audioUrl) {
+        if (!audioUrl) return "";
+        return `
+            <audio controls style="margin-top: 12px; width: 100%;">
+                <source src="${audioUrl}">
+            </audio>
+        `;
+    }
+
     function renderGameDetails(data) {
         const game = data.game;
         const vocabulary = data.vocabulary || [];
@@ -129,10 +138,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="modal-pill-row">
                         ${item.category ? `<span class="modal-pill">${item.category}</span>` : ""}
                         ${item.part_of_speech ? `<span class="modal-pill">${item.part_of_speech}</span>` : ""}
+                        ${item.audio_status ? `<span class="modal-pill">${item.audio_status}</span>` : ""}
                     </div>
 
                     ${item.phonetic ? `<div class="modal-muted">${item.phonetic}</div>` : ""}
                     ${item.notes ? `<div class="modal-muted">${item.notes}</div>` : ""}
+                    ${renderAudioPlayer(item.audio_url)}
                     ${renderFlashcardLink(item.flashcard_pdf)}
                 </div>
             `).join("")
@@ -151,10 +162,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <div class="modal-pill-row">
                         ${item.phrase_type ? `<span class="modal-pill">${item.phrase_type}</span>` : ""}
+                        ${item.audio_status ? `<span class="modal-pill">${item.audio_status}</span>` : ""}
                     </div>
 
                     ${item.phonetic ? `<div class="modal-muted">${item.phonetic}</div>` : ""}
                     ${item.notes ? `<div class="modal-muted">${item.notes}</div>` : ""}
+                    ${renderAudioPlayer(item.audio_url)}
                 </div>
             `).join("")
             : `<div class="modal-empty">No phrases linked to this game yet.</div>`;

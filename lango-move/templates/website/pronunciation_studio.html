@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Pronunciation Studio | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container">
+        <div class="section-header">
+            <h1>Pronunciation Studio</h1>
+            <p>Review vocabulary and phrases, check phonetics, and verify audio availability.</p>
+        </div>
+
+        <div class="filters-panel">
+            <div class="chip-row">
+                <a href="{% url 'pronunciation-studio' %}" class="chip {% if item_type == 'all' %}active{% endif %}">All</a>
+                <a href="{% url 'pronunciation-studio' %}?type=vocabulary" class="chip {% if item_type == 'vocabulary' %}active{% endif %}">Vocabulary</a>
+                <a href="{% url 'pronunciation-studio' %}?type=phrases" class="chip {% if item_type == 'phrases' %}active{% endif %}">Phrases</a>
+                <a href="{% url 'pronunciation-studio' %}?missing=1" class="chip {% if missing_only %}active{% endif %}">Missing audio only</a>
+            </div>
+        </div>
+
+        {% if vocabulary_items %}
+            <div class="section-header" style="margin-top: 24px;">
+                <h2>Vocabulary</h2>
+            </div>
+
+            <div class="modal-list">
+                {% for item in vocabulary_items %}
+                    <article class="modal-list-item">
+                        <div class="modal-item-top">
+                            <div>
+                                <h3 class="modal-item-title">
+                                    {{ item.word }}
+                                    {% if item.word_fr %}
+                                        <span class="modal-item-subtitle"> — {{ item.word_fr }}</span>
+                                    {% endif %}
+                                </h3>
+                            </div>
+
+                            <div class="modal-pill-row">
+                                {% if item.audio_url %}
+                                    <span class="modal-pill">audio ready</span>
+                                {% else %}
+                                    <span class="modal-pill">missing audio</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="modal-pill-row">
+                            {% if item.category %}<span class="modal-pill">{{ item.category }}</span>{% endif %}
+                            {% if item.language_code %}<span class="modal-pill">{{ item.language_code }}</span>{% endif %}
+                        </div>
+
+                        {% if item.phonetic %}
+                            <div class="modal-muted">{{ item.phonetic }}</div>
+                        {% endif %}
+
+                        {% if item.audio_url %}
+                            <audio controls style="margin-top: 12px; width: 100%;">
+                                <source src="{{ item.audio_url }}">
+                            </audio>
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if phrase_items %}
+            <div class="section-header" style="margin-top: 34px;">
+                <h2>Phrases</h2>
+            </div>
+
+            <div class="modal-list">
+                {% for item in phrase_items %}
+                    <article class="modal-list-item">
+                        <div class="modal-item-top">
+                            <div>
+                                <h3 class="modal-item-title">{{ item.text }}</h3>
+                                {% if item.text_fr %}
+                                    <div class="modal-muted">{{ item.text_fr }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="modal-pill-row">
+                                {% if item.audio_url %}
+                                    <span class="modal-pill">audio ready</span>
+                                {% else %}
+                                    <span class="modal-pill">missing audio</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="modal-pill-row">
+                            {% if item.phrase_type %}<span class="modal-pill">{{ item.phrase_type }}</span>{% endif %}
+                            {% if item.language_code %}<span class="modal-pill">{{ item.language_code }}</span>{% endif %}
+                        </div>
+
+                        {% if item.phonetic %}
+                            <div class="modal-muted">{{ item.phonetic }}</div>
+                        {% endif %}
+
+                        {% if item.audio_url %}
+                            <audio controls style="margin-top: 12px; width: 100%;">
+                                <source src="{{ item.audio_url }}">
+                            </audio>
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

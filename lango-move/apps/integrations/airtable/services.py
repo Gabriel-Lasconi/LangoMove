@@ -66,6 +66,9 @@ class AirtableContentService:
                 "category": vocabulary.get("category", ""),
                 "part_of_speech": vocabulary.get("part-of-speech", ""),
                 "phonetic": vocabulary.get("phonetic", ""),
+                "audio_url": vocabulary.get("audio-url", ""),
+                "audio_status": vocabulary.get("audio-status", ""),
+                "language_code": vocabulary.get("language-code", ""),
                 "flashcard_pdf": vocabulary.get("flashcard-pdf", []),
                 "importance": fields.get("importance", ""),
                 "display_order": fields.get("display-order", 9999),
@@ -93,7 +96,9 @@ class AirtableContentService:
                 "text_fr": phrase.get("text-fr", ""),
                 "phrase_type": phrase.get("phrase-type", ""),
                 "phonetic": phrase.get("phonetic", ""),
-                "audio": phrase.get("audio", []),
+                "audio_url": phrase.get("audio-url", ""),
+                "audio_status": phrase.get("audio-status", ""),
+                "language_code": phrase.get("language-code", ""),
                 "importance": fields.get("importance", ""),
                 "display_order": fields.get("display-order", 9999),
                 "notes": fields.get("notes", ""),
@@ -114,6 +119,61 @@ class AirtableContentService:
             "vocabulary": vocabulary,
             "phrases": phrases,
         }
+
+
+    def get_all_vocabulary(self) -> list[dict]:
+        records = self.client.list_records(settings.AIRTABLE_TABLES["vocabulary"])
+        result = []
+
+        for record in records:
+            fields = record.get("fields", {})
+            result.append({
+                "airtable_id": record["id"],
+                "word": fields.get("word", ""),
+                "audio_url": fields.get("audio-url", ""),
+                "audio_status": fields.get("audio-status", ""),
+                "language_code": fields.get("language-code", "") or "en",
+                "phonetic": fields.get("phonetic", ""),
+            })
+
+        return result
+
+    def get_all_phrases(self) -> list[dict]:
+        records = self.client.list_records(settings.AIRTABLE_TABLES["phrases"])
+        result = []
+
+        for record in records:
+            fields = record.get("fields", {})
+            result.append({
+                "airtable_id": record["id"],
+                "text": fields.get("text", ""),
+                "audio_url": fields.get("audio-url", ""),
+                "audio_status": fields.get("audio-status", ""),
+                "language_code": fields.get("language-code", "") or "en",
+                "phonetic": fields.get("phonetic", ""),
+            })
+
+        return result
+
+    def update_vocabulary_audio(self, record_id: str, audio_url: str, audio_status: str) -> dict:
+        return self.client.update_record(
+            settings.AIRTABLE_TABLES["vocabulary"],
+            record_id,
+            {
+                "audio-url": audio_url,
+                "audio-status": audio_status,
+            },
+        )
+
+    def update_phrase_audio(self, record_id: str, audio_url: str, audio_status: str) -> dict:
+        return self.client.update_record(
+            settings.AIRTABLE_TABLES["phrases"],
+            record_id,
+            {
+                "audio-url": audio_url,
+                "audio-status": audio_status,
+            },
+        )
 
     def get_languages_map(self) -> dict:
         records = self.client.list_records(settings.AIRTABLE_TABLES["languages"])
