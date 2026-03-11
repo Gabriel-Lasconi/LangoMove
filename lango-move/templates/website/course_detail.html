@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ course.title }} | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container">
+        <div class="page-top-actions">
+            <a class="button button-secondary" href="{% url 'home' %}">← {% trans "Back to home" %}</a>
+        </div>
+
+        <div class="section-header">
+            <h1>{{ course.title }}</h1>
+            <p>{{ course.description }}</p>
+        </div>
+
+        <div class="meta-list" style="max-width: 520px; margin-bottom: 28px;">
+            <div class="meta-item">
+                <span class="meta-label">{% trans "Language" %}</span>
+                <span class="meta-value">{{ course.language_name }}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">{% trans "Age group" %}</span>
+                <span class="meta-value">{{ course.age_group_name }}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">{% trans "Sessions" %}</span>
+                <span class="meta-value">{{ course.sessions_count }}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">{% trans "Minutes per session" %}</span>
+                <span class="meta-value">{{ course.minutes_per_session }}</span>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>{% trans "Sessions" %}</h2>
+            <p>{% trans "Open a session to explore its learning objectives and the games connected to it." %}</p>
+        </div>
+
+        <div class="stack">
+            {% for session in sessions %}
+                <article class="card session-card">
+                    <div class="session-number-badge">{{ session.session_number }}</div>
+
+                    <div class="session-content">
+                        <h3>{{ session.full_title }}</h3>
+                        <p><span class="tag">{{ session.topic_name }}</span></p>
+                        <p style="margin-top: 12px;">{{ session.action_objectives }}</p>
+                    </div>
+
+                    <div>
+                        <a class="button" href="{% url 'session-detail' session.slug %}">{% trans "Open session" %}</a>
+                    </div>
+                </article>
+            {% empty %}
+                <article class="card">
+                    <div class="card-body">
+                        <h3>{% trans "No sessions found" %}</h3>
+                        <p class="course-description">{% trans "This course currently has no published sessions." %}</p>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

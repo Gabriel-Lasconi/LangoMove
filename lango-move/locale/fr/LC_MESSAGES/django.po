@@ -1,0 +1,166 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: fr\n"
+
+msgid "Languages through movement"
+msgstr "Les langues par le mouvement"
+
+msgid "Home"
+msgstr "Accueil"
+
+msgid "Courses"
+msgstr "Cours"
+
+msgid "About"
+msgstr "À propos"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "LangoMove | Home"
+msgstr "LangoMove | Accueil"
+
+msgid "LangoMove Prototype"
+msgstr "Prototype LangoMove"
+
+msgid "Language learning through movement, games, and structured sessions"
+msgstr "L’apprentissage des langues par le mouvement, les jeux et des séances structurées"
+
+msgid "Discover complete language courses connected to Airtable, organised by age group and session length. Explore sessions, activities, and build a scalable prototype for the future LangoMove platform."
+msgstr "Découvrez des parcours de langues complets connectés à Airtable, organisés par groupe d’âge et durée de séance. Explorez les séances, les activités, et construisez un prototype évolutif pour la future plateforme LangoMove."
+
+msgid "Browse courses"
+msgstr "Voir les cours"
+
+msgid "Learn more"
+msgstr "En savoir plus"
+
+msgid "Published courses"
+msgstr "Cours publiés"
+
+msgid "Age groups"
+msgstr "Groupes d’âge"
+
+msgid "Languages"
+msgstr "Langues"
+
+msgid "English through movement"
+msgstr "L’anglais en mouvement"
+
+msgid "Structured sessions, reusable games, Airtable-powered content"
+msgstr "Des séances structurées, des jeux réutilisables, et un contenu alimenté par Airtable"
+
+msgid "Colours"
+msgstr "Couleurs"
+
+msgid "Numbers"
+msgstr "Nombres"
+
+msgid "Animals"
+msgstr "Animaux"
+
+msgid "Action verbs"
+msgstr "Verbes d’action"
+
+msgid "8 sessions"
+msgstr "8 séances"
+
+msgid "30–45 min"
+msgstr "30–45 min"
+
+msgid "Published Courses"
+msgstr "Cours publiés"
+
+msgid "Filter courses by age group or language. These cards are loaded from Airtable and can lead to course pages, sessions, and activity sequences."
+msgstr "Filtrez les cours par groupe d’âge ou par langue. Ces cartes sont chargées depuis Airtable et mènent vers les pages de cours, les séances et les séquences d’activités."
+
+msgid "All"
+msgstr "Tous"
+
+msgid "Sessions"
+msgstr "Séances"
+
+msgid "Minutes per session"
+msgstr "Minutes par séance"
+
+msgid "Target group"
+msgstr "Groupe cible"
+
+msgid "View course"
+msgstr "Voir le cours"
+
+msgid "No matching courses found"
+msgstr "Aucun cours correspondant trouvé"
+
+msgid "Try removing one of the filters or check Airtable to make sure your course records are marked as published."
+msgstr "Essayez de retirer un des filtres ou vérifiez dans Airtable que vos cours sont bien marqués comme publiés."
+
+msgid "Try another combination of filters."
+msgstr "Essayez une autre combinaison de filtres."
+
+msgid "About this prototype"
+msgstr "À propos de ce prototype"
+
+msgid "This version connects Django to Airtable and turns your database into an actual website structure: courses, sessions, and linked games. It is a strong foundation for a richer LangoMove platform."
+msgstr "Cette version connecte Django à Airtable et transforme votre base de données en une véritable structure de site web : cours, séances et jeux liés. C’est une base solide pour une plateforme LangoMove plus riche."
+
+msgid "Next additions can include a real session generator, pronunciation pages, flashcards, and an AI-driven custom course builder."
+msgstr "Les prochaines étapes peuvent inclure un vrai générateur de séances, des pages de prononciation, des flashcards et un créateur de cours personnalisé alimenté par l’IA."
+
+msgid "Back to home"
+msgstr "Retour à l’accueil"
+
+msgid "Language"
+msgstr "Langue"
+
+msgid "Age group"
+msgstr "Groupe d’âge"
+
+msgid "Open a session to explore its learning objectives and the games connected to it."
+msgstr "Ouvrez une séance pour explorer ses objectifs pédagogiques et les jeux qui y sont liés."
+
+msgid "Open session"
+msgstr "Ouvrir la séance"
+
+msgid "No sessions found"
+msgstr "Aucune séance trouvée"
+
+msgid "This course currently has no published sessions."
+msgstr "Ce cours n’a actuellement aucune séance publiée."
+
+msgid "Back"
+msgstr "Retour"
+
+msgid "Explore the objectives of this session and the ordered sequence of games connected to it."
+msgstr "Explorez les objectifs de cette séance et la séquence ordonnée des jeux qui y sont liés."
+
+msgid "Grammar objectives"
+msgstr "Objectifs grammaticaux"
+
+msgid "Action objectives"
+msgstr "Objectifs d’action"
+
+msgid "Lexical objectives"
+msgstr "Objectifs lexicaux"
+
+msgid "Games in this session"
+msgstr "Jeux dans cette séance"
+
+msgid "The activities below are displayed in the same order as stored in the session-games Airtable table."
+msgstr "Les activités ci-dessous sont affichées dans le même ordre que dans la table Airtable session-games."
+
+msgid "Stage"
+msgstr "Étape"
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "min"
+msgstr "min"
+
+msgid "No games found"
+msgstr "Aucun jeu trouvé"
+
+msgid "This session currently has no published linked games."
+msgstr "Cette séance n’a actuellement aucun jeu lié publié."

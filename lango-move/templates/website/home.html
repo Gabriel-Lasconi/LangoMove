@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "LangoMove | Home" %}{% endblock %}
+
+{% block hero %}
+<section class="hero hero-home">
+    <div class="container hero-home-layout">
+        <div class="hero-home-text">
+            <span class="hero-kicker">{% trans "LangoMove Prototype" %}</span>
+            <h1>{% trans "Language learning through movement, games, and structured sessions" %}</h1>
+            <p>
+                {% trans "Discover complete language courses connected to Airtable, organised by age group and session length. Explore sessions, activities, and build a scalable prototype for the future LangoMove platform." %}
+            </p>
+
+            <div class="hero-actions">
+                <a href="#courses" class="button">{% trans "Browse courses" %}</a>
+                <a href="#about" class="button button-secondary">{% trans "Learn more" %}</a>
+            </div>
+
+            <div class="hero-mini-stats">
+                <div class="mini-stat">
+                    <strong>{{ courses|length }}</strong>
+                    <span>{% trans "Published courses" %}</span>
+                </div>
+                <div class="mini-stat">
+                    <strong>{{ all_age_groups|length }}</strong>
+                    <span>{% trans "Age groups" %}</span>
+                </div>
+                <div class="mini-stat">
+                    <strong>{{ all_languages|length }}</strong>
+                    <span>{% trans "Languages" %}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-home-visual">
+            <div class="hero-visual-card hero-visual-main">
+                <div class="hero-visual-top">
+                    <span class="hero-flag">🇬🇧</span>
+                    <div>
+                        <h3>{% trans "English through movement" %}</h3>
+                        <p>{% trans "Structured sessions, reusable games, Airtable-powered content" %}</p>
+                    </div>
+                </div>
+
+                <div class="hero-visual-tags">
+                    <span class="tag">{% trans "Colours" %}</span>
+                    <span class="tag">{% trans "Numbers" %}</span>
+                    <span class="tag">{% trans "Animals" %}</span>
+                    <span class="tag">{% trans "Action verbs" %}</span>
+                </div>
+
+                <div class="hero-visual-lines">
+                    <div class="hero-line"></div>
+                    <div class="hero-line short"></div>
+                    <div class="hero-line"></div>
+                </div>
+            </div>
+
+            <div class="hero-floating hero-floating-one">{% trans "8 sessions" %}</div>
+            <div class="hero-floating hero-floating-two">{% trans "30–45 min" %}</div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="page-section" id="courses">
+    <div class="container">
+        <div class="section-header">
+            <h2>{% trans "Published Courses" %}</h2>
+            <p>
+                {% trans "Filter courses by age group or language. These cards are loaded from Airtable and can lead to course pages, sessions, and activity sequences." %}
+            </p>
+        </div>
+
+        <div class="filters-panel">
+            <div class="filter-group">
+                <span class="filter-label">{% trans "Age groups" %}</span>
+                <div class="chip-row" id="age-group-filters">
+                    <button type="button" class="chip active" data-filter-type="age-group" data-filter-value="">
+                        {% trans "All" %}
+                    </button>
+
+                    {% for age_group in all_age_groups %}
+                        <button type="button" class="chip" data-filter-type="age-group" data-filter-value="{{ age_group }}">
+                            {{ age_group }}
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">{% trans "Languages" %}</span>
+                <div class="chip-row" id="language-filters">
+                    <button type="button" class="chip active" data-filter-type="language" data-filter-value="">
+                        {% trans "All" %}
+                    </button>
+
+                    {% for language in all_languages %}
+                        <button type="button" class="chip" data-filter-type="language" data-filter-value="{{ language }}">
+                            {{ language }}
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="grid course-grid" id="course-grid">
+            {% for course in courses %}
+                <article class="card course-card enhanced-course-card course-item"
+                         data-age-group="{{ course.age_group_name }}"
+                         data-language="{{ course.language_name }}">
+                    <div class="course-card-topband"></div>
+
+                    <div class="card-body">
+                        <div class="course-icon-wrap">
+                            <div class="course-icon">
+                                {{ course.language_flag|default:"🌍" }}
+                            </div>
+                            <div class="course-badges">
+                                <span class="tag">{{ course.language_name }}</span>
+                                <span class="tag">{{ course.age_group_name }}</span>
+                            </div>
+                        </div>
+
+                        <h3 class="course-title">{{ course.title }}</h3>
+                        <p class="course-description">{{ course.description }}</p>
+
+                        <div class="meta-list">
+                            <div class="meta-item">
+                                <span class="meta-label">{% trans "Sessions" %}</span>
+                                <span class="meta-value">{{ course.sessions_count }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">{% trans "Minutes per session" %}</span>
+                                <span class="meta-value">{{ course.minutes_per_session }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">{% trans "Target group" %}</span>
+                                <span class="meta-value">{{ course.age_group_name }}</span>
+                            </div>
+                        </div>
+
+                        <div class="course-card-actions">
+                            <a class="button" href="{% url 'course-detail' course.slug %}">{% trans "View course" %}</a>
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <article class="card">
+                    <div class="card-body">
+                        <h3>{% trans "No matching courses found" %}</h3>
+                        <p class="course-description">
+                            {% trans "Try removing one of the filters or check Airtable to make sure your course records are marked as published." %}
+                        </p>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+
+        <div id="no-results-message" class="card" style="display: none; margin-top: 22px;">
+            <div class="card-body">
+                <h3>{% trans "No matching courses found" %}</h3>
+                <p class="course-description">{% trans "Try another combination of filters." %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="page-section" id="about">
+    <div class="container">
+        <div class="section-header">
+            <h2>{% trans "About this prototype" %}</h2>
+            <p>
+                {% trans "This version connects Django to Airtable and turns your database into an actual website structure: courses, sessions, and linked games. It is a strong foundation for a richer LangoMove platform." %}
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="page-section" id="contact">
+    <div class="container">
+        <p class="footer-note">
+            {% trans "Next additions can include a real session generator, pronunciation pages, flashcards, and an AI-driven custom course builder." %}
+        </p>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const courseItems = document.querySelectorAll(".course-item");
+        const ageButtons = document.querySelectorAll('[data-filter-type="age-group"]');
+        const languageButtons = document.querySelectorAll('[data-filter-type="language"]');
+        const noResultsMessage = document.getElementById("no-results-message");
+
+        let selectedAgeGroup = "";
+        let selectedLanguage = "";
+
+        function updateActiveButtons(buttons, selectedValue) {
+            buttons.forEach((button) => {
+                const value = button.dataset.filterValue;
+                button.classList.toggle("active", value === selectedValue);
+            });
+        }
+
+        function applyFilters() {
+            let visibleCount = 0;
+
+            courseItems.forEach((item) => {
+                const itemAgeGroup = item.dataset.ageGroup || "";
+                const itemLanguage = item.dataset.language || "";
+
+                const ageMatches = !selectedAgeGroup || itemAgeGroup === selectedAgeGroup;
+                const languageMatches = !selectedLanguage || itemLanguage === selectedLanguage;
+
+                if (ageMatches && languageMatches) {
+                    item.style.display = "";
+                    visibleCount += 1;
+                } else {
+                    item.style.display = "none";
+                }
+            });
+
+            noResultsMessage.style.display = visibleCount === 0 ? "block" : "none";
+        }
+
+        ageButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                selectedAgeGroup = this.dataset.filterValue;
+                updateActiveButtons(ageButtons, selectedAgeGroup);
+                applyFilters();
+            });
+        });
+
+        languageButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                selectedLanguage = this.dataset.filterValue;
+                updateActiveButtons(languageButtons, selectedLanguage);
+                applyFilters();
+            });
+        });
+    });
+</script>
+{% endblock %}

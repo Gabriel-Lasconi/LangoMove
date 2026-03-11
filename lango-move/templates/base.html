@@ -1,0 +1,64 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LangoMove{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container navbar">
+
+            <a href="{% url 'home' %}" class="brand">
+                <div class="brand-mark">LM</div>
+                <div class="brand-text">
+                    <span class="brand-title">LangoMove</span>
+                    <span class="brand-subtitle">{% trans "Languages through movement" %}</span>
+                </div>
+            </a>
+
+            <div class="nav-right">
+
+                <nav class="nav-links">
+                    <a href="{% url 'home' %}">{% trans "Home" %}</a>
+                    <a href="{% url 'home' %}#courses">{% trans "Courses" %}</a>
+                    <a href="{% url 'home' %}#about">{% trans "About" %}</a>
+                    <a href="{% url 'home' %}#contact">{% trans "Contact" %}</a>
+                </nav>
+
+                <div class="language-switcher">
+                    <form action="{% url 'set_language' %}" method="post" class="language-toggle-form">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+
+                        {% if LANGUAGE_CODE == "en" %}
+                            <input type="hidden" name="language" value="fr">
+                        {% else %}
+                            <input type="hidden" name="language" value="en">
+                        {% endif %}
+
+                        <button type="submit" class="language-pill" aria-label="Toggle language">
+                            <span class="language-pill-track">
+                                <span class="language-pill-option {% if LANGUAGE_CODE == 'en' %}active{% endif %}">EN</span>
+                                <span class="language-pill-option {% if LANGUAGE_CODE == 'fr' %}active{% endif %}">FR</span>
+                                <span class="language-pill-slider {% if LANGUAGE_CODE == 'fr' %}is-fr{% endif %}"></span>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% block hero %}{% endblock %}
+
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

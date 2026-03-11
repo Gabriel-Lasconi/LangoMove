@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ session.full_title }} | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container">
+        <div class="page-top-actions">
+            <a class="button button-secondary" href="javascript:history.back()">← {% trans "Back" %}</a>
+        </div>
+
+        <div class="section-header">
+            <h1>{{ session.full_title }}</h1>
+            <p>{% trans "Explore the objectives of this session and the ordered sequence of games connected to it." %}</p>
+        </div>
+
+        <div class="objectives-grid">
+            <div class="objective-box">
+                <h3>{% trans "Grammar objectives" %}</h3>
+                <p>{{ session.grammar_objectives }}</p>
+            </div>
+
+            <div class="objective-box">
+                <h3>{% trans "Action objectives" %}</h3>
+                <p>{{ session.action_objectives }}</p>
+            </div>
+
+            <div class="objective-box">
+                <h3>{% trans "Lexical objectives" %}</h3>
+                <p>{{ session.lexical_objectives }}</p>
+            </div>
+        </div>
+
+        <section class="page-section" style="padding-bottom: 0;">
+            <div class="section-header">
+                <h2>{% trans "Games in this session" %}</h2>
+                <p>{% trans "Click a game to open its details, vocabulary, and phrases." %}</p>
+            </div>
+
+            <div class="games-list">
+                {% for item in session_games %}
+                    <article class="card game-card game-card-clickable"
+                             data-game-slug="{{ item.game_slug }}"
+                             tabindex="0"
+                             role="button">
+                        <div class="game-order">{{ item.order_in_session }}</div>
+
+                        <div class="game-content">
+                            <h3>{{ item.game_name }}</h3>
+                            <p><strong>{% trans "Stage" %}:</strong> {{ item.stage_name }}</p>
+                            <p>{{ item.game_description }}</p>
+                            {% if item.notes %}
+                                <p><strong>{% trans "Notes" %}:</strong> {{ item.notes }}</p>
+                            {% endif %}
+                            <p class="game-open-hint">{% trans "Click to view full details" %}</p>
+                        </div>
+
+                        <div class="game-aside">
+                            <div class="duration-pill">{{ item.duration_minutes }} {% trans "min" %}</div>
+                        </div>
+                    </article>
+                {% empty %}
+                    <article class="card">
+                        <div class="card-body">
+                            <h3>{% trans "No games found" %}</h3>
+                            <p class="course-description">{% trans "This session currently has no published linked games." %}</p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</section>
+
+<div class="modal-overlay" id="game-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <button class="modal-close" id="game-modal-close" aria-label="Close">×</button>
+
+        <div class="modal-body" id="game-modal-body">
+            <div class="modal-loading">{% trans "Loading game details..." %}</div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("game-modal");
+    const modalBody = document.getElementById("game-modal-body");
+    const closeButton = document.getElementById("game-modal-close");
+    const clickableCards = document.querySelectorAll(".game-card-clickable");
+
+    function openModal() {
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+    }
+
+    function closeModal() {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+    }
+
+    function renderFlashcardLink(flashcardPdf) {
+        if (!flashcardPdf || !flashcardPdf.length) return "";
+        const file = flashcardPdf[0];
+        return `<a class="modal-link" href="${file.url}" target="_blank" rel="noopener">Open flashcard PDF</a>`;
+    }
+
+    function renderGameDetails(data) {
+        const game = data.game;
+        const vocabulary = data.vocabulary || [];
+        const phrases = data.phrases || [];
+
+        const vocabularyHtml = vocabulary.length
+            ? vocabulary.map(item => `
+                <div class="modal-list-item">
+                    <div class="modal-item-top">
+                        <div>
+                            <h4 class="modal-item-title">
+                                ${item.word || ""}
+                                ${item.word_fr ? `<span class="modal-item-subtitle"> — ${item.word_fr}</span>` : ""}
+                            </h4>
+                        </div>
+                        ${item.importance ? `<span class="modal-pill">${item.importance}</span>` : ""}
+                    </div>
+
+                    <div class="modal-pill-row">
+                        ${item.category ? `<span class="modal-pill">${item.category}</span>` : ""}
+                        ${item.part_of_speech ? `<span class="modal-pill">${item.part_of_speech}</span>` : ""}
+                    </div>
+
+                    ${item.phonetic ? `<div class="modal-muted">${item.phonetic}</div>` : ""}
+                    ${item.notes ? `<div class="modal-muted">${item.notes}</div>` : ""}
+                    ${renderFlashcardLink(item.flashcard_pdf)}
+                </div>
+            `).join("")
+            : `<div class="modal-empty">No vocabulary linked to this game yet.</div>`;
+
+        const phrasesHtml = phrases.length
+            ? phrases.map(item => `
+                <div class="modal-list-item">
+                    <div class="modal-item-top">
+                        <div>
+                            <h4 class="modal-item-title">${item.text || ""}</h4>
+                            ${item.text_fr ? `<div class="modal-muted">${item.text_fr}</div>` : ""}
+                        </div>
+                        ${item.importance ? `<span class="modal-pill">${item.importance}</span>` : ""}
+                    </div>
+
+                    <div class="modal-pill-row">
+                        ${item.phrase_type ? `<span class="modal-pill">${item.phrase_type}</span>` : ""}
+                    </div>
+
+                    ${item.phonetic ? `<div class="modal-muted">${item.phonetic}</div>` : ""}
+                    ${item.notes ? `<div class="modal-muted">${item.notes}</div>` : ""}
+                </div>
+            `).join("")
+            : `<div class="modal-empty">No phrases linked to this game yet.</div>`;
+
+        modalBody.innerHTML = `
+            <div class="modal-hero">
+                <div class="modal-title-block">
+                    <h2>${game.name || ""}</h2>
+                    ${game.name_fr ? `<p class="modal-subtitle">${game.name_fr}</p>` : ""}
+                </div>
+
+                <div class="modal-hero-badge">
+                    ${game.duration_minutes || 0} min
+                </div>
+            </div>
+
+            <div class="modal-meta-grid">
+                <div class="modal-meta-card">
+                    <span class="modal-meta-label">Description</span>
+                    <div class="modal-meta-value">Activity overview</div>
+                </div>
+
+                ${game.activity_type ? `
+                    <div class="modal-meta-card">
+                        <span class="modal-meta-label">Activity type</span>
+                        <div class="modal-meta-value">${game.activity_type}</div>
+                    </div>
+                ` : ""}
+
+                ${game.materials_needed ? `
+                    <div class="modal-meta-card">
+                        <span class="modal-meta-label">Materials</span>
+                        <div class="modal-meta-value">${game.materials_needed}</div>
+                    </div>
+                ` : ""}
+            </div>
+
+            <div class="modal-section">
+                <div class="modal-rich-card">
+                    <p>${game.description || "No description available."}</p>
+                    ${game.description_fr ? `<p class="modal-muted">${game.description_fr}</p>` : ""}
+                </div>
+            </div>
+
+            ${game.variants ? `
+                <div class="modal-section">
+                    <div class="modal-section-header">
+                        <h3>Variants</h3>
+                    </div>
+                    <div class="modal-rich-card">
+                        <p>${game.variants}</p>
+                    </div>
+                </div>
+            ` : ""}
+
+            ${game.notes_for_facilitator ? `
+                <div class="modal-section">
+                    <div class="modal-section-header">
+                        <h3>Facilitator notes</h3>
+                    </div>
+                    <div class="modal-rich-card">
+                        <p>${game.notes_for_facilitator}</p>
+                    </div>
+                </div>
+            ` : ""}
+
+            <div class="modal-section">
+                <div class="modal-section-header">
+                    <h3>Vocabulary</h3>
+                    <span class="modal-section-count">${vocabulary.length}</span>
+                </div>
+                <div class="modal-list">
+                    ${vocabularyHtml}
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <div class="modal-section-header">
+                    <h3>Phrases</h3>
+                    <span class="modal-section-count">${phrases.length}</span>
+                </div>
+                <div class="modal-list">
+                    ${phrasesHtml}
+                </div>
+            </div>
+        `;
+    }
+
+    async function loadGameDetails(slug) {
+        modalBody.innerHTML = `<div class="modal-loading">Loading game details...</div>`;
+        openModal();
+
+        try {
+            const response = await fetch(`/api/games/${slug}/`);
+            if (!response.ok) {
+                throw new Error("Failed to load game details.");
+            }
+
+            const data = await response.json();
+            renderGameDetails(data);
+        } catch (error) {
+            modalBody.innerHTML = `
+                <div class="modal-section">
+                    <div class="modal-empty">${error.message}</div>
+                </div>
+            `;
+        }
+    }
+
+    clickableCards.forEach(card => {
+        card.addEventListener("click", function () {
+            const slug = this.dataset.gameSlug;
+            if (slug) {
+                loadGameDetails(slug);
+            }
+        });
+
+        card.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                const slug = this.dataset.gameSlug;
+                if (slug) {
+                    loadGameDetails(slug);
+                }
+            }
+        });
+    });
+
+    closeButton.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && modal.classList.contains("open")) {
+            closeModal();
+        }
+    });
+});
+</script>
+{% endblock %}
