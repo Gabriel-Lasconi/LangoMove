@@ -5,9 +5,9 @@
 
 {% block content %}
 <section class="auth-page">
-    <div class="container">
+    <div class="container auth-container">
         <div class="auth-layout">
-            <div class="auth-side">
+            <aside class="auth-side">
                 <span class="auth-kicker">{% trans "Get started" %}</span>
                 <h1>{% trans "Create your LangoMove account" %}</h1>
                 <p>
@@ -22,16 +22,16 @@
                     <span class="tag">{% trans "Teacher" %}</span>
                     <span class="tag">{% trans "Volunteer" %}</span>
                 </div>
-            </div>
+            </aside>
 
-            <div class="auth-card card">
+            <section class="auth-card card">
                 <div class="card-body">
                     <div class="auth-card-header">
                         <h2>{% trans "Register" %}</h2>
                         <p>{% trans "Create an account and choose how you use the platform." %}</p>
                     </div>
 
-                    <form method="post" class="auth-form">
+                    <form method="post" class="auth-form" novalidate>
                         {% csrf_token %}
 
                         {% if form.non_field_errors %}
@@ -43,26 +43,41 @@
                         <div class="auth-field">
                             <label for="{{ form.username.id_for_label }}">{% trans "Username" %}</label>
                             {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="auth-error">{{ form.username.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="auth-field">
                             <label for="{{ form.email.id_for_label }}">{% trans "Email" %}</label>
                             {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="auth-error">{{ form.email.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="auth-field">
                             <label for="{{ form.role.id_for_label }}">{% trans "Role" %}</label>
                             {{ form.role }}
+                            {% if form.role.errors %}
+                                <div class="auth-error">{{ form.role.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="auth-field">
                             <label for="{{ form.password1.id_for_label }}">{% trans "Password" %}</label>
                             {{ form.password1 }}
+                            {% if form.password1.errors %}
+                                <div class="auth-error">{{ form.password1.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="auth-field">
                             <label for="{{ form.password2.id_for_label }}">{% trans "Confirm password" %}</label>
                             {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <div class="auth-error">{{ form.password2.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <button class="button auth-submit" type="submit">{% trans "Create account" %}</button>
@@ -75,7 +90,7 @@
                         </p>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 </section>

@@ -2,41 +2,49 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LangoMove\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-11 12:47+0100\n"
+"POT-Creation-Date: 2026-03-11 23:19+0100\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: templates/base.html:21
+#: templates/base.html:27
 msgid "Languages through movement"
 msgstr "Les langues par le mouvement"
 
-#: templates/base.html:29
+#: templates/base.html:35
 msgid "Admin panel"
 msgstr "Administration"
 
-#: templates/base.html:31
+#: templates/base.html:37
 msgid "Home"
 msgstr "Accueil"
 
-#: templates/base.html:32
+#: templates/base.html:38
 msgid "Courses"
 msgstr "Cours"
 
-#: templates/base.html:33
+#: templates/base.html:39
+msgid "Pronunciation"
+msgstr ""
+
+#: templates/base.html:40
 msgid "About"
 msgstr "À propos"
 
-#: templates/base.html:34
+#: templates/base.html:41
 msgid "Contact"
 msgstr "Contact"
 
-#: templates/base.html:39 templates/users/login.html:59
+#: templates/base.html:49
+msgid "Logout"
+msgstr ""
+
+#: templates/base.html:51 templates/users/login.html:59
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:40 templates/users/register.html:30
+#: templates/base.html:52 templates/users/register.html:30
 msgid "Register"
 msgstr "Inscription"
 

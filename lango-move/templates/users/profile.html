@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Profile | LangoMove{% endblock %}
+
+{% block content %}
+<section class="profile-page">
+    <div class="container profile-container">
+        <div class="section-header profile-page-header">
+            <h1>Profile</h1>
+            <p>Manage your personal information and review your class activity history.</p>
+        </div>
+
+        <div class="profile-layout">
+            <aside class="profile-sidebar card">
+                <div class="card-body profile-sidebar-body">
+                    <span class="auth-kicker">Your account</span>
+
+                    {% if request.user.photo %}
+                        <img src="{{ request.user.photo.url }}" alt="Profile photo" class="profile-avatar">
+                    {% else %}
+                        <div class="profile-avatar profile-avatar-placeholder">
+                            {{ request.user.username|first|upper }}
+                        </div>
+                    {% endif %}
+
+                    <h2 class="profile-name">{{ request.user.username }}</h2>
+                    <p class="profile-email">{{ request.user.email }}</p>
+
+                    <div class="profile-tags">
+                        <span class="tag">{{ request.user.get_role_display }}</span>
+                        {% if request.user.city %}
+                            <span class="tag">{{ request.user.city }}</span>
+                        {% endif %}
+                        {% if request.user.country %}
+                            <span class="tag">{{ request.user.country }}</span>
+                        {% endif %}
+                    </div>
+
+                    {% if request.user.bio %}
+                        <div class="profile-bio-box">
+                            <h3>About</h3>
+                            <p>{{ request.user.bio }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </aside>
+
+            <section class="profile-main">
+                <div class="card profile-form-card">
+                    <div class="card-body">
+                        <div class="profile-section-heading">
+                            <h2>Edit profile</h2>
+                            <p>Update your information and keep your account details current.</p>
+                        </div>
+
+                        <form method="post" enctype="multipart/form-data" class="profile-form">
+                            {% csrf_token %}
+
+                            {% if form.non_field_errors %}
+                                <div class="auth-alert">{{ form.non_field_errors }}</div>
+                            {% endif %}
+
+                            <div class="profile-form-grid">
+                                <div class="auth-field">
+                                    <label for="{{ form.username.id_for_label }}">Username</label>
+                                    {{ form.username }}
+                                    {% if form.username.errors %}
+                                        <div class="auth-error">{{ form.username.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="auth-field">
+                                    <label for="{{ form.email.id_for_label }}">Email</label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="auth-error">{{ form.email.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="auth-field auth-field-full">
+                                    <label for="{{ form.photo.id_for_label }}">Profile photo</label>
+
+                                    <div class="profile-upload-box">
+                                        {% if request.user.photo %}
+                                            <div class="profile-upload-current">
+                                                <span class="profile-upload-label">Current photo</span>
+                                                <div class="profile-upload-current-row">
+                                                    <img src="{{ request.user.photo.url }}" alt="Current profile photo" class="profile-upload-thumb">
+                                                    <span class="profile-upload-filename">{{ request.user.photo.name|cut:"profiles/" }}</span>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="profile-upload-new">
+                                            <label class="profile-upload-button" for="{{ form.photo.id_for_label }}">
+                                                Choose file
+                                            </label>
+                                            {{ form.photo }}
+                                        </div>
+
+                                        {% if form.photo.errors %}
+                                            <div class="auth-error">{{ form.photo.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="auth-field">
+                                    <label for="{{ form.date_of_birth.id_for_label }}">Date of birth</label>
+                                    {{ form.date_of_birth }}
+                                    {% if form.date_of_birth.errors %}
+                                        <div class="auth-error">{{ form.date_of_birth.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="auth-field">
+                                    <label for="{{ form.phone.id_for_label }}">Phone</label>
+                                    {{ form.phone }}
+                                    {% if form.phone.errors %}
+                                        <div class="auth-error">{{ form.phone.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="auth-field">
+                                    <label for="{{ form.city.id_for_label }}">City</label>
+                                    {{ form.city }}
+                                    {% if form.city.errors %}
+                                        <div class="auth-error">{{ form.city.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="auth-field">
+                                    <label for="{{ form.country.id_for_label }}">Country</label>
+                                    {{ form.country }}
+                                    {% if form.country.errors %}
+                                        <div class="auth-error">{{ form.country.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="auth-field auth-field-full">
+                                    <label for="{{ form.bio.id_for_label }}">Bio</label>
+                                    {{ form.bio }}
+                                    {% if form.bio.errors %}
+                                        <div class="auth-error">{{ form.bio.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="profile-form-actions">
+                                <button class="button auth-submit" type="submit">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card profile-history-card">
+                    <div class="card-body">
+                        <div class="profile-section-heading">
+                            <h2>Class activity history</h2>
+                            <p>
+                                {% if request.user.role == "volunteer" %}
+                                    Review the classes you joined as a volunteer.
+                                {% elif request.user.role == "teacher" %}
+                                    Review the classes connected to your teaching work.
+                                {% else %}
+                                    Your class activity history will appear here if relevant to your role.
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        {% if participation_history %}
+                            <div class="profile-history-list">
+                                {% for entry in participation_history %}
+                                    <article class="profile-history-item">
+                                        <div class="profile-history-top">
+                                            <div>
+                                                <h3>{{ entry.school_name }}</h3>
+                                                <p class="profile-history-date">{{ entry.date }}</p>
+                                            </div>
+                                            <span class="tag">{{ entry.language }}</span>
+                                        </div>
+
+                                        <div class="profile-history-meta">
+                                            {% if entry.children_group %}
+                                                <div class="profile-history-meta-item">
+                                                    <span>Children group</span>
+                                                    <strong>{{ entry.children_group }}</strong>
+                                                </div>
+                                            {% endif %}
+
+                                            {% if entry.session_title %}
+                                                <div class="profile-history-meta-item">
+                                                    <span>Session</span>
+                                                    <strong>{{ entry.session_title }}</strong>
+                                                </div>
+                                            {% endif %}
+
+                                            {% if entry.teacher %}
+                                                <div class="profile-history-meta-item">
+                                                    <span>Teacher</span>
+                                                    <strong>{{ entry.teacher.username }}</strong>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                        {% if entry.other_volunteers.all %}
+                                            <p class="profile-history-notes">
+                                                <strong>Other volunteers:</strong>
+                                                {% for volunteer in entry.other_volunteers.all %}
+                                                    {{ volunteer.username }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                        {% endif %}
+
+                                        {% if entry.notes %}
+                                            <p class="profile-history-notes">
+                                                <strong>Notes:</strong> {{ entry.notes }}
+                                            </p>
+                                        {% endif %}
+                                    </article>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="profile-empty-state">
+                                <p>No class activity history has been added yet.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}

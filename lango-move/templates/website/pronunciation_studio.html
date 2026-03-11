@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Pronunciation Studio | LangoMove{% endblock %}
 
@@ -6,49 +7,99 @@
 <section class="page-section">
     <div class="container">
         <div class="section-header">
-            <h1>Pronunciation Studio</h1>
-            <p>Review vocabulary and phrases, check phonetics, and verify audio availability.</p>
+            <h1 id="ps-title">Pronunciation Studio</h1>
+            <p id="ps-subtitle">Review vocabulary and phrases, check phonetics, and verify audio availability.</p>
         </div>
 
-        <div class="filters-panel">
-            <div class="chip-row">
-                <a href="{% url 'pronunciation-studio' %}" class="chip {% if item_type == 'all' %}active{% endif %}">All</a>
-                <a href="{% url 'pronunciation-studio' %}?type=vocabulary" class="chip {% if item_type == 'vocabulary' %}active{% endif %}">Vocabulary</a>
-                <a href="{% url 'pronunciation-studio' %}?type=phrases" class="chip {% if item_type == 'phrases' %}active{% endif %}">Phrases</a>
-                <a href="{% url 'pronunciation-studio' %}?missing=1" class="chip {% if missing_only %}active{% endif %}">Missing audio only</a>
+        <div class="filters-panel pronunciation-filters-panel">
+            <div class="filter-group">
+                <div class="filter-label" id="ps-filter-type-label">Type</div>
+                <div class="chip-row" id="type-filters">
+                    <button type="button" class="chip active" data-type="all">All</button>
+                    <button type="button" class="chip" data-type="vocabulary">Vocabulary</button>
+                    <button type="button" class="chip" data-type="phrases">Phrases</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-label" id="ps-filter-audio-label">Audio</div>
+                <div class="chip-row" id="audio-filters">
+                    <button type="button" class="chip active" data-audio="all">All</button>
+                    <button type="button" class="chip" data-audio="ready">Audio ready</button>
+                    <button type="button" class="chip" data-audio="missing">Missing audio</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-label" id="ps-filter-search-label">Search</div>
+                <div class="pronunciation-search-wrap">
+                    <input
+                        id="pronunciation-search"
+                        class="pronunciation-search-input"
+                        type="text"
+                        placeholder="Search word, phrase, translation, category..."
+                    >
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-label" id="ps-filter-language-label">Language</div>
+                <div class="chip-row" id="language-filters">
+                    <button type="button" class="chip active" data-language="all">All</button>
+                    {% for item in vocabulary_items %}
+                        {% if item.language_name %}
+                            <button type="button" class="chip pronunciation-language-chip" data-language-option="{{ item.language_name }}">{{ item.language_name }}</button>
+                        {% endif %}
+                    {% endfor %}
+                    {% for item in phrase_items %}
+                        {% if item.language_name %}
+                            <button type="button" class="chip pronunciation-language-chip" data-language-option="{{ item.language_name }}">{{ item.language_name }}</button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
 
         {% if vocabulary_items %}
-            <div class="section-header" style="margin-top: 24px;">
-                <h2>Vocabulary</h2>
+            <div class="section-header pronunciation-section-header" data-section="vocabulary">
+                <h2 id="ps-vocabulary-heading">Vocabulary</h2>
             </div>
 
-            <div class="modal-list">
+            <div class="modal-list pronunciation-items-list" data-list-type="vocabulary">
                 {% for item in vocabulary_items %}
-                    <article class="modal-list-item">
+                    <article
+                        class="modal-list-item pronunciation-item"
+                        data-item-type="vocabulary"
+                        data-audio-state="{% if item.audio_file and item.audio_file.0.url %}ready{% else %}missing{% endif %}"
+                        data-language="{{ item.language_name|default:item.language_code|default:''|lower }}"
+                        data-search="{{ item.word|default:''|lower }} {{ item.word_fr|default:''|lower }} {{ item.category|default:''|lower }} {{ item.language_name|default:''|lower }} {{ item.language_code|default:''|lower }} {{ item.phonetic|default:''|lower }}"
+                    >
                         <div class="modal-item-top">
                             <div>
                                 <h3 class="modal-item-title">
-                                    {{ item.word }}
+                                    <span class="field-en">{{ item.word }}</span>
                                     {% if item.word_fr %}
-                                        <span class="modal-item-subtitle"> — {{ item.word_fr }}</span>
+                                        <span class="modal-item-subtitle field-fr-inline"> — {{ item.word_fr }}</span>
                                     {% endif %}
                                 </h3>
                             </div>
 
                             <div class="modal-pill-row">
                                 {% if item.audio_file and item.audio_file.0.url %}
-                                    <span class="modal-pill">audio ready</span>
+                                    <span class="modal-pill audio-status-pill" data-audio-label="ready">audio ready</span>
                                 {% else %}
-                                    <span class="modal-pill">missing audio</span>
+                                    <span class="modal-pill audio-status-pill" data-audio-label="missing">missing audio</span>
                                 {% endif %}
                             </div>
                         </div>
 
                         <div class="modal-pill-row">
                             {% if item.category %}<span class="modal-pill">{{ item.category }}</span>{% endif %}
-                            {% if item.language_code %}<span class="modal-pill">{{ item.language_code }}</span>{% endif %}
+                            {% if item.language_name %}
+                                <span class="modal-pill language-pill-label">{{ item.language_name }}</span>
+                            {% elif item.language_code %}
+                                <span class="modal-pill language-pill-label">{{ item.language_code }}</span>
+                            {% endif %}
                         </div>
 
                         {% if item.phonetic %}
@@ -67,33 +118,45 @@
         {% endif %}
 
         {% if phrase_items %}
-            <div class="section-header" style="margin-top: 34px;">
-                <h2>Phrases</h2>
+            <div class="section-header pronunciation-section-header" data-section="phrases" style="margin-top: 34px;">
+                <h2 id="ps-phrases-heading">Phrases</h2>
             </div>
 
-            <div class="modal-list">
+            <div class="modal-list pronunciation-items-list" data-list-type="phrases">
                 {% for item in phrase_items %}
-                    <article class="modal-list-item">
+                    <article
+                        class="modal-list-item pronunciation-item"
+                        data-item-type="phrases"
+                        data-audio-state="{% if item.audio_file and item.audio_file.0.url %}ready{% else %}missing{% endif %}"
+                        data-language="{{ item.language_name|default:item.language_code|default:''|lower }}"
+                        data-search="{{ item.text|default:''|lower }} {{ item.text_fr|default:''|lower }} {{ item.phrase_type|default:''|lower }} {{ item.language_name|default:''|lower }} {{ item.language_code|default:''|lower }} {{ item.phonetic|default:''|lower }}"
+                    >
                         <div class="modal-item-top">
                             <div>
-                                <h3 class="modal-item-title">{{ item.text }}</h3>
+                                <h3 class="modal-item-title">
+                                    <span class="field-en">{{ item.text }}</span>
+                                </h3>
                                 {% if item.text_fr %}
-                                    <div class="modal-muted">{{ item.text_fr }}</div>
+                                    <div class="modal-muted field-fr-block">{{ item.text_fr }}</div>
                                 {% endif %}
                             </div>
 
                             <div class="modal-pill-row">
                                 {% if item.audio_file and item.audio_file.0.url %}
-                                    <span class="modal-pill">audio ready</span>
+                                    <span class="modal-pill audio-status-pill" data-audio-label="ready">audio ready</span>
                                 {% else %}
-                                    <span class="modal-pill">missing audio</span>
+                                    <span class="modal-pill audio-status-pill" data-audio-label="missing">missing audio</span>
                                 {% endif %}
                             </div>
                         </div>
 
                         <div class="modal-pill-row">
                             {% if item.phrase_type %}<span class="modal-pill">{{ item.phrase_type }}</span>{% endif %}
-                            {% if item.language_code %}<span class="modal-pill">{{ item.language_code }}</span>{% endif %}
+                            {% if item.language_name %}
+                                <span class="modal-pill language-pill-label">{{ item.language_name }}</span>
+                            {% elif item.language_code %}
+                                <span class="modal-pill language-pill-label">{{ item.language_code }}</span>
+                            {% endif %}
                         </div>
 
                         {% if item.phonetic %}
@@ -110,6 +173,12 @@
                 {% endfor %}
             </div>
         {% endif %}
+
+        <div id="pronunciation-empty-state" class="modal-empty" style="display: none; margin-top: 22px;">
+            No items match the current filters.
+        </div>
     </div>
 </section>
+
+<script src="{% static 'js/pronunciation_studio.js' %}"></script>
 {% endblock %}
