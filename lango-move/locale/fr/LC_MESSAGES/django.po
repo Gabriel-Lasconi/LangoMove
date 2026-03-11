@@ -1,166 +1,418 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: LangoMove\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-11 12:47+0100\n"
 "Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 
+#: templates/base.html:21
 msgid "Languages through movement"
 msgstr "Les langues par le mouvement"
 
+#: templates/base.html:29
+msgid "Admin panel"
+msgstr "Panneau d'administration"
+
+#: templates/base.html:31
 msgid "Home"
 msgstr "Accueil"
 
+#: templates/base.html:32
 msgid "Courses"
 msgstr "Cours"
 
+#: templates/base.html:33
 msgid "About"
 msgstr "À propos"
 
+#: templates/base.html:34
 msgid "Contact"
 msgstr "Contact"
 
-msgid "LangoMove | Home"
-msgstr "LangoMove | Accueil"
+#: templates/base.html:39 templates/users/login.html:59
+msgid "Login"
+msgstr "Connexion"
 
-msgid "LangoMove Prototype"
-msgstr "Prototype LangoMove"
+#: templates/base.html:40 templates/users/register.html:30
+msgid "Register"
+msgstr "Inscription"
 
-msgid "Language learning through movement, games, and structured sessions"
-msgstr "L’apprentissage des langues par le mouvement, les jeux et des séances structurées"
+#: templates/users/login.html:4
+msgid "Login | LangoMove"
+msgstr "Connexion | LangoMove"
 
-msgid "Discover complete language courses connected to Airtable, organised by age group and session length. Explore sessions, activities, and build a scalable prototype for the future LangoMove platform."
-msgstr "Découvrez des parcours de langues complets connectés à Airtable, organisés par groupe d’âge et durée de séance. Explorez les séances, les activités, et construisez un prototype évolutif pour la future plateforme LangoMove."
+#: templates/users/login.html:11
+msgid "Welcome back"
+msgstr "Bon retour"
 
-msgid "Browse courses"
-msgstr "Voir les cours"
+#: templates/users/login.html:12
+msgid "Login to LangoMove"
+msgstr "Connexion à LangoMove"
 
-msgid "Learn more"
-msgstr "En savoir plus"
+#: templates/users/login.html:14
+msgid ""
+"\n"
+"                    Access your account to continue exploring courses, "
+"sessions, and educational\n"
+"                    content built through movement and language learning.\n"
+"                    "
+msgstr ""
+"\n"
+"                    Accédez à votre compte pour continuer à explorer les "
+"cours, les séances et les contenus pédagogiques\n"
+"                    basés sur le mouvement et l’apprentissage des langues.\n"
+"                    "
 
-msgid "Published courses"
-msgstr "Cours publiés"
+#: templates/users/login.html:21
+msgid "Teachers"
+msgstr "Enseignants"
 
-msgid "Age groups"
-msgstr "Groupes d’âge"
+#: templates/users/login.html:22
+msgid "Volunteers"
+msgstr "Bénévoles"
 
-msgid "Languages"
-msgstr "Langues"
+#: templates/users/login.html:23
+msgid "Guests"
+msgstr "Invités"
 
-msgid "English through movement"
-msgstr "L’anglais en mouvement"
+#: templates/users/login.html:30
+msgid "Sign in"
+msgstr "Se connecter"
 
-msgid "Structured sessions, reusable games, Airtable-powered content"
-msgstr "Des séances structurées, des jeux réutilisables, et un contenu alimenté par Airtable"
+#: templates/users/login.html:31
+msgid "Use your email and password to access your account."
+msgstr ""
+"Utilisez votre adresse e-mail et votre mot de passe pour accéder à votre "
+"compte."
 
-msgid "Colours"
-msgstr "Couleurs"
+#: templates/users/login.html:44 templates/users/register.html:49
+msgid "Email"
+msgstr "Adresse e-mail"
 
-msgid "Numbers"
-msgstr "Nombres"
+#: templates/users/login.html:52 templates/users/register.html:59
+msgid "Password"
+msgstr "Mot de passe"
 
-msgid "Animals"
-msgstr "Animaux"
+#: templates/users/login.html:64
+msgid "Don’t have an account yet?"
+msgstr "Vous n’avez pas encore de compte ?"
 
-msgid "Action verbs"
-msgstr "Verbes d’action"
+#: templates/users/login.html:65
+msgid "Create one"
+msgstr "Créer un compte"
 
-msgid "8 sessions"
-msgstr "8 séances"
+#: templates/users/register.html:4
+msgid "Register | LangoMove"
+msgstr "Inscription | LangoMove"
 
-msgid "30–45 min"
-msgstr "30–45 min"
+#: templates/users/register.html:11
+msgid "Get started"
+msgstr "Commencer"
 
-msgid "Published Courses"
-msgstr "Cours publiés"
+#: templates/users/register.html:12
+msgid "Create your LangoMove account"
+msgstr "Créer votre compte LangoMove"
 
-msgid "Filter courses by age group or language. These cards are loaded from Airtable and can lead to course pages, sessions, and activity sequences."
-msgstr "Filtrez les cours par groupe d’âge ou par langue. Ces cartes sont chargées depuis Airtable et mènent vers les pages de cours, les séances et les séquences d’activités."
+#: templates/users/register.html:14
+msgid ""
+"\n"
+"                    Register as a guest, teacher, or volunteer. For now, all "
+"logged-in users can\n"
+"                    access the same platform features, while admins manage "
+"the admin panel separately.\n"
+"                    "
+msgstr ""
+"\n"
+"                    Inscrivez-vous en tant qu’invité, enseignant ou "
+"bénévole. Pour l’instant, tous les utilisateurs connectés\n"
+"                    ont accès aux mêmes fonctionnalités de la plateforme, "
+"tandis que les administrateurs gèrent le panneau d’administration "
+"séparément.\n"
+"                    "
 
-msgid "All"
-msgstr "Tous"
+#: templates/users/register.html:21
+msgid "Guest"
+msgstr "Invité"
 
-msgid "Sessions"
-msgstr "Séances"
+#: templates/users/register.html:22
+msgid "Teacher"
+msgstr "Enseignant"
 
-msgid "Minutes per session"
-msgstr "Minutes par séance"
+#: templates/users/register.html:23
+msgid "Volunteer"
+msgstr "Bénévole"
 
-msgid "Target group"
-msgstr "Groupe cible"
+#: templates/users/register.html:31
+msgid "Create an account and choose how you use the platform."
+msgstr "Créez un compte et choisissez comment vous utilisez la plateforme."
 
-msgid "View course"
-msgstr "Voir le cours"
+#: templates/users/register.html:44
+msgid "Username"
+msgstr "Nom d’utilisateur"
 
-msgid "No matching courses found"
-msgstr "Aucun cours correspondant trouvé"
+#: templates/users/register.html:54
+msgid "Role"
+msgstr "Rôle"
 
-msgid "Try removing one of the filters or check Airtable to make sure your course records are marked as published."
-msgstr "Essayez de retirer un des filtres ou vérifiez dans Airtable que vos cours sont bien marqués comme publiés."
+#: templates/users/register.html:64
+msgid "Confirm password"
+msgstr "Confirmer le mot de passe"
 
-msgid "Try another combination of filters."
-msgstr "Essayez une autre combinaison de filtres."
+#: templates/users/register.html:68
+msgid "Create account"
+msgstr "Créer un compte"
 
-msgid "About this prototype"
-msgstr "À propos de ce prototype"
+#: templates/users/register.html:73
+msgid "Already have an account?"
+msgstr "Vous avez déjà un compte ?"
 
-msgid "This version connects Django to Airtable and turns your database into an actual website structure: courses, sessions, and linked games. It is a strong foundation for a richer LangoMove platform."
-msgstr "Cette version connecte Django à Airtable et transforme votre base de données en une véritable structure de site web : cours, séances et jeux liés. C’est une base solide pour une plateforme LangoMove plus riche."
+#: templates/users/register.html:74
+msgid "Login here"
+msgstr "Se connecter ici"
 
-msgid "Next additions can include a real session generator, pronunciation pages, flashcards, and an AI-driven custom course builder."
-msgstr "Les prochaines étapes peuvent inclure un vrai générateur de séances, des pages de prononciation, des flashcards et un créateur de cours personnalisé alimenté par l’IA."
-
+#: templates/website/course_detail.html:10
 msgid "Back to home"
 msgstr "Retour à l’accueil"
 
+#: templates/website/course_detail.html:20
 msgid "Language"
 msgstr "Langue"
 
+#: templates/website/course_detail.html:24
 msgid "Age group"
 msgstr "Groupe d’âge"
 
-msgid "Open a session to explore its learning objectives and the games connected to it."
-msgstr "Ouvrez une séance pour explorer ses objectifs pédagogiques et les jeux qui y sont liés."
+#: templates/website/course_detail.html:28
+#: templates/website/course_detail.html:38 templates/website/home.html:133
+msgid "Sessions"
+msgstr "Séances"
 
+#: templates/website/course_detail.html:32 templates/website/home.html:137
+msgid "Minutes per session"
+msgstr "Minutes par séance"
+
+#: templates/website/course_detail.html:39
+msgid ""
+"Open a session to explore its learning objectives and the games connected to "
+"it."
+msgstr ""
+"Ouvrez une séance pour explorer ses objectifs pédagogiques et les jeux qui y "
+"sont liés."
+
+#: templates/website/course_detail.html:54
 msgid "Open session"
 msgstr "Ouvrir la séance"
 
+#: templates/website/course_detail.html:60
 msgid "No sessions found"
 msgstr "Aucune séance trouvée"
 
+#: templates/website/course_detail.html:61
 msgid "This course currently has no published sessions."
 msgstr "Ce cours n’a actuellement aucune séance publiée."
 
+#: templates/website/home.html:4
+msgid "LangoMove | Home"
+msgstr "LangoMove | Accueil"
+
+#: templates/website/home.html:10
+msgid "LangoMove Prototype"
+msgstr "Prototype LangoMove"
+
+#: templates/website/home.html:11
+msgid "Language learning through movement, games, and structured sessions"
+msgstr ""
+"L’apprentissage des langues par le mouvement, les jeux et des séances "
+"structurées"
+
+#: templates/website/home.html:13
+msgid ""
+"Discover complete language courses connected to Airtable, organised by age "
+"group and session length. Explore sessions, activities, and build a scalable "
+"prototype for the future LangoMove platform."
+msgstr ""
+"Découvrez des parcours de langues complets connectés à Airtable, organisés "
+"par groupe d’âge et durée de séance. Explorez les séances, les activités, et "
+"construisez un prototype évolutif pour la future plateforme LangoMove."
+
+#: templates/website/home.html:17
+msgid "Browse courses"
+msgstr "Voir les cours"
+
+#: templates/website/home.html:18
+msgid "Learn more"
+msgstr "En savoir plus"
+
+#: templates/website/home.html:24
+msgid "Published courses"
+msgstr "Cours publiés"
+
+#: templates/website/home.html:28 templates/website/home.html:80
+msgid "Age groups"
+msgstr "Groupes d’âge"
+
+#: templates/website/home.html:32 templates/website/home.html:95
+msgid "Languages"
+msgstr "Langues"
+
+#: templates/website/home.html:42
+msgid "English through movement"
+msgstr "L’anglais en mouvement"
+
+#: templates/website/home.html:43
+msgid "Structured sessions, reusable games, Airtable-powered content"
+msgstr ""
+"Des séances structurées, des jeux réutilisables et un contenu alimenté par "
+"Airtable"
+
+#: templates/website/home.html:48
+msgid "Colours"
+msgstr "Couleurs"
+
+#: templates/website/home.html:49
+msgid "Numbers"
+msgstr "Nombres"
+
+#: templates/website/home.html:50
+msgid "Animals"
+msgstr "Animaux"
+
+#: templates/website/home.html:51
+msgid "Action verbs"
+msgstr "Verbes d’action"
+
+#: templates/website/home.html:61
+msgid "8 sessions"
+msgstr "8 séances"
+
+#: templates/website/home.html:62
+msgid "30–45 min"
+msgstr "30–45 min"
+
+#: templates/website/home.html:72
+msgid "Published Courses"
+msgstr "Cours publiés"
+
+#: templates/website/home.html:74
+msgid ""
+"Filter courses by age group or language. These cards are loaded from "
+"Airtable and can lead to course pages, sessions, and activity sequences."
+msgstr ""
+"Filtrez les cours par groupe d’âge ou par langue. Ces cartes sont chargées "
+"depuis Airtable et mènent vers les pages de cours, les séances et les "
+"séquences d’activités."
+
+#: templates/website/home.html:83 templates/website/home.html:98
+msgid "All"
+msgstr "Tous"
+
+#: templates/website/home.html:141
+msgid "Target group"
+msgstr "Groupe cible"
+
+#: templates/website/home.html:147
+msgid "View course"
+msgstr "Voir le cours"
+
+#: templates/website/home.html:154 templates/website/home.html:165
+msgid "No matching courses found"
+msgstr "Aucun cours correspondant trouvé"
+
+#: templates/website/home.html:156
+msgid ""
+"Try removing one of the filters or check Airtable to make sure your course "
+"records are marked as published."
+msgstr ""
+"Essayez de retirer un des filtres ou vérifiez dans Airtable que vos cours "
+"sont bien marqués comme publiés."
+
+#: templates/website/home.html:166
+msgid "Try another combination of filters."
+msgstr "Essayez une autre combinaison de filtres."
+
+#: templates/website/home.html:175
+msgid "About this prototype"
+msgstr "À propos de ce prototype"
+
+#: templates/website/home.html:177
+msgid ""
+"This version connects Django to Airtable and turns your database into an "
+"actual website structure: courses, sessions, and linked games. It is a "
+"strong foundation for a richer LangoMove platform."
+msgstr ""
+"Cette version connecte Django à Airtable et transforme votre base de données "
+"en une véritable structure de site web : cours, séances et jeux liés. C’est "
+"une base solide pour une plateforme LangoMove plus riche."
+
+#: templates/website/home.html:186
+msgid ""
+"Next additions can include a real session generator, pronunciation pages, "
+"flashcards, and an AI-driven custom course builder."
+msgstr ""
+"Les prochaines étapes peuvent inclure un vrai générateur de séances, des "
+"pages de prononciation, des flashcards et un créateur de cours personnalisé "
+"alimenté par l’IA."
+
+#: templates/website/session_detail.html:10
 msgid "Back"
 msgstr "Retour"
 
-msgid "Explore the objectives of this session and the ordered sequence of games connected to it."
-msgstr "Explorez les objectifs de cette séance et la séquence ordonnée des jeux qui y sont liés."
+#: templates/website/session_detail.html:15
+msgid ""
+"Explore the objectives of this session and the ordered sequence of games "
+"connected to it."
+msgstr ""
+"Explorez les objectifs de cette séance et la séquence ordonnée des jeux qui "
+"y sont liés."
 
+#: templates/website/session_detail.html:20
 msgid "Grammar objectives"
 msgstr "Objectifs grammaticaux"
 
+#: templates/website/session_detail.html:25
 msgid "Action objectives"
 msgstr "Objectifs d’action"
 
+#: templates/website/session_detail.html:30
 msgid "Lexical objectives"
 msgstr "Objectifs lexicaux"
 
+#: templates/website/session_detail.html:37
 msgid "Games in this session"
 msgstr "Jeux dans cette séance"
 
-msgid "The activities below are displayed in the same order as stored in the session-games Airtable table."
-msgstr "Les activités ci-dessous sont affichées dans le même ordre que dans la table Airtable session-games."
+#: templates/website/session_detail.html:38
+msgid "Click a game to open its details, vocabulary, and phrases."
+msgstr ""
+"Cliquez sur un jeu pour ouvrir ses détails, son vocabulaire et ses phrases."
 
+#: templates/website/session_detail.html:51
 msgid "Stage"
 msgstr "Étape"
 
+#: templates/website/session_detail.html:54
 msgid "Notes"
 msgstr "Notes"
 
+#: templates/website/session_detail.html:56
+msgid "Click to view full details"
+msgstr "Cliquez pour voir tous les détails"
+
+#: templates/website/session_detail.html:60
 msgid "min"
 msgstr "min"
 
+#: templates/website/session_detail.html:66
 msgid "No games found"
 msgstr "Aucun jeu trouvé"
 
+#: templates/website/session_detail.html:67
 msgid "This session currently has no published linked games."
 msgstr "Cette séance n’a actuellement aucun jeu lié publié."
+
+#: templates/website/session_detail.html:81
+msgid "Loading game details..."
+msgstr "Chargement des détails du jeu..."

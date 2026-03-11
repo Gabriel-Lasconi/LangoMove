@@ -6,9 +6,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
-]
-
-urlpatterns += [
+    path("users/", include("apps.users.urls")),
     path("admin/", admin.site.urls),
     path("", include("apps.website.urls")),
 ]

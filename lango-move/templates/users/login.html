@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Login | LangoMove" %}{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="container">
+        <div class="auth-layout">
+            <div class="auth-side">
+                <span class="auth-kicker">{% trans "Welcome back" %}</span>
+                <h1>{% trans "Login to LangoMove" %}</h1>
+                <p>
+                    {% blocktrans %}
+                    Access your account to continue exploring courses, sessions, and educational
+                    content built through movement and language learning.
+                    {% endblocktrans %}
+                </p>
+
+                <div class="auth-side-pills">
+                    <span class="tag">{% trans "Teachers" %}</span>
+                    <span class="tag">{% trans "Volunteers" %}</span>
+                    <span class="tag">{% trans "Guests" %}</span>
+                </div>
+            </div>
+
+            <div class="auth-card card">
+                <div class="card-body">
+                    <div class="auth-card-header">
+                        <h2>{% trans "Sign in" %}</h2>
+                        <p>{% trans "Use your email and password to access your account." %}</p>
+                    </div>
+
+                    <form method="post" class="auth-form">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="auth-alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="auth-field">
+                            <label for="{{ form.username.id_for_label }}">{% trans "Email" %}</label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="auth-error">{{ form.username.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.password.id_for_label }}">{% trans "Password" %}</label>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <div class="auth-error">{{ form.password.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <button class="button auth-submit" type="submit">{% trans "Login" %}</button>
+                    </form>
+
+                    <div class="auth-footer">
+                        <p>
+                            {% trans "Don’t have an account yet?" %}
+                            <a href="{% url 'register' %}">{% trans "Create one" %}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
