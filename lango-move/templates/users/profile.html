@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %}Profile | LangoMove{% endblock %}
 
@@ -157,27 +157,33 @@
                     <div class="card-body">
                         <div class="profile-section-heading">
                             <h2>Class activity history</h2>
-                            <p>
-                                {% if request.user.role == "volunteer" %}
-                                    Review the classes you joined as a volunteer.
-                                {% elif request.user.role == "teacher" %}
-                                    Review the classes connected to your teaching work.
-                                {% else %}
-                                    Your class activity history will appear here if relevant to your role.
-                                {% endif %}
-                            </p>
+                            <p>Review the classes where you participated as a volunteer or teacher.</p>
+
+                            {% if request.user.role == "volunteer" or request.user.role == "teacher" or request.user.role == "admin" %}
+                                <div style="margin-top: 16px;">
+                                    <a class="button" href="{% url 'create-class-participation' %}">Create class</a>
+                                </div>
+                            {% endif %}
                         </div>
 
                         {% if participation_history %}
                             <div class="profile-history-list">
                                 {% for entry in participation_history %}
-                                    <article class="profile-history-item">
+                                    <article
+                                        class="profile-history-item profile-history-clickable"
+                                        tabindex="0"
+                                        role="button"
+                                        data-history-item
+                                    >
                                         <div class="profile-history-top">
                                             <div>
                                                 <h3>{{ entry.school_name }}</h3>
                                                 <p class="profile-history-date">{{ entry.date }}</p>
                                             </div>
-                                            <span class="tag">{{ entry.language }}</span>
+                                            <div class="profile-history-top-tags">
+                                                <span class="tag">{{ entry.language }}</span>
+                                                <span class="tag">{{ entry.user_participation_role }}</span>
+                                            </div>
                                         </div>
 
                                         <div class="profile-history-meta">
@@ -203,20 +209,142 @@
                                             {% endif %}
                                         </div>
 
-                                        {% if entry.other_volunteers.all %}
-                                            <p class="profile-history-notes">
-                                                <strong>Other volunteers:</strong>
-                                                {% for volunteer in entry.other_volunteers.all %}
-                                                    {{ volunteer.username }}{% if not forloop.last %}, {% endif %}
-                                                {% endfor %}
-                                            </p>
-                                        {% endif %}
+                                        <div class="profile-history-preview-people">
+                                            {% if entry.teacher %}
+                                                <div class="profile-mini-person">
+                                                    {% if entry.teacher.photo %}
+                                                        <img src="{{ entry.teacher.photo.url }}" alt="{{ entry.teacher.username }}">
+                                                    {% else %}
+                                                        <div class="profile-mini-person-placeholder">
+                                                            {{ entry.teacher.username|first|upper }}
+                                                        </div>
+                                                    {% endif %}
+                                                    <span>{{ entry.teacher.username }}</span>
+                                                </div>
+                                            {% endif %}
 
-                                        {% if entry.notes %}
-                                            <p class="profile-history-notes">
-                                                <strong>Notes:</strong> {{ entry.notes }}
-                                            </p>
-                                        {% endif %}
+                                            {% for volunteer in entry.display_volunteers|slice:":3" %}
+                                                <div class="profile-mini-person">
+                                                    {% if volunteer.photo %}
+                                                        <img src="{{ volunteer.photo.url }}" alt="{{ volunteer.username }}">
+                                                    {% else %}
+                                                        <div class="profile-mini-person-placeholder">
+                                                            {{ volunteer.username|first|upper }}
+                                                        </div>
+                                                    {% endif %}
+                                                    <span>{{ volunteer.username }}</span>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <p class="profile-history-open-hint">Click to view full details</p>
+
+                                        <template class="profile-history-modal-template">
+                                            <div class="profile-history-modal-content">
+                                                <div class="modal-hero">
+                                                    <div class="modal-title-block">
+                                                        <h2>{{ entry.school_name }}</h2>
+                                                        <p class="modal-subtitle">{{ entry.date }}</p>
+                                                    </div>
+                                                    <div class="modal-hero-badge">
+                                                        {{ entry.language }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-meta-grid">
+                                                    {% if entry.children_group %}
+                                                        <div class="modal-meta-card">
+                                                            <span class="modal-meta-label">Children group</span>
+                                                            <div class="modal-meta-value">{{ entry.children_group }}</div>
+                                                        </div>
+                                                    {% endif %}
+
+                                                    {% if entry.session_title %}
+                                                        <div class="modal-meta-card">
+                                                            <span class="modal-meta-label">Session</span>
+                                                            <div class="modal-meta-value">{{ entry.session_title }}</div>
+                                                        </div>
+                                                    {% endif %}
+
+                                                    <div class="modal-meta-card">
+                                                        <span class="modal-meta-label">Your role</span>
+                                                        <div class="modal-meta-value">{{ entry.user_participation_role }}</div>
+                                                    </div>
+                                                </div>
+
+                                                {% if entry.teacher %}
+                                                    <div class="modal-section">
+                                                        <div class="modal-section-header">
+                                                            <h3>Teacher</h3>
+                                                        </div>
+                                                        <div class="profile-people-grid">
+                                                            <div class="profile-person-card">
+                                                                {% if entry.teacher.photo %}
+                                                                    <img src="{{ entry.teacher.photo.url }}" alt="{{ entry.teacher.username }}" class="profile-person-avatar">
+                                                                {% else %}
+                                                                    <div class="profile-person-avatar profile-person-avatar-placeholder">
+                                                                        {{ entry.teacher.username|first|upper }}
+                                                                    </div>
+                                                                {% endif %}
+                                                                <div>
+                                                                    <h4>{{ entry.teacher.username }}</h4>
+                                                                    <p>{{ entry.teacher.email }}</p>
+                                                                    <div class="profile-person-tags">
+                                                                        <span class="tag">{{ entry.teacher.get_role_display }}</span>
+                                                                        {% if entry.teacher.id == request.user.id %}
+                                                                            <span class="tag">You</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if entry.display_volunteers %}
+                                                    <div class="modal-section">
+                                                        <div class="modal-section-header">
+                                                            <h3>Volunteers</h3>
+                                                            <span class="modal-section-count">{{ entry.volunteer_count }}</span>
+                                                        </div>
+                                                        <div class="profile-people-grid">
+                                                            {% for volunteer in entry.display_volunteers %}
+                                                                <div class="profile-person-card">
+                                                                    {% if volunteer.photo %}
+                                                                        <img src="{{ volunteer.photo.url }}" alt="{{ volunteer.username }}" class="profile-person-avatar">
+                                                                    {% else %}
+                                                                        <div class="profile-person-avatar profile-person-avatar-placeholder">
+                                                                            {{ volunteer.username|first|upper }}
+                                                                        </div>
+                                                                    {% endif %}
+                                                                    <div>
+                                                                        <h4>{{ volunteer.username }}</h4>
+                                                                        <p>{{ volunteer.email }}</p>
+                                                                        <div class="profile-person-tags">
+                                                                            <span class="tag">{{ volunteer.get_role_display }}</span>
+                                                                            {% if volunteer.id == request.user.id %}
+                                                                                <span class="tag">You</span>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if entry.notes %}
+                                                    <div class="modal-section">
+                                                        <div class="modal-section-header">
+                                                            <h3>Notes</h3>
+                                                        </div>
+                                                        <div class="modal-rich-card">
+                                                            <p>{{ entry.notes }}</p>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </template>
                                     </article>
                                 {% endfor %}
                             </div>
@@ -231,4 +359,15 @@
         </div>
     </div>
 </section>
+
+<div class="modal-overlay" id="history-modal" aria-hidden="true">
+    <div class="modal-dialog profile-history-modal-dialog">
+        <button class="modal-close" id="history-modal-close" aria-label="Close">×</button>
+        <div class="modal-body" id="history-modal-body">
+            <div class="modal-loading">Loading class details...</div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/profile_history.js' %}"></script>
 {% endblock %}

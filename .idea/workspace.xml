@@ -5,8 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="profile page for users + class history added in database and front-end">
+      <change afterPath="$PROJECT_DIR$/lango-move/static/js/class_participation_form.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/static/js/profile_history.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/users/create_class_participation.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/forms/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/forms/profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/models/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/models/profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/views/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/views/dashboard.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/static/css/auth.css" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/static/css/auth.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/static/css/components.css" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/static/css/components.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/users/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/users/profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +30,8 @@
       <list>
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -203,7 +215,7 @@
       <workItem from="1773151190726" duration="21352000" />
       <workItem from="1773218640957" duration="12649000" />
       <workItem from="1773251498513" duration="13996000" />
-      <workItem from="1773315858487" duration="5150000" />
+      <workItem from="1773315858487" duration="14385000" />
     </task>
     <task id="LOCAL-00001" summary="update of login and registration">
       <option name="closed" value="true" />
@@ -245,7 +257,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773270208469</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="profile page for users + class history added in database and front-end">
+      <option name="closed" value="true" />
+      <created>1773339798231</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1773339798231</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

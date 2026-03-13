@@ -50,7 +50,33 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(ClassParticipation)
 class ClassParticipationAdmin(admin.ModelAdmin):
-    list_display = ("date", "volunteer", "school_name", "language", "teacher")
+    list_display = ("date", "school_name", "language", "teacher", "display_volunteers")
     list_filter = ("language", "date")
-    search_fields = ("school_name", "children_group", "session_title", "volunteer__username", "teacher__username")
-    filter_horizontal = ("other_volunteers",)
+    search_fields = (
+        "school_name",
+        "children_group",
+        "session_title",
+        "teacher__username",
+        "teacher__email",
+        "volunteers__username",
+        "volunteers__email",
+    )
+    filter_horizontal = ("volunteers",)
+    fields = (
+        "date",
+        "school_name",
+        "children_group",
+        "language",
+        "session_title",
+        "teacher",
+        "volunteers",
+        "notes",
+    )
+
+    def display_volunteers(self, obj):
+        volunteers = obj.all_volunteers
+        if not volunteers:
+            return "-"
+        return ", ".join(user.username for user in volunteers)
+
+    display_volunteers.short_description = "Volunteers"

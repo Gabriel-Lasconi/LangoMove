@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create class participation | LangoMove{% endblock %}
+
+{% block content %}
+<section class="profile-page">
+    <div class="container profile-container">
+        <div class="section-header profile-page-header">
+            <h1>Create class participation</h1>
+            <p>Fill in the class details so it appears in the history of all involved participants.</p>
+        </div>
+
+        <div class="card profile-form-card">
+            <div class="card-body">
+                <div class="profile-section-heading">
+                    <h2>New class</h2>
+                    <p>
+                        {% if request.user.role == "volunteer" %}
+                            You will automatically be added as one of the volunteers for this class.
+                        {% elif request.user.role == "teacher" %}
+                            You can create the class and assign the volunteers involved.
+                        {% else %}
+                            Create a class participation entry for the team.
+                        {% endif %}
+                    </p>
+                </div>
+
+                <form method="post" class="profile-form">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="auth-alert">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="profile-form-grid">
+                        <div class="auth-field">
+                            <label for="{{ form.date.id_for_label }}">Date</label>
+                            {{ form.date }}
+                            {% if form.date.errors %}
+                                <div class="auth-error">{{ form.date.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.language.id_for_label }}">Language</label>
+                            {{ form.language }}
+                            {% if form.language.errors %}
+                                <div class="auth-error">{{ form.language.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field auth-field-full">
+                            <label for="{{ form.school_name.id_for_label }}">School name</label>
+                            {{ form.school_name }}
+                            {% if form.school_name.errors %}
+                                <div class="auth-error">{{ form.school_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.children_group.id_for_label }}">Children group</label>
+                            {{ form.children_group }}
+                            {% if form.children_group.errors %}
+                                <div class="auth-error">{{ form.children_group.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.session_title.id_for_label }}">Session title</label>
+                            {{ form.session_title }}
+                            {% if form.session_title.errors %}
+                                <div class="auth-error">{{ form.session_title.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.teacher.id_for_label }}">Teacher</label>
+                            {{ form.teacher }}
+                            {% if form.teacher.errors %}
+                                <div class="auth-error">{{ form.teacher.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field auth-field-full">
+                            <label>Volunteers</label>
+
+                            <div class="volunteer-dropdown" data-volunteer-dropdown>
+                                <button type="button" class="volunteer-dropdown-trigger" data-volunteer-trigger>
+                                    <span class="volunteer-dropdown-trigger-text" data-volunteer-trigger-text>
+                                        Select volunteers
+                                    </span>
+                                    <span class="volunteer-dropdown-trigger-icon">▾</span>
+                                </button>
+
+                                <div class="volunteer-dropdown-panel" data-volunteer-panel>
+                                    <div class="volunteer-dropdown-search-wrap">
+                                        <input
+                                            type="text"
+                                            class="volunteer-dropdown-search"
+                                            placeholder="Search volunteers..."
+                                            data-volunteer-search
+                                        >
+                                    </div>
+
+                                    <div class="volunteer-dropdown-list" data-volunteer-list>
+                                        {% for volunteer in volunteer_options %}
+                                            <label
+                                                class="volunteer-dropdown-item"
+                                                data-volunteer-item
+                                                data-search="{{ volunteer.username|lower }} {{ volunteer.email|lower }} {{ volunteer.get_role_display|lower }}"
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    name="volunteers"
+                                                    value="{{ volunteer.id }}"
+                                                    class="volunteer-dropdown-checkbox"
+                                                    {% if volunteer.id|stringformat:"s" in selected_volunteer_ids %}checked{% endif %}
+                                                >
+
+                                                <div class="volunteer-dropdown-card">
+                                                    {% if volunteer.photo %}
+                                                        <img src="{{ volunteer.photo.url }}" alt="{{ volunteer.username }}" class="volunteer-dropdown-avatar">
+                                                    {% else %}
+                                                        <div class="volunteer-dropdown-avatar volunteer-dropdown-avatar-placeholder">
+                                                            {{ volunteer.username|first|upper }}
+                                                        </div>
+                                                    {% endif %}
+
+                                                    <div class="volunteer-dropdown-content">
+                                                        <div class="volunteer-dropdown-top">
+                                                            <strong>{{ volunteer.username }}</strong>
+                                                            <span class="tag">{{ volunteer.get_role_display }}</span>
+                                                        </div>
+                                                        <p>{{ volunteer.email }}</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        {% empty %}
+                                            <div class="volunteer-dropdown-empty">No volunteers available.</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="auth-help">
+                                Select one or more additional volunteers. You are added automatically as the creator of this class.
+                            </div>
+
+                            {% if form.volunteers.errors %}
+                                <div class="auth-error">{{ form.volunteers.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field auth-field-full">
+                            <label for="{{ form.notes.id_for_label }}">Notes</label>
+                            {{ form.notes }}
+                            {% if form.notes.errors %}
+                                <div class="auth-error">{{ form.notes.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="button">
+                            Create class
+                        </button>
+
+                        <a href="{% url 'dashboard' %}" class="button-secondary">
+                            Back to profile
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/class_participation_form.js' %}"></script>
+{% endblock %}
