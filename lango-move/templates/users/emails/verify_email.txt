@@ -1,0 +1,9 @@
+Hello {{ user.username }},
+
+Welcome to LangoMove.
+
+Please confirm your email address by clicking the link below:
+
+{{ activation_url }}
+
+If you did not create this account, you can safely ignore this email.

@@ -4,7 +4,7 @@
 {% block title %}Create class participation | LangoMove{% endblock %}
 
 {% block content %}
-<section class="profile-page">
+<section class="profile-page class-participation-page">
     <div class="container profile-container">
         <div class="section-header profile-page-header">
             <h1>Create class participation</h1>
@@ -101,6 +101,10 @@
                                             placeholder="Search volunteers..."
                                             data-volunteer-search
                                         >
+                                    </div>
+
+                                    <div class="volunteer-dropdown-count">
+                                        {{ volunteer_options|length }} volunteers available
                                     </div>
 
                                     <div class="volunteer-dropdown-list" data-volunteer-list>

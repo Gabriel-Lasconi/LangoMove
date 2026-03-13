@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Activation link invalid | LangoMove{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="container">
+        <div class="card profile-form-card">
+            <div class="card-body">
+                <div class="profile-section-heading">
+                    <h1>Activation link invalid</h1>
+                    <p>
+                        This activation link is invalid, expired, or has already been used.
+                    </p>
+                </div>
+
+                <div class="modal-rich-card" style="margin-bottom: 22px;">
+                    <p>
+                        You can request a new activation email below.
+                    </p>
+                </div>
+
+                <form method="post" action="{% url 'resend-activation' %}" class="profile-form">
+                    {% csrf_token %}
+
+                    <div class="auth-field auth-field-full">
+                        <label for="id_email">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="id_email"
+                            value="{{ activation_email }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="button">Send new activation link</button>
+                        <a href="{% url 'login' %}" class="button-secondary">Back to login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

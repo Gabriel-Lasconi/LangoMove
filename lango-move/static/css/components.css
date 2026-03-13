@@ -680,8 +680,10 @@
         width: 100%;
     }
 }
+
 /* ============================= */
 /* Volunteer picker cards        */
+/* Legacy support                */
 /* ============================= */
 
 .volunteer-picker {
@@ -781,12 +783,26 @@
         align-items: flex-start;
     }
 }
+
 /* ============================= */
 /* Volunteer dropdown picker     */
 /* ============================= */
 
+.auth-field {
+    position: relative;
+    overflow: visible;
+}
+
+.profile-form,
+.profile-form-grid,
+.profile-form-card,
+.profile-form-card .card-body {
+    overflow: visible;
+}
+
 .volunteer-dropdown {
     position: relative;
+    z-index: 40;
 }
 
 .volunteer-dropdown-trigger {
@@ -834,7 +850,7 @@
     top: calc(100% + 10px);
     left: 0;
     right: 0;
-    z-index: 30;
+    z-index: 999;
     display: none;
     padding: 14px;
     border-radius: 20px;
@@ -868,12 +884,19 @@
     background: white;
 }
 
+.volunteer-dropdown-count {
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
 .volunteer-dropdown-list {
     display: grid;
     gap: 10px;
-    max-height: 320px;
+    max-height: 60vh;
     overflow-y: auto;
-    padding-right: 4px;
+    padding-right: 6px;
 }
 
 .volunteer-dropdown-item {
@@ -965,12 +988,17 @@
 
 @media (max-width: 700px) {
     .volunteer-dropdown-panel {
-        position: static;
-        margin-top: 10px;
+        position: absolute;
+        left: 0;
+        right: 0;
     }
 
     .volunteer-dropdown-top {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .volunteer-dropdown-list {
+        max-height: 50vh;
     }
 }

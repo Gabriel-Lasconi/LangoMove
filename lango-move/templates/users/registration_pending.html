@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Check your email | LangoMove{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="container">
+        <div class="card profile-form-card">
+            <div class="card-body">
+                <div class="profile-section-heading">
+                    <h1>Check your email</h1>
+                    <p>
+                        We sent a confirmation link to
+                        <strong>{{ pending_user.email }}</strong>.
+                    </p>
+                </div>
+
+                <div class="modal-rich-card" style="margin-bottom: 22px;">
+                    <p>
+                        Please open the email and click the activation link to confirm your account.
+                        You will not be able to log in until your email is confirmed.
+                    </p>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{% url 'login' %}" class="button-secondary">Back to login</a>
+                    <a href="{% url 'resend-activation' %}" class="button">Resend activation link</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

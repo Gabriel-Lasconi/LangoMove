@@ -4,13 +4,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const trigger = dropdown.querySelector("[data-volunteer-trigger]");
     const triggerText = dropdown.querySelector("[data-volunteer-trigger-text]");
-    const panel = dropdown.querySelector("[data-volunteer-panel]");
     const searchInput = dropdown.querySelector("[data-volunteer-search]");
+    const list = dropdown.querySelector("[data-volunteer-list]");
     const items = Array.from(dropdown.querySelectorAll("[data-volunteer-item]"));
     const checkboxes = Array.from(dropdown.querySelectorAll(".volunteer-dropdown-checkbox"));
 
     function updateTriggerText() {
         const checked = checkboxes.filter((cb) => cb.checked);
+
         if (checked.length === 0) {
             triggerText.textContent = "Select volunteers";
             return;
@@ -26,12 +27,18 @@ document.addEventListener("DOMContentLoaded", function () {
         triggerText.textContent = `${checked.length} volunteers selected`;
     }
 
-    function openDropdown() {
-        dropdown.classList.add("open");
-    }
+    function resetFilter() {
+        if (searchInput) {
+            searchInput.value = "";
+        }
 
-    function closeDropdown() {
-        dropdown.classList.remove("open");
+        items.forEach((item) => {
+            item.style.display = "";
+        });
+
+        if (list) {
+            list.scrollTop = 0;
+        }
     }
 
     function filterItems() {
@@ -39,14 +46,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
         items.forEach((item) => {
             const haystack = item.dataset.search || "";
-            const matches = !query || haystack.includes(query);
-            item.style.display = matches ? "" : "none";
+            item.style.display = !query || haystack.includes(query) ? "" : "none";
         });
+
+        if (list) {
+            list.scrollTop = 0;
+        }
+    }
+
+    function openDropdown() {
+        dropdown.classList.add("open");
+        resetFilter();
+
+        if (searchInput) {
+            setTimeout(() => searchInput.focus(), 0);
+        }
+    }
+
+    function closeDropdown() {
+        dropdown.classList.remove("open");
     }
 
     trigger.addEventListener("click", function (event) {
         event.preventDefault();
-        dropdown.classList.toggle("open");
+
+        if (dropdown.classList.contains("open")) {
+            closeDropdown();
+        } else {
+            openDropdown();
+        }
     });
 
     document.addEventListener("click", function (event) {

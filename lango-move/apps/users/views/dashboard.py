@@ -68,8 +68,11 @@ def create_class_participation_view(request):
 
     selected_volunteer_ids = [str(v) for v in (form["volunteers"].value() or [])]
 
-    volunteer_options = form.fields["volunteers"].queryset.exclude(id=request.user.id)
-
+    volunteer_options = (
+        form.fields["volunteers"].queryset
+        .exclude(id=request.user.id)
+        .order_by("username")
+    )
     return render(
         request,
         "users/create_class_participation.html",
