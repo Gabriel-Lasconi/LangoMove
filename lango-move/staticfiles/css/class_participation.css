@@ -1,0 +1,30 @@
+.class-participation-page .profile-form-card,
+.class-participation-page .profile-form-card .card-body,
+.class-participation-page .profile-form,
+.class-participation-page .profile-form-grid,
+.class-participation-page .auth-field {
+    overflow: visible;
+}
+
+.class-participation-page .profile-form-grid {
+    row-gap: 22px;
+}
+
+.class-participation-page .auth-field {
+    position: relative;
+    z-index: 1;
+}
+
+.class-participation-page .auth-field.dropdown-open {
+    z-index: 500;
+}
+
+.class-participation-page .teacher-dropdown,
+.class-participation-page .volunteer-dropdown {
+    position: relative;
+}
+
+.class-participation-page .teacher-dropdown-panel,
+.class-participation-page .volunteer-dropdown-panel {
+    z-index: 9999;
+}

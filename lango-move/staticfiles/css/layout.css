@@ -1,0 +1,163 @@
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(226, 230, 240, 0.8);
+}
+
+.navbar {
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.brand-mark {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--primary), #9e9bd1);
+    color: white;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    box-shadow: 0 8px 18px rgba(124, 121, 184, 0.35);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-title {
+    font-weight: 800;
+    font-size: 1.05rem;
+}
+
+.brand-subtitle {
+    color: var(--muted);
+    font-size: 0.86rem;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+    flex: 1;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+    flex: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
+}
+
+.nav-links a {
+    padding: 10px 14px;
+    border-radius: 999px;
+    color: var(--muted);
+    font-weight: 600;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-links a:hover {
+    background: var(--accent);
+    color: var(--primary-dark);
+}
+
+.nav-auth {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.nav-auth a {
+    padding: 10px 14px;
+    border-radius: 999px;
+    color: var(--muted);
+    font-weight: 600;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-auth a:hover {
+    background: var(--accent);
+    color: var(--primary-dark);
+}
+
+.page-section {
+    padding: 24px 0;
+}
+
+.section-header {
+    margin-bottom: 22px;
+}
+
+.section-header h2,
+.section-header h1 {
+    margin: 0 0 10px;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+}
+
+.section-header p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 780px;
+}
+
+.page-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.footer-note {
+    margin-top: 50px;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+@media (max-width: 700px) {
+    .navbar {
+        padding: 14px 0;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .nav-right {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .nav-links,
+    .nav-auth {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+}
