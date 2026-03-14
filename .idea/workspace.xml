@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="added to base.txt">
+    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="fixed deployment-ready">
       <change afterPath="$PROJECT_DIR$/lango-move/airtable.env" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lango-move/email.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/views/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/views/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,7 +214,7 @@
       <workItem from="1773251498513" duration="13996000" />
       <workItem from="1773315858487" duration="22378000" />
       <workItem from="1773442297465" duration="163000" />
-      <workItem from="1773482336788" duration="8053000" />
+      <workItem from="1773482336788" duration="10176000" />
     </task>
     <task id="LOCAL-00001" summary="update of login and registration">
       <option name="closed" value="true" />
@@ -333,7 +336,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773493200526</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="fixed deployment-ready">
+      <option name="closed" value="true" />
+      <created>1773493711217</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1773493711217</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -352,7 +363,8 @@
     <MESSAGE value="cleaned requirements.txt" />
     <MESSAGE value="cleaned base.txt" />
     <MESSAGE value="added to base.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="added to base.txt" />
+    <MESSAGE value="fixed deployment-ready" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed deployment-ready" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/LangoMove$main.coverage" NAME="main Coverage Results" MODIFIED="1773159705124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

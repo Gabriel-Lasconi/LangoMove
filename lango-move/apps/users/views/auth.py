@@ -48,9 +48,21 @@ def register_view(request):
             user.is_active = False
             user.save()
 
-            send_verification_email(request, user)
-
-            return redirect("registration-pending", user_id=user.id)
+            try:
+                send_verification_email(request, user)
+                messages.success(
+                    request,
+                    "Account created. Please check your email to activate it."
+                )
+                return redirect("registration-pending", user_id=user.id)
+            except Exception as exc:
+                messages.warning(
+                    request,
+                    "Your account was created, but we could not send the activation email right now. "
+                    "Please request a new activation link."
+                )
+                print(f"Activation email error during registration: {exc}")
+                return redirect("resend-activation")
 
     return render(request, "users/register.html", {"form": form})
 
@@ -73,7 +85,6 @@ def activate_account_view(request, uidb64, token):
         messages.error(request, "We could not identify this account.")
         return redirect("resend-activation")
 
-    # If already active, do not treat it as an error
     if user.is_active:
         messages.info(request, "This account is already activated. You can log in.")
         return redirect("login")
@@ -119,12 +130,20 @@ def resend_activation_view(request):
             messages.info(request, "This account is already activated. You can log in.")
             return redirect("login")
 
-        send_verification_email(request, user)
-        messages.success(
-            request,
-            "A new activation link has been sent to your email address."
-        )
-        return redirect("registration-pending", user_id=user.id)
+        try:
+            send_verification_email(request, user)
+            messages.success(
+                request,
+                "A new activation link has been sent to your email address."
+            )
+            return redirect("registration-pending", user_id=user.id)
+        except Exception as exc:
+            messages.error(
+                request,
+                "We could not send a new activation email right now. Please try again later."
+            )
+            print(f"Activation email error during resend: {exc}")
+            return redirect("resend-activation")
 
     return render(request, "users/resend_activation.html")
 
