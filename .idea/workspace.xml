@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="more robust email_verification.py">
+    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="debugg for authentication">
       <change afterPath="$PROJECT_DIR$/lango-move/airtable.env" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lango-move/email.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/config/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/config/settings/base.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,7 +213,8 @@
       <workItem from="1773251498513" duration="13996000" />
       <workItem from="1773315858487" duration="22378000" />
       <workItem from="1773442297465" duration="163000" />
-      <workItem from="1773482336788" duration="12337000" />
+      <workItem from="1773482336788" duration="13826000" />
+      <workItem from="1773512835304" duration="393000" />
     </task>
     <task id="LOCAL-00001" summary="update of login and registration">
       <option name="closed" value="true" />
@@ -358,7 +360,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773497126511</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="debugg for authentication">
+      <option name="closed" value="true" />
+      <created>1773498364011</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1773498364012</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -380,7 +390,8 @@
     <MESSAGE value="fixed deployment-ready" />
     <MESSAGE value="new auth.py" />
     <MESSAGE value="more robust email_verification.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="more robust email_verification.py" />
+    <MESSAGE value="debugg for authentication" />
+    <option name="LAST_COMMIT_MESSAGE" value="debugg for authentication" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/LangoMove$main.coverage" NAME="main Coverage Results" MODIFIED="1773159705124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
