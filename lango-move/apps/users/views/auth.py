@@ -1,3 +1,6 @@
+import traceback
+
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -48,6 +51,14 @@ def register_view(request):
             user.is_active = False
             user.save()
 
+            print("=== REGISTER DEBUG ===")
+            print("DEBUG:", settings.DEBUG)
+            print("EMAIL_BACKEND:", settings.EMAIL_BACKEND)
+            print("DEFAULT_FROM_EMAIL:", settings.DEFAULT_FROM_EMAIL)
+            print("SITE_URL:", getattr(settings, "SITE_URL", ""))
+            print("USER ID:", user.id)
+            print("USER EMAIL:", user.email)
+
             try:
                 send_verification_email(request, user)
                 messages.success(
@@ -55,13 +66,14 @@ def register_view(request):
                     "Account created. Please check your email to activate it."
                 )
                 return redirect("registration-pending", user_id=user.id)
-            except Exception as exc:
+            except Exception:
+                print("=== Activation email error during registration ===")
+                traceback.print_exc()
                 messages.warning(
                     request,
                     "Your account was created, but we could not send the activation email right now. "
                     "Please request a new activation link."
                 )
-                print(f"Activation email error during registration: {exc}")
                 return redirect("resend-activation")
 
     return render(request, "users/register.html", {"form": form})
@@ -130,6 +142,14 @@ def resend_activation_view(request):
             messages.info(request, "This account is already activated. You can log in.")
             return redirect("login")
 
+        print("=== RESEND DEBUG ===")
+        print("DEBUG:", settings.DEBUG)
+        print("EMAIL_BACKEND:", settings.EMAIL_BACKEND)
+        print("DEFAULT_FROM_EMAIL:", settings.DEFAULT_FROM_EMAIL)
+        print("SITE_URL:", getattr(settings, "SITE_URL", ""))
+        print("USER ID:", user.id)
+        print("USER EMAIL:", user.email)
+
         try:
             send_verification_email(request, user)
             messages.success(
@@ -137,12 +157,13 @@ def resend_activation_view(request):
                 "A new activation link has been sent to your email address."
             )
             return redirect("registration-pending", user_id=user.id)
-        except Exception as exc:
+        except Exception:
+            print("=== Activation email error during resend ===")
+            traceback.print_exc()
             messages.error(
                 request,
                 "We could not send a new activation email right now. Please try again later."
             )
-            print(f"Activation email error during resend: {exc}")
             return redirect("resend-activation")
 
     return render(request, "users/resend_activation.html")

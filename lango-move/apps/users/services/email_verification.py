@@ -11,6 +11,11 @@ def send_verification_email(request, user):
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
 
+    print("=== EMAIL VERIFICATION DEBUG ===")
+    print("USER PK:", user.pk)
+    print("UID:", uid)
+    print("TOKEN:", token)
+
     activation_path = reverse(
         "activate-account",
         kwargs={
@@ -18,16 +23,21 @@ def send_verification_email(request, user):
             "token": token,
         },
     )
+    print("ACTIVATION PATH:", activation_path)
 
     site_url = getattr(settings, "SITE_URL", "").rstrip("/")
+    print("SITE_URL:", site_url)
 
     if request is not None:
         try:
             activation_url = request.build_absolute_uri(activation_path)
-        except Exception:
+        except Exception as exc:
+            print("build_absolute_uri failed:", exc)
             activation_url = f"{site_url}{activation_path}"
     else:
         activation_url = f"{site_url}{activation_path}"
+
+    print("ACTIVATION URL:", activation_url)
 
     subject = "Activate your LangoMove account"
 
@@ -39,7 +49,8 @@ def send_verification_email(request, user):
                 "activation_url": activation_url,
             },
         )
-    except Exception:
+    except Exception as exc:
+        print("render_to_string failed:", exc)
         message = (
             f"Hello {user.username},\n\n"
             f"Welcome to LangoMove.\n\n"
@@ -47,6 +58,8 @@ def send_verification_email(request, user):
             f"{activation_url}\n\n"
             f"If you did not create this account, you can safely ignore this email.\n"
         )
+
+    print("EMAIL_BACKEND USED:", settings.EMAIL_BACKEND)
 
     send_mail(
         subject=subject,
