@@ -1,8 +1,8 @@
 from django import forms
 from django.conf import settings
 
-from apps.users.models import User, ClassParticipation, UserRole
 from apps.integrations.airtable.client import AirtableClient
+from apps.users.models import ClassParticipation, User, UserRole
 
 
 class UserAccountForm(forms.ModelForm):
@@ -30,7 +30,7 @@ class UserAccountForm(forms.ModelForm):
 
 
 class ClassParticipationForm(forms.ModelForm):
-    language = forms.ChoiceField(choices=[])
+    language = forms.ChoiceField(choices=[], required=True)
     session_title = forms.ChoiceField(choices=[], required=False)
     children_group = forms.ChoiceField(choices=[], required=False)
 
@@ -62,13 +62,13 @@ class ClassParticipationForm(forms.ModelForm):
         ).order_by("username")
 
         self.fields["teacher"].queryset = allowed_users.filter(
-            role__in=[UserRole.TEACHER, UserRole.ADMIN]
-        )
+            role=UserRole.TEACHER
+        ).order_by("username")
         self.fields["teacher"].required = False
 
         self.fields["volunteers"].queryset = allowed_users.filter(
-            role__in=[UserRole.VOLUNTEER, UserRole.ADMIN]
-        )
+            role=UserRole.VOLUNTEER
+        ).order_by("username")
         self.fields["volunteers"].required = False
 
         self.fields["language"].choices = self.get_language_choices()

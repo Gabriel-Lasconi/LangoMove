@@ -6,79 +6,25 @@
     overflow: visible;
 }
 
+.class-participation-page .profile-form-grid {
+    row-gap: 22px;
+}
+
+.class-participation-page .auth-field {
+    position: relative;
+    z-index: 1;
+}
+
+.class-participation-page .auth-field.dropdown-open {
+    z-index: 500;
+}
+
+.class-participation-page .teacher-dropdown,
 .class-participation-page .volunteer-dropdown {
     position: relative;
-    z-index: 60;
 }
 
+.class-participation-page .teacher-dropdown-panel,
 .class-participation-page .volunteer-dropdown-panel {
-    position: absolute;
-    top: calc(100% + 10px);
-    left: 0;
-    right: 0;
     z-index: 9999;
-    display: none;
-    padding: 14px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: white;
-    box-shadow: 0 18px 40px rgba(34, 42, 70, 0.12);
-}
-
-.class-participation-page .volunteer-dropdown.open .volunteer-dropdown-panel {
-    display: block;
-}
-
-.class-participation-page .volunteer-dropdown-list {
-    display: grid;
-    gap: 10px;
-    max-height: min(460px, 60vh);
-    overflow-y: auto;
-    overflow-x: hidden;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    padding-right: 6px;
-}
-
-.class-participation-page .volunteer-dropdown-list::-webkit-scrollbar {
-    width: 10px;
-}
-
-.class-participation-page .volunteer-dropdown-list::-webkit-scrollbar-thumb {
-    background: rgba(124, 121, 184, 0.28);
-    border-radius: 999px;
-}
-
-.class-participation-page .volunteer-dropdown-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.class-participation-page .volunteer-dropdown-search {
-    width: 100%;
-    min-height: 46px;
-    padding: 0 14px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    background: linear-gradient(180deg, #fbfbfe 0%, #f6f8fd 100%);
-    font: inherit;
-    outline: none;
-}
-
-.class-participation-page .volunteer-dropdown-search:focus {
-    border-color: rgba(124, 121, 184, 0.65);
-    box-shadow: 0 0 0 4px rgba(124, 121, 184, 0.12);
-    background: white;
-}
-
-.class-participation-page .volunteer-dropdown-count {
-    margin-bottom: 10px;
-    color: var(--muted);
-    font-size: 0.92rem;
-    font-weight: 600;
-}
-
-@media (max-width: 700px) {
-    .class-participation-page .volunteer-dropdown-list {
-        max-height: 50vh;
-    }
 }

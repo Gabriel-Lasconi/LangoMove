@@ -75,8 +75,70 @@
                         </div>
 
                         <div class="auth-field">
-                            <label for="{{ form.teacher.id_for_label }}">Teacher</label>
-                            {{ form.teacher }}
+                            <label>Teacher</label>
+
+                            <div class="teacher-dropdown" data-teacher-dropdown data-dropdown-root>
+                                <button type="button" class="teacher-dropdown-trigger" data-teacher-trigger>
+                                    <span class="teacher-dropdown-trigger-text" data-teacher-trigger-text>
+                                        Select teacher
+                                    </span>
+                                    <span class="teacher-dropdown-trigger-icon">▾</span>
+                                </button>
+
+                                <div class="teacher-dropdown-panel" data-teacher-panel>
+                                    <div class="teacher-dropdown-search-wrap">
+                                        <input
+                                            type="text"
+                                            class="teacher-dropdown-search"
+                                            placeholder="Search teachers..."
+                                            data-teacher-search
+                                        >
+                                    </div>
+
+                                    <div class="teacher-dropdown-count">
+                                        {{ teacher_options|length }} teachers available
+                                    </div>
+
+                                    <div class="teacher-dropdown-list" data-teacher-list>
+                                        {% for teacher in teacher_options %}
+                                            <label
+                                                class="teacher-dropdown-item"
+                                                data-teacher-item
+                                                data-search="{{ teacher.username|lower }} {{ teacher.email|lower }} {{ teacher.get_role_display|lower }}"
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    name="teacher"
+                                                    value="{{ teacher.id }}"
+                                                    class="teacher-dropdown-radio"
+                                                    {% if teacher.id|stringformat:"s" == selected_teacher_id %}checked{% endif %}
+                                                >
+
+                                                <div class="teacher-dropdown-card">
+                                                    {% if teacher.photo %}
+                                                        <img src="{{ teacher.photo.url }}" alt="{{ teacher.username }}" class="teacher-dropdown-avatar">
+                                                    {% else %}
+                                                        <div class="teacher-dropdown-avatar teacher-dropdown-avatar-placeholder">
+                                                            {{ teacher.username|first|upper }}
+                                                        </div>
+                                                    {% endif %}
+
+                                                    <div class="teacher-dropdown-content">
+                                                        <div class="teacher-dropdown-top">
+                                                            <strong>{{ teacher.username }}</strong>
+                                                            <span class="tag">{{ teacher.get_role_display }}</span>
+                                                        </div>
+                                                        <p>{{ teacher.email }}</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        {% empty %}
+                                            <div class="teacher-dropdown-empty">No teachers available.</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
                             {% if form.teacher.errors %}
                                 <div class="auth-error">{{ form.teacher.errors }}</div>
                             {% endif %}
@@ -85,7 +147,7 @@
                         <div class="auth-field auth-field-full">
                             <label>Volunteers</label>
 
-                            <div class="volunteer-dropdown" data-volunteer-dropdown>
+                            <div class="volunteer-dropdown" data-volunteer-dropdown data-dropdown-root>
                                 <button type="button" class="volunteer-dropdown-trigger" data-volunteer-trigger>
                                     <span class="volunteer-dropdown-trigger-text" data-volunteer-trigger-text>
                                         Select volunteers

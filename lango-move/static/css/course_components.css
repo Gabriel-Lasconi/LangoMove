@@ -1,0 +1,124 @@
+.grid {
+    display: grid;
+    gap: 22px;
+}
+
+.course-grid {
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+}
+
+.course-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.enhanced-course-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.course-card-topband {
+    height: 10px;
+    background: linear-gradient(90deg, var(--primary), #b4b1df);
+}
+
+.course-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.course-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--accent), #f7f8fd);
+    border: 1px solid var(--border);
+}
+
+.course-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.course-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.flag-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    background: var(--surface-soft);
+    font-size: 1.4rem;
+    border: 1px solid var(--border);
+}
+
+.course-title {
+    margin: 0 0 12px;
+    font-size: 1.5rem;
+    line-height: 1.2;
+}
+
+.course-description {
+    color: var(--muted);
+    line-height: 1.65;
+    margin: 0 0 18px;
+}
+
+.meta-list {
+    display: grid;
+    gap: 10px;
+    margin: 0 0 20px;
+}
+
+.meta-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 14px;
+    background: var(--surface-soft);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+}
+
+.meta-label {
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.meta-value {
+    font-weight: 700;
+}
+
+.course-card-actions {
+    margin-top: auto;
+}
+
+@media (max-width: 700px) {
+    .course-card .card-body {
+        padding: 20px;
+    }
+
+    .course-icon-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .course-badges {
+        justify-content: flex-start;
+    }
+}
