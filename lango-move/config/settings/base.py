@@ -13,6 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Load local environment variables for development.
 # On Render, real environment variables from the dashboard will be used.
 load_dotenv(BASE_DIR / "airtable.env")
+load_dotenv(BASE_DIR / "email.env")
 
 # -----------------------------------------------------------------------------
 # Core environment
@@ -20,6 +21,7 @@ load_dotenv(BASE_DIR / "airtable.env")
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-change-this-later")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
+
 
 ALLOWED_HOSTS = [
     host.strip()
