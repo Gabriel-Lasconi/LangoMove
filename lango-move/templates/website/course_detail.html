@@ -10,67 +10,101 @@
             <a class="button button-secondary" href="{% url 'home' %}">← {% trans "Back to home" %}</a>
         </div>
 
-        <div class="section-header">
-            <h1>{{ course.title }}</h1>
-            <p>{{ course.description }}</p>
-        </div>
+        <section class="course-detail-hero-card">
+            <div class="course-detail-hero-topline"></div>
 
-        <div class="meta-list" style="max-width: 520px; margin-bottom: 28px;">
-            <div class="meta-item">
-                <span class="meta-label">{% trans "Language" %}</span>
-                <span class="meta-value">{{ course.language_name }}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">{% trans "Age group" %}</span>
-                <span class="meta-value">{{ course.age_group_name }}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">{% trans "Sessions" %}</span>
-                <span class="meta-value">{{ course.sessions_count }}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">{% trans "Minutes per session" %}</span>
-                <span class="meta-value">{{ course.minutes_per_session }}</span>
-            </div>
-        </div>
-
-        <div class="section-header">
-            <h2>{% trans "Sessions" %}</h2>
-            <p>{% trans "Open a session to explore its learning objectives and the games connected to it." %}</p>
-        </div>
-
-        <div class="stack">
-            {% for session in sessions %}
-                <article class="card session-card">
-                    <div class="session-number-badge">{{ session.session_number }}</div>
-
-                    <div class="session-content">
-                        <h3>{{ session.full_title }}</h3>
-
-                        {% if session.topic_name %}
-                            <p><span class="tag">{{ session.topic_name }}</span></p>
-                        {% endif %}
-
-                        {% if session.action_objectives %}
-                            <p style="margin-top: 12px;">{{ session.action_objectives }}</p>
-                        {% elif session.lexical_objectives %}
-                            <p style="margin-top: 12px;">{{ session.lexical_objectives }}</p>
-                        {% endif %}
+            <div class="course-detail-hero-body">
+                <div class="course-detail-hero-header">
+                    <div class="course-detail-hero-flag">
+                        {{ course.language_flag|default:"🌍" }}
                     </div>
 
-                    <div>
-                        <a class="button" href="{% url 'session-detail' session.slug %}">{% trans "Open session" %}</a>
+                    <div class="course-detail-hero-main">
+                        <div class="section-header course-detail-hero-text">
+                            <h1>{{ course.display_title|default:course.title }}</h1>
+                            <p>{{ course.description }}</p>
+                        </div>
                     </div>
-                </article>
-            {% empty %}
-                <article class="card">
-                    <div class="card-body">
-                        <h3>{% trans "No sessions found" %}</h3>
-                        <p class="course-description">{% trans "This course currently has no published sessions." %}</p>
+                </div>
+                
+
+                <div class="course-detail-stats">
+                    <div class="course-detail-stat-box">
+                        <span class="course-detail-stat-label">{% trans "Language" %}</span>
+                        <strong class="course-detail-stat-value">{{ course.language_name }}</strong>
                     </div>
-                </article>
-            {% endfor %}
-        </div>
+
+                    <div class="course-detail-stat-box">
+                        <span class="course-detail-stat-label">{% trans "Age group" %}</span>
+                        <strong class="course-detail-stat-value">{{ course.age_group_name }}</strong>
+                    </div>
+
+                    <div class="course-detail-stat-box">
+                        <span class="course-detail-stat-label">{% trans "Sessions" %}</span>
+                        <strong class="course-detail-stat-value">{{ course.sessions_count }}</strong>
+                    </div>
+
+                    <div class="course-detail-stat-box">
+                        <span class="course-detail-stat-label">{% trans "Minutes per session" %}</span>
+                        <strong class="course-detail-stat-value">{{ course.minutes_per_session }}</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section" style="padding-bottom: 0;">
+            <div class="section-header">
+                <h2>{% trans "Sessions" %}</h2>
+                <p>{% trans "Open a session to explore its learning objectives and the games connected to it." %}</p>
+            </div>
+
+            <div class="course-sessions-list">
+                {% for session in sessions %}
+                    <article class="card course-session-card">
+                        <div class="course-session-card-topline"></div>
+
+                        <div class="course-session-card-body">
+                            <div class="course-session-card-left">
+                                <div class="course-session-number-badge">
+                                    {{ session.session_number }}
+                                </div>
+                            </div>
+
+                            <div class="course-session-card-middle">
+                                <h3 class="course-session-title">{{ session.full_title }}</h3>
+
+                                <div class="course-session-tags">
+                                    {% if session.topic_name %}
+                                        <span class="course-pill course-pill-soft">{{ session.topic_name }}</span>
+                                    {% endif %}
+                                </div>
+
+                                {% if session.action_objectives %}
+                                    <p class="course-session-description">{{ session.action_objectives }}</p>
+                                {% elif session.lexical_objectives %}
+                                    <p class="course-session-description">{{ session.lexical_objectives }}</p>
+                                {% else %}
+                                    <p class="course-session-description">—</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="course-session-card-right">
+                                <a class="button course-session-open-button" href="{% url 'session-detail' session.slug %}">
+                                    {% trans "Open session" %}
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                {% empty %}
+                    <article class="card">
+                        <div class="card-body">
+                            <h3>{% trans "No sessions found" %}</h3>
+                            <p class="course-description">{% trans "This course currently has no published sessions." %}</p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
     </div>
 </section>
 {% endblock %}

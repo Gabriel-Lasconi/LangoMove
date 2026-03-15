@@ -218,9 +218,12 @@ class AirtableContentService:
             language = language_map.get(language_ids[0], {}) if language_ids else {}
             age_group = age_group_map.get(age_group_ids[0], {}) if age_group_ids else {}
 
+            raw_title = fields.get("title", "")
+
             courses.append({
                 "airtable_id": record["id"],
-                "title": fields.get("title", ""),
+                "title": raw_title,
+                "display_title": self._build_course_display_title(raw_title, language.get("name", "")),
                 "slug": fields.get("slug", ""),
                 "description": fields.get("description", ""),
                 "sessions_count": fields.get("sessions-count", 0),
@@ -355,3 +358,37 @@ class AirtableContentService:
                 phrase_topics.setdefault(phrase_id, []).append(topic_name)
 
         return vocabulary_topics, phrase_topics
+
+    def _build_course_display_title(self, title: str, language_name: str = "") -> str:
+        raw = (title or "").strip()
+        if not raw:
+            return ""
+
+        lowered = raw.lower()
+
+        # remove repeated session/minutes info from display title
+        for token in ["sessions", "session", "[30min]", "[45min]", "[60min]"]:
+            lowered = lowered.replace(token, "")
+
+        cleaned = lowered
+
+        # common prefixes like EN -, DE -
+        if " - " in cleaned:
+            parts = [part.strip() for part in cleaned.split(" - ") if part.strip()]
+            if len(parts) >= 2:
+                # often first is code, second is level/name
+                maybe_level = parts[1]
+            else:
+                maybe_level = cleaned.strip()
+        else:
+            maybe_level = cleaned.strip()
+
+        maybe_level = maybe_level.replace("  ", " ").strip(" -[]")
+
+        if not maybe_level:
+            return raw
+
+        if language_name:
+            return f"{language_name} [{maybe_level.capitalize()}]"
+
+        return maybe_level.capitalize()

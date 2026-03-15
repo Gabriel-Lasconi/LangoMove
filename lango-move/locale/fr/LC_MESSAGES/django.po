@@ -1,50 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: LangoMove\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-11 23:19+0100\n"
+"POT-Creation-Date: 2026-03-15 20:16+0100\n"
+"PO-Revision-Date: 2026-03-15 20:30+0100\n"
+"Last-Translator: Gabriel\n"
+"Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: templates/base.html:27
+#: templates/base.html:35
 msgid "Languages through movement"
 msgstr "Les langues par le mouvement"
 
-#: templates/base.html:35
+#: templates/base.html:43
 msgid "Admin panel"
-msgstr "Administration"
+msgstr "Panneau d’administration"
 
-#: templates/base.html:37
+#: templates/base.html:45
 msgid "Home"
 msgstr "Accueil"
 
-#: templates/base.html:38
+#: templates/base.html:46
 msgid "Courses"
 msgstr "Cours"
 
-#: templates/base.html:39
+#: templates/base.html:47
 msgid "Pronunciation"
-msgstr ""
+msgstr "Prononciation"
 
-#: templates/base.html:40
+#: templates/base.html:48
 msgid "About"
 msgstr "À propos"
 
-#: templates/base.html:41
+#: templates/base.html:49
 msgid "Contact"
 msgstr "Contact"
 
-#: templates/base.html:49
+#: templates/base.html:57
 msgid "Logout"
-msgstr ""
+msgstr "Déconnexion"
 
-#: templates/base.html:51 templates/users/login.html:59
+#: templates/base.html:59 templates/users/login.html:59
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:52 templates/users/register.html:30
+#: templates/base.html:60 templates/users/register.html:30
 msgid "Register"
 msgstr "Inscription"
 
@@ -58,7 +67,7 @@ msgstr "Bon retour"
 
 #: templates/users/login.html:12
 msgid "Login to LangoMove"
-msgstr "Connexion à LangoMove"
+msgstr "Connectez-vous à LangoMove"
 
 #: templates/users/login.html:14
 msgid ""
@@ -70,8 +79,9 @@ msgid ""
 msgstr ""
 "\n"
 "                    Accédez à votre compte pour continuer à explorer les "
-"cours, les séances et les contenus pédagogiques\n"
-"                    basés sur le mouvement et l’apprentissage des langues.\n"
+"cours, les séances et les contenus éducatifs\n"
+"                    construits autour du mouvement et de l’apprentissage des "
+"langues.\n"
 "                    "
 
 #: templates/users/login.html:21
@@ -96,11 +106,11 @@ msgstr ""
 "Utilisez votre adresse e-mail et votre mot de passe pour accéder à votre "
 "compte."
 
-#: templates/users/login.html:44 templates/users/register.html:49
+#: templates/users/login.html:44 templates/users/register.html:52
 msgid "Email"
 msgstr "Adresse e-mail"
 
-#: templates/users/login.html:52 templates/users/register.html:59
+#: templates/users/login.html:52 templates/users/register.html:68
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -122,7 +132,7 @@ msgstr "Commencer"
 
 #: templates/users/register.html:12
 msgid "Create your LangoMove account"
-msgstr "Créer votre compte LangoMove"
+msgstr "Créez votre compte LangoMove"
 
 #: templates/users/register.html:14
 msgid ""
@@ -135,8 +145,8 @@ msgid ""
 msgstr ""
 "\n"
 "                    Inscrivez-vous en tant qu’invité, enseignant ou "
-"bénévole. Pour l’instant, tous les utilisateurs connectés\n"
-"                    ont accès aux mêmes fonctionnalités de la plateforme, "
+"bénévole. Pour l’instant, tous les utilisateurs connectés peuvent\n"
+"                    accéder aux mêmes fonctionnalités de la plateforme, "
 "tandis que les administrateurs gèrent le panneau d’administration "
 "séparément.\n"
 "                    "
@@ -161,31 +171,34 @@ msgstr "Créez un compte et choisissez comment vous utilisez la plateforme."
 msgid "Username"
 msgstr "Nom d’utilisateur"
 
-#: templates/users/register.html:54
+#: templates/users/register.html:60
 msgid "Role"
 msgstr "Rôle"
 
-#: templates/users/register.html:64
+#: templates/users/register.html:76
 msgid "Confirm password"
 msgstr "Confirmer le mot de passe"
 
-#: templates/users/register.html:68
+#: templates/users/register.html:83
 msgid "Create account"
 msgstr "Créer un compte"
 
-#: templates/users/register.html:73
+#: templates/users/register.html:88
 msgid "Already have an account?"
 msgstr "Vous avez déjà un compte ?"
 
-#: templates/users/register.html:74
+#: templates/users/register.html:89
 msgid "Login here"
-msgstr "Se connecter ici"
+msgstr "Connectez-vous ici"
 
 #: templates/website/course_detail.html:10
 msgid "Back to home"
 msgstr "Retour à l’accueil"
 
 #: templates/website/course_detail.html:20
+#: templates/website/pronunciation_studio.html:14
+#: templates/website/pronunciation_studio.html:49
+#: templates/website/pronunciation_studio.html:116
 msgid "Language"
 msgstr "Langue"
 
@@ -207,18 +220,18 @@ msgid ""
 "Open a session to explore its learning objectives and the games connected to "
 "it."
 msgstr ""
-"Ouvrez une séance pour explorer ses objectifs pédagogiques et les jeux qui y "
-"sont liés."
+"Ouvrez une séance pour explorer ses objectifs d’apprentissage et les jeux "
+"qui y sont liés."
 
-#: templates/website/course_detail.html:54
+#: templates/website/course_detail.html:62
 msgid "Open session"
 msgstr "Ouvrir la séance"
 
-#: templates/website/course_detail.html:60
+#: templates/website/course_detail.html:68
 msgid "No sessions found"
 msgstr "Aucune séance trouvée"
 
-#: templates/website/course_detail.html:61
+#: templates/website/course_detail.html:69
 msgid "This course currently has no published sessions."
 msgstr "Ce cours n’a actuellement aucune séance publiée."
 
@@ -233,7 +246,7 @@ msgstr "Prototype LangoMove"
 #: templates/website/home.html:11
 msgid "Language learning through movement, games, and structured sessions"
 msgstr ""
-"L’apprentissage des langues par le mouvement, les jeux et des séances "
+"Apprentissage des langues à travers le mouvement, les jeux et des séances "
 "structurées"
 
 #: templates/website/home.html:13
@@ -243,12 +256,12 @@ msgid ""
 "prototype for the future LangoMove platform."
 msgstr ""
 "Découvrez des parcours de langues complets connectés à Airtable, organisés "
-"par groupe d’âge et durée de séance. Explorez les séances, les activités, et "
-"construisez un prototype évolutif pour la future plateforme LangoMove."
+"par groupe d’âge et durée de séance. Explorez les séances, les activités, "
+"et construisez un prototype évolutif pour la future plateforme LangoMove."
 
 #: templates/website/home.html:17
 msgid "Browse courses"
-msgstr "Voir les cours"
+msgstr "Parcourir les cours"
 
 #: templates/website/home.html:18
 msgid "Learn more"
@@ -268,7 +281,7 @@ msgstr "Langues"
 
 #: templates/website/home.html:42
 msgid "English through movement"
-msgstr "L’anglais en mouvement"
+msgstr "L’anglais par le mouvement"
 
 #: templates/website/home.html:43
 msgid "Structured sessions, reusable games, Airtable-powered content"
@@ -310,10 +323,21 @@ msgid ""
 "Airtable and can lead to course pages, sessions, and activity sequences."
 msgstr ""
 "Filtrez les cours par groupe d’âge ou par langue. Ces cartes sont chargées "
-"depuis Airtable et mènent vers les pages de cours, les séances et les "
-"séquences d’activités."
+"depuis Airtable et peuvent mener vers des pages de cours, des séances et "
+"des séquences d’activités."
 
 #: templates/website/home.html:83 templates/website/home.html:98
+#: templates/website/pronunciation_studio.html:11
+#: templates/website/pronunciation_studio.html:33
+#: templates/website/pronunciation_studio.html:42
+#: templates/website/pronunciation_studio.html:51
+#: templates/website/pronunciation_studio.html:63
+#: templates/website/pronunciation_studio.html:75
+#: templates/website/pronunciation_studio.html:114
+#: templates/website/pronunciation_studio.html:115
+#: templates/website/pronunciation_studio.html:116
+#: templates/website/pronunciation_studio.html:117
+#: templates/website/pronunciation_studio.html:118
 msgid "All"
 msgstr "Tous"
 
@@ -351,9 +375,9 @@ msgid ""
 "actual website structure: courses, sessions, and linked games. It is a "
 "strong foundation for a richer LangoMove platform."
 msgstr ""
-"Cette version connecte Django à Airtable et transforme votre base de données "
-"en une véritable structure de site web : cours, séances et jeux liés. C’est "
-"une base solide pour une plateforme LangoMove plus riche."
+"Cette version connecte Django à Airtable et transforme votre base de "
+"données en une véritable structure de site web : cours, séances et jeux "
+"liés. C’est une base solide pour une plateforme LangoMove plus riche."
 
 #: templates/website/home.html:186
 msgid ""
@@ -363,6 +387,129 @@ msgstr ""
 "Les prochaines étapes peuvent inclure un vrai générateur de séances, des "
 "pages de prononciation, des flashcards et un créateur de cours personnalisé "
 "alimenté par l’IA."
+
+#: templates/website/pronunciation_studio.html:5
+#: templates/website/pronunciation_studio.html:23
+msgid "Pronunciation Studio"
+msgstr "Studio de prononciation"
+
+#: templates/website/pronunciation_studio.html:12
+#: templates/website/pronunciation_studio.html:31
+#: templates/website/pronunciation_studio.html:114
+msgid "Type"
+msgstr "Type"
+
+#: templates/website/pronunciation_studio.html:13
+#: templates/website/pronunciation_studio.html:40
+#: templates/website/pronunciation_studio.html:115
+msgid "Audio"
+msgstr "Audio"
+
+#: templates/website/pronunciation_studio.html:15
+#: templates/website/pronunciation_studio.html:61
+#: templates/website/pronunciation_studio.html:117
+msgid "Part of speech"
+msgstr "Partie du discours"
+
+#: templates/website/pronunciation_studio.html:16
+#: templates/website/pronunciation_studio.html:118
+msgid "Topic"
+msgstr "Thème"
+
+#: templates/website/pronunciation_studio.html:17
+#: templates/website/pronunciation_studio.html:107
+msgid "items"
+msgstr "éléments"
+
+#: templates/website/pronunciation_studio.html:18
+msgid "item"
+msgstr "élément"
+
+#: templates/website/pronunciation_studio.html:19
+#: templates/website/pronunciation_studio.html:109
+msgid "visible with current filters"
+msgstr "visibles avec les filtres actuels"
+
+#: templates/website/pronunciation_studio.html:25
+msgid ""
+"Review vocabulary and phrases, filter by language, topic, and part of "
+"speech, and quickly spot missing audio."
+msgstr ""
+"Consultez le vocabulaire et les phrases, filtrez par langue, thème et "
+"partie du discours, et repérez rapidement l’audio manquant."
+
+#: templates/website/pronunciation_studio.html:34
+#: templates/website/pronunciation_studio.html:125
+msgid "Vocabulary"
+msgstr "Vocabulaire"
+
+#: templates/website/pronunciation_studio.html:35
+#: templates/website/pronunciation_studio.html:194
+msgid "Phrases"
+msgstr "Phrases"
+
+#: templates/website/pronunciation_studio.html:43
+msgid "Audio ready"
+msgstr "Audio prêt"
+
+#: templates/website/pronunciation_studio.html:44
+msgid "Missing audio"
+msgstr "Audio manquant"
+
+#: templates/website/pronunciation_studio.html:73
+msgid "Topics"
+msgstr "Thèmes"
+
+#: templates/website/pronunciation_studio.html:85
+msgid "Search"
+msgstr "Recherche"
+
+#: templates/website/pronunciation_studio.html:91
+msgid "Search word, phrase, translation, category, topic..."
+msgstr "Rechercher un mot, une phrase, une traduction, une catégorie, un thème..."
+
+#: templates/website/pronunciation_studio.html:97
+msgid "Actions"
+msgstr "Actions"
+
+#: templates/website/pronunciation_studio.html:99
+msgid "Reset filters"
+msgstr "Réinitialiser les filtres"
+
+#: templates/website/pronunciation_studio.html:126
+msgid ""
+"Single words with pronunciation, category, topic links, and audio "
+"availability."
+msgstr ""
+"Mots isolés avec prononciation, catégorie, liens thématiques et "
+"disponibilité audio."
+
+#: templates/website/pronunciation_studio.html:152
+#: templates/website/pronunciation_studio.html:221
+msgid "audio ready"
+msgstr "audio prêt"
+
+#: templates/website/pronunciation_studio.html:154
+#: templates/website/pronunciation_studio.html:223
+msgid "missing audio"
+msgstr "audio manquant"
+
+#: templates/website/pronunciation_studio.html:184
+#: templates/website/pronunciation_studio.html:252
+msgid "Your browser does not support the audio element."
+msgstr "Votre navigateur ne prend pas en charge l’élément audio."
+
+#: templates/website/pronunciation_studio.html:195
+msgid ""
+"Useful sentence patterns and classroom expressions linked to topics and "
+"languages."
+msgstr ""
+"Structures de phrases utiles et expressions de classe liées aux thèmes et "
+"aux langues."
+
+#: templates/website/pronunciation_studio.html:261
+msgid "No items match the current filters."
+msgstr "Aucun élément ne correspond aux filtres actuels."
 
 #: templates/website/session_detail.html:10
 msgid "Back"
@@ -397,30 +544,30 @@ msgid "Click a game to open its details, vocabulary, and phrases."
 msgstr ""
 "Cliquez sur un jeu pour ouvrir ses détails, son vocabulaire et ses phrases."
 
-#: templates/website/session_detail.html:51
+#: templates/website/session_detail.html:53
 msgid "Stage"
 msgstr "Étape"
 
-#: templates/website/session_detail.html:54
+#: templates/website/session_detail.html:59
 msgid "Notes"
 msgstr "Notes"
 
-#: templates/website/session_detail.html:56
+#: templates/website/session_detail.html:62
 msgid "Click to view full details"
 msgstr "Cliquez pour voir tous les détails"
 
-#: templates/website/session_detail.html:60
+#: templates/website/session_detail.html:66
 msgid "min"
 msgstr "min"
 
-#: templates/website/session_detail.html:66
+#: templates/website/session_detail.html:72
 msgid "No games found"
 msgstr "Aucun jeu trouvé"
 
-#: templates/website/session_detail.html:67
+#: templates/website/session_detail.html:73
 msgid "This session currently has no published linked games."
 msgstr "Cette séance n’a actuellement aucun jeu lié publié."
 
-#: templates/website/session_detail.html:81
+#: templates/website/session_detail.html:87
 msgid "Loading game details..."
 msgstr "Chargement des détails du jeu..."

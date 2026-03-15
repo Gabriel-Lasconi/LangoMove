@@ -109,45 +109,52 @@
 
         <div class="grid course-grid" id="course-grid">
             {% for course in courses %}
-                <article class="card course-card enhanced-course-card course-item"
-                         data-age-group="{{ course.age_group_name }}"
-                         data-language="{{ course.language_name }}">
-                    <div class="course-card-topband"></div>
+                <article class="card course-card-v2 course-item"
+                     data-age-group="{{ course.age_group_name }}"
+                     data-language="{{ course.language_name }}">
+                <div class="course-card-v2-topline"></div>
 
-                    <div class="card-body">
-                        <div class="course-icon-wrap">
-                            <div class="course-icon">
-                                {{ course.language_flag|default:"🌍" }}
-                            </div>
-                            <div class="course-badges">
-                                <span class="tag">{{ course.language_name }}</span>
-                                <span class="tag">{{ course.age_group_name }}</span>
-                            </div>
+                <div class="card-body course-card-v2-body">
+                    <div class="course-card-v2-header">
+                        <div class="course-card-v2-flag">
+                            {{ course.language_flag|default:"🌍" }}
                         </div>
 
-                        <h3 class="course-title">{{ course.title }}</h3>
-                        <p class="course-description">{{ course.description }}</p>
-
-                        <div class="meta-list">
-                            <div class="meta-item">
-                                <span class="meta-label">{% trans "Sessions" %}</span>
-                                <span class="meta-value">{{ course.sessions_count }}</span>
-                            </div>
-                            <div class="meta-item">
-                                <span class="meta-label">{% trans "Minutes per session" %}</span>
-                                <span class="meta-value">{{ course.minutes_per_session }}</span>
-                            </div>
-                            <div class="meta-item">
-                                <span class="meta-label">{% trans "Target group" %}</span>
-                                <span class="meta-value">{{ course.age_group_name }}</span>
-                            </div>
-                        </div>
-
-                        <div class="course-card-actions">
-                            <a class="button" href="{% url 'course-detail' course.slug %}">{% trans "View course" %}</a>
+                        <div class="course-card-v2-header-text">
+                            <h3 class="course-card-v2-title">{{ course.display_title|default:course.title }}</h3>
+                            <p class="course-card-v2-description">{{ course.description }}</p>
                         </div>
                     </div>
-                </article>
+
+                    <div class="course-card-v2-tags">
+                        <span class="course-pill">{{ course.language_name }}</span>
+                        <span class="course-pill course-pill-soft">{{ course.age_group_name }}</span>
+                    </div>
+
+                    <div class="course-card-v2-stats">
+                        <div class="course-stat-box">
+                            <span class="course-stat-label">{% trans "Sessions" %}</span>
+                            <strong class="course-stat-value">{{ course.sessions_count }}</strong>
+                        </div>
+
+                        <div class="course-stat-box">
+                            <span class="course-stat-label">{% trans "Minutes per session" %}</span>
+                            <strong class="course-stat-value">{{ course.minutes_per_session }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="course-card-v2-target">
+                        <span class="course-target-label">{% trans "Target group" %}</span>
+                        <span class="course-target-value">{{ course.age_group_name }}</span>
+                    </div>
+
+                    <div class="course-card-v2-actions">
+                        <a class="button course-card-v2-button" href="{% url 'course-detail' course.slug %}">
+                            {% trans "View course" %}
+                        </a>
+                    </div>
+                </div>
+            </article>
             {% empty %}
                 <article class="card">
                     <div class="card-body">

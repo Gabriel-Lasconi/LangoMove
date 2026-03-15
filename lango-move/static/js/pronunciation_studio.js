@@ -1,4 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const page = document.getElementById("pronunciation-page");
+
+    const i18n = {
+        all: page?.dataset.labelAll || "All",
+        type: page?.dataset.labelType || "Type",
+        audio: page?.dataset.labelAudio || "Audio",
+        language: page?.dataset.labelLanguage || "Language",
+        pos: page?.dataset.labelPos || "Part of speech",
+        topic: page?.dataset.labelTopic || "Topic",
+        item: page?.dataset.labelItem || "item",
+        items: page?.dataset.labelItems || "items",
+        visibleWithCurrentFilters:
+            page?.dataset.labelVisibleWithCurrentFilters || "visible with current filters"
+    };
+
     const state = {
         type: "all",
         audio: "all",
@@ -15,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("pronunciation-search");
     const resetButton = document.getElementById("pronunciation-reset-filters");
     const resultsCount = document.getElementById("pronunciation-results-count");
+    const resultsSubtitle = document.getElementById("pronunciation-results-subtitle");
 
     const activeTypePill = document.getElementById("active-type-pill");
     const activeAudioPill = document.getElementById("active-audio-pill");
@@ -28,8 +44,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const posButtons = Array.from(document.querySelectorAll("#pos-filters .chip"));
     const topicButtons = Array.from(document.querySelectorAll("#topic-filters .chip"));
 
-    function prettifyLabel(value) {
-        if (!value || value === "all") return "All";
+    function prettifyLabel(value, buttons, datasetKey) {
+        if (!value || value === "all") return i18n.all;
+
+        const matchingButton = buttons.find((button) => (button.dataset[datasetKey] || "") === value);
+        if (matchingButton) {
+            return matchingButton.textContent.trim();
+        }
+
         return value.replace(/\b\w/g, (char) => char.toUpperCase());
     }
 
@@ -42,19 +64,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateSummaryPills() {
         if (activeTypePill) {
-            activeTypePill.textContent = `Type: ${prettifyLabel(state.type)}`;
+            activeTypePill.textContent = `${i18n.type}: ${prettifyLabel(state.type, typeButtons, "type")}`;
         }
         if (activeAudioPill) {
-            activeAudioPill.textContent = `Audio: ${prettifyLabel(state.audio)}`;
+            activeAudioPill.textContent = `${i18n.audio}: ${prettifyLabel(state.audio, audioButtons, "audio")}`;
         }
         if (activeLanguagePill) {
-            activeLanguagePill.textContent = `Language: ${prettifyLabel(state.language)}`;
+            activeLanguagePill.textContent = `${i18n.language}: ${prettifyLabel(state.language, languageButtons, "language")}`;
         }
         if (activePosPill) {
-            activePosPill.textContent = `Part of speech: ${prettifyLabel(state.pos)}`;
+            activePosPill.textContent = `${i18n.pos}: ${prettifyLabel(state.pos, posButtons, "pos")}`;
         }
         if (activeTopicPill) {
-            activeTopicPill.textContent = `Topic: ${prettifyLabel(state.topic)}`;
+            activeTopicPill.textContent = `${i18n.topic}: ${prettifyLabel(state.topic, topicButtons, "topic")}`;
         }
     }
 
@@ -85,23 +107,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const itemTopics = (item.dataset.topics || "").toLowerCase();
             const itemSearch = (item.dataset.search || "").toLowerCase();
 
-            const matchesType =
-                state.type === "all" || itemType === state.type;
-
-            const matchesAudio =
-                state.audio === "all" || itemAudio === state.audio;
-
-            const matchesLanguage =
-                state.language === "all" || itemLanguage === state.language;
-
-            const matchesPos =
-                state.pos === "all" || itemPos === state.pos;
-
-            const matchesTopicFilter =
-                matchesTopic(itemTopics, state.topic);
-
-            const matchesSearch =
-                !state.search || itemSearch.includes(state.search);
+            const matchesType = state.type === "all" || itemType === state.type;
+            const matchesAudio = state.audio === "all" || itemAudio === state.audio;
+            const matchesLanguage = state.language === "all" || itemLanguage === state.language;
+            const matchesPos = state.pos === "all" || itemPos === state.pos;
+            const matchesTopicFilter = matchesTopic(itemTopics, state.topic);
+            const matchesSearch = !state.search || itemSearch.includes(state.search);
 
             const shouldShow =
                 matchesType &&
@@ -136,7 +147,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (resultsCount) {
-            resultsCount.textContent = `${visibleCount} item${visibleCount === 1 ? "" : "s"}`;
+            resultsCount.textContent = `${visibleCount} ${visibleCount === 1 ? i18n.item : i18n.items}`;
+        }
+
+        if (resultsSubtitle) {
+            resultsSubtitle.textContent = i18n.visibleWithCurrentFilters;
         }
 
         updateSummaryPills();
