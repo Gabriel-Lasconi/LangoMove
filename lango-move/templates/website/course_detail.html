@@ -46,8 +46,16 @@
 
                     <div class="session-content">
                         <h3>{{ session.full_title }}</h3>
-                        <p><span class="tag">{{ session.topic_name }}</span></p>
-                        <p style="margin-top: 12px;">{{ session.action_objectives }}</p>
+
+                        {% if session.topic_name %}
+                            <p><span class="tag">{{ session.topic_name }}</span></p>
+                        {% endif %}
+
+                        {% if session.action_objectives %}
+                            <p style="margin-top: 12px;">{{ session.action_objectives }}</p>
+                        {% elif session.lexical_objectives %}
+                            <p style="margin-top: 12px;">{{ session.lexical_objectives }}</p>
+                        {% endif %}
                     </div>
 
                     <div>

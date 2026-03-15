@@ -10,7 +10,7 @@ from apps.integrations.airtable.client import AirtableClient
 
 
 class Command(BaseCommand):
-    help = "Generate pronunciation audio for words and phrases using edge-tts and upload to Airtable attachment field"
+    help = "Generate pronunciation audio for vocabulary and phrases using edge-tts and upload to Airtable"
 
     LANG_MAP = {
         "english": "en",
@@ -39,12 +39,12 @@ class Command(BaseCommand):
     }
 
     def handle(self, *args, **options):
-        airtable = AirtableClient()
+        self.airtable = AirtableClient()
+        self.language_record_map = self.build_language_record_map()
 
         self.stdout.write("🎤 Generating pronunciation audio and uploading to Airtable...")
 
         self.process_table(
-            airtable=airtable,
             table_name=settings.AIRTABLE_TABLES["vocabulary"],
             text_field="word",
             language_code_field="language-code",
@@ -52,7 +52,6 @@ class Command(BaseCommand):
         )
 
         self.process_table(
-            airtable=airtable,
             table_name=settings.AIRTABLE_TABLES["phrases"],
             text_field="text",
             language_code_field="language-code",
@@ -61,8 +60,53 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS("✅ Done."))
 
-    def process_table(self, airtable, table_name, text_field, language_code_field, attachment_field):
-        records = airtable.list_records(table_name)
+    def build_language_record_map(self) -> dict:
+        """
+        Maps Airtable language record ID -> normalized language code.
+        Supports linked-record language fields safely.
+        """
+        records = self.airtable.list_records(settings.AIRTABLE_TABLES["languages"])
+        result = {}
+
+        for record in records:
+            fields = record.get("fields", {})
+            possible_values = [
+                fields.get("code", ""),
+                fields.get("name", ""),
+            ]
+
+            normalized_code = "en"
+            for value in possible_values:
+                value = (value or "").strip().lower()
+                if value in self.LANG_MAP:
+                    normalized_code = self.LANG_MAP[value]
+                    break
+
+            result[record["id"]] = normalized_code
+
+        return result
+
+    def resolve_language_code(self, raw_lang) -> str:
+        """
+        Resolves language-code whether it is:
+        - a linked Airtable record list
+        - a plain string like 'en'
+        - a language name like 'English'
+        """
+        if isinstance(raw_lang, list) and raw_lang:
+            first = raw_lang[0]
+            if first in self.language_record_map:
+                return self.language_record_map[first]
+
+            return self.LANG_MAP.get(str(first).strip().lower(), "en")
+
+        if isinstance(raw_lang, str):
+            return self.LANG_MAP.get(raw_lang.strip().lower(), "en")
+
+        return "en"
+
+    def process_table(self, table_name, text_field, language_code_field, attachment_field):
+        records = self.airtable.list_records(table_name)
 
         for record in records:
             fields = record.get("fields", {})
@@ -71,21 +115,16 @@ class Command(BaseCommand):
             existing_attachment = fields.get(attachment_field)
 
             raw_lang = fields.get(language_code_field)
-            if isinstance(raw_lang, list) and raw_lang:
-                raw_lang = raw_lang[0]
+            language_code = self.resolve_language_code(raw_lang)
 
-            language_code = self.LANG_MAP.get(
-                (raw_lang or "en").strip().lower(),
-                "en"
-            )
-
-            # Skip already ready records that already have an attachment
             if not text:
                 continue
+
+            # Skip records already done
             if audio_status == "ready" and existing_attachment:
                 continue
 
-            self.stdout.write(f"🔊 {text}")
+            self.stdout.write(f"🔊 {text} [{language_code}]")
 
             temp_file = None
 
@@ -106,16 +145,14 @@ class Command(BaseCommand):
                 if not os.path.exists(temp_file) or os.path.getsize(temp_file) < 1000:
                     raise RuntimeError("MP3 file was not created correctly.")
 
-                upload_response = airtable.upload_attachment(
+                self.airtable.upload_attachment(
                     table_name=table_name,
                     record_id=record["id"],
                     field_name=attachment_field,
                     file_path=temp_file,
                 )
 
-                # The upload endpoint stores the file directly in the cell.
-                # Then we only need to update the status.
-                airtable.update_record(
+                self.airtable.update_record(
                     table_name,
                     record["id"],
                     {
@@ -124,16 +161,14 @@ class Command(BaseCommand):
                 )
 
                 self.stdout.write(
-                    self.style.SUCCESS(
-                        f"✅ Uploaded audio for '{text}'"
-                    )
+                    self.style.SUCCESS(f"✅ Uploaded audio for '{text}'")
                 )
 
             except Exception as exc:
                 self.stderr.write(f"❌ Failed for '{text}': {exc}")
 
                 try:
-                    airtable.update_record(
+                    self.airtable.update_record(
                         table_name,
                         record["id"],
                         {

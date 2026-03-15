@@ -214,10 +214,7 @@ AIRTABLE_TABLES = {
     "courses": os.getenv("AIRTABLE_TABLE_COURSES", "courses"),
     "sessions": os.getenv("AIRTABLE_TABLE_SESSIONS", "sessions"),
     "games": os.getenv("AIRTABLE_TABLE_GAMES", "games"),
-    "session_games": os.getenv("AIRTABLE_TABLE_SESSION_GAMES", "session-games"),
     "session_requests": os.getenv("AIRTABLE_TABLE_SESSION_REQUESTS", "session-requests"),
     "vocabulary": os.getenv("AIRTABLE_TABLE_VOCABULARY", "vocabulary"),
-    "game_vocabulary": os.getenv("AIRTABLE_TABLE_GAME_VOCABULARY", "game-vocabulary"),
     "phrases": os.getenv("AIRTABLE_TABLE_PHRASES", "phrases"),
-    "game_phrases": os.getenv("AIRTABLE_TABLE_GAME_PHRASES", "game-phrases"),
 }

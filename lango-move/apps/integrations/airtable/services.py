@@ -1,4 +1,5 @@
 from django.conf import settings
+
 from .client import AirtableClient
 
 
@@ -6,7 +7,7 @@ class AirtableContentService:
     def __init__(self) -> None:
         self.client = AirtableClient()
 
-    def _records_to_dict(self, records: list[dict], key_field: str = "name") -> dict:
+    def _records_to_dict(self, records: list[dict]) -> dict:
         result = {}
         for record in records:
             result[record["id"]] = {
@@ -59,78 +60,75 @@ class AirtableContentService:
                     "activity_type": fields.get("activity-type", ""),
                     "notes_for_facilitator": fields.get("notes-for-facilitator", ""),
                     "status": fields.get("status", ""),
+                    "sessions": fields.get("sessions", []),
+                    "vocabulary": fields.get("vocabulary", []),
+                    "phrases": fields.get("phrases", []),
                 }
         return None
 
     def get_vocabulary_for_game(self, game_airtable_id: str) -> list[dict]:
-        vocabulary_map = self.get_vocabulary_map()
+        records = self.client.list_records(settings.AIRTABLE_TABLES["vocabulary"])
         languages_map = self.get_languages_map()
-        records = self.client.list_records(settings.AIRTABLE_TABLES["game_vocabulary"])
-
         result = []
+
         for record in records:
             fields = record.get("fields", {})
-            game_ids = fields.get("game", [])
-            if not game_ids or game_ids[0] != game_airtable_id:
+            game_ids = fields.get("games", [])
+
+            if game_airtable_id not in game_ids:
                 continue
 
-            vocabulary_ids = fields.get("vocabulary", [])
-            vocabulary = vocabulary_map.get(vocabulary_ids[0], {}) if vocabulary_ids else {}
-
-            language_ids = vocabulary.get("language-code", [])
+            language_ids = fields.get("language-code", [])
             language = languages_map.get(language_ids[0], {}) if language_ids else {}
 
             result.append({
-                "word": vocabulary.get("word", ""),
-                "word_fr": vocabulary.get("word-fr", ""),
-                "category": vocabulary.get("category", ""),
-                "part_of_speech": vocabulary.get("part-of-speech", ""),
-                "phonetic": vocabulary.get("phonetic", ""),
-                "audio_file": vocabulary.get("audio-file", []),
-                "audio_status": vocabulary.get("audio-status", ""),
+                "word": fields.get("word", ""),
+                "word_fr": fields.get("word-fr", ""),
+                "category": fields.get("category", ""),
+                "part_of_speech": fields.get("part-of-speech", ""),
+                "phonetic": fields.get("phonetic", ""),
+                "audio_file": fields.get("audio-file", []),
+                "audio_status": fields.get("audio-status", ""),
                 "language_code": language.get("code", ""),
                 "language_name": language.get("name", ""),
-                "flashcard_pdf": vocabulary.get("flashcard-pdf", []),
-                "importance": fields.get("importance", ""),
-                "display_order": fields.get("display-order", 9999),
+                "flashcard_pdf": fields.get("flashcard-pdf", []),
+                "importance": "",
+                "display_order": 9999,
                 "notes": fields.get("notes", ""),
             })
 
-        return sorted(result, key=lambda x: x["display_order"])
+        return sorted(result, key=lambda x: ((x["word"] or "").lower(), (x["word_fr"] or "").lower()))
 
     def get_phrases_for_game(self, game_airtable_id: str) -> list[dict]:
-        phrases_map = self.get_phrases_map()
+        records = self.client.list_records(settings.AIRTABLE_TABLES["phrases"])
         languages_map = self.get_languages_map()
-        records = self.client.list_records(settings.AIRTABLE_TABLES["game_phrases"])
-
         result = []
+
         for record in records:
             fields = record.get("fields", {})
-            game_ids = fields.get("game", [])
-            if not game_ids or game_ids[0] != game_airtable_id:
+            game_ids = fields.get("games", [])
+
+            if game_airtable_id not in game_ids:
                 continue
 
-            phrase_ids = fields.get("phrase", [])
-            phrase = phrases_map.get(phrase_ids[0], {}) if phrase_ids else {}
-
-            language_ids = phrase.get("language-code", [])
+            language_ids = fields.get("language-code", [])
             language = languages_map.get(language_ids[0], {}) if language_ids else {}
 
             result.append({
-                "text": phrase.get("text", ""),
-                "text_fr": phrase.get("text-fr", ""),
-                "phrase_type": phrase.get("phrase-type", ""),
-                "phonetic": phrase.get("phonetic", ""),
-                "audio_file": phrase.get("audio-file", []),
-                "audio_status": phrase.get("audio-status", ""),
+                "text": fields.get("text", ""),
+                "text_fr": fields.get("text-fr", ""),
+                "phrase_type": fields.get("phrase-type", ""),
+                "phonetic": fields.get("phonetic", ""),
+                "audio_file": fields.get("audio-file", []),
+                "audio_status": fields.get("audio-status", ""),
                 "language_code": language.get("code", ""),
                 "language_name": language.get("name", ""),
-                "importance": fields.get("importance", ""),
-                "display_order": fields.get("display-order", 9999),
+                "importance": "",
+                "display_order": 9999,
                 "notes": fields.get("notes", ""),
             })
 
-        return sorted(result, key=lambda x: x["display_order"])
+        return sorted(result, key=lambda x: ((x["text"] or "").lower(), (x["text_fr"] or "").lower()))
 
     def get_game_detail_payload(self, slug: str) -> dict | None:
         game = self.get_game_by_slug(slug)
@@ -225,7 +223,7 @@ class AirtableContentService:
                 "minutes_per_session": fields.get("minutes-per-session", 0),
                 "language_name": language.get("name", ""),
                 "language_flag": language.get("flag", ""),
-                "age_group_name": age_group.get("name", ""),
+                "age_group_name": age_group.get("label", age_group.get("name", "")),
                 "display_order": fields.get("display-order", 9999),
             })
 
@@ -248,7 +246,7 @@ class AirtableContentService:
                 continue
 
             course_ids = fields.get("course", [])
-            if not course_ids or course_ids[0] != course_airtable_id:
+            if not course_ids or course_airtable_id not in course_ids:
                 continue
 
             topic_ids = fields.get("topic", [])
@@ -256,16 +254,17 @@ class AirtableContentService:
 
             sessions.append({
                 "airtable_id": record["id"],
-                "session_id": fields.get("session-id"),
+                "session_id": record["id"],
                 "session_number": fields.get("session-number", 0),
-                "title": fields.get("title", ""),
-                "full_title": fields.get("full-title", ""),
+                "title": fields.get("session-name", fields.get("title", "")),
+                "full_title": fields.get("full-title", fields.get("session-name", fields.get("title", ""))),
                 "slug": fields.get("slug", ""),
                 "topic_name": topic.get("name", ""),
                 "grammar_objectives": fields.get("grammar-objectives", ""),
                 "action_objectives": fields.get("action-objectives", ""),
                 "lexical_objectives": fields.get("lexical-objectives", ""),
                 "teacher_notes": fields.get("teacher-notes", ""),
+                "games": fields.get("games", []),
             })
 
         return sorted(sessions, key=lambda s: s["session_number"])
@@ -277,42 +276,47 @@ class AirtableContentService:
             if fields.get("slug") == slug and fields.get("status") == "published":
                 return {
                     "airtable_id": record["id"],
-                    "session_id": fields.get("session-id"),
+                    "session_id": record["id"],
                     "session_number": fields.get("session-number", 0),
-                    "title": fields.get("title", ""),
-                    "full_title": fields.get("full-title", ""),
+                    "title": fields.get("session-name", fields.get("title", "")),
+                    "full_title": fields.get("full-title", fields.get("session-name", fields.get("title", ""))),
                     "slug": fields.get("slug", ""),
                     "grammar_objectives": fields.get("grammar-objectives", ""),
                     "action_objectives": fields.get("action-objectives", ""),
                     "lexical_objectives": fields.get("lexical-objectives", ""),
                     "teacher_notes": fields.get("teacher-notes", ""),
                     "course_ids": fields.get("course", []),
+                    "games": fields.get("games", []),
                 }
         return None
 
     def get_games_for_session(self, session_airtable_id: str) -> list[dict]:
         games_map = self.get_games_map()
-        records = self.client.list_records(settings.AIRTABLE_TABLES["session_games"])
+
+        session_records = self.client.list_records(settings.AIRTABLE_TABLES["sessions"])
+        session_record = None
+
+        for record in session_records:
+            if record["id"] == session_airtable_id:
+                session_record = record
+                break
+
+        if not session_record:
+            return []
+
+        session_fields = session_record.get("fields", {})
+        ordered_game_ids = session_fields.get("games", [])
 
         session_games = []
-        for record in records:
-            fields = record.get("fields", {})
-            if fields.get("status") != "published":
-                continue
-
-            session_ids = fields.get("session", [])
-            if not session_ids or session_ids[0] != session_airtable_id:
-                continue
-
-            game_ids = fields.get("game", [])
-            game = games_map.get(game_ids[0], {}) if game_ids else {}
+        for index, game_id in enumerate(ordered_game_ids, start=1):
+            game = games_map.get(game_id, {})
 
             session_games.append({
-                "airtable_id": record["id"],
-                "order_in_session": fields.get("order-in-session", 0),
-                "stage_name": fields.get("stage-name", ""),
-                "duration_minutes": fields.get("duration-minutes", 0),
-                "notes": fields.get("notes", ""),
+                "airtable_id": game_id,
+                "order_in_session": index,
+                "stage_name": "",
+                "duration_minutes": game.get("duration-minutes", 0),
+                "notes": "",
                 "game_name": game.get("name", ""),
                 "game_name_fr": game.get("name-fr", ""),
                 "game_slug": game.get("slug", ""),
@@ -322,4 +326,4 @@ class AirtableContentService:
                 "vocabulary_tags": game.get("vocabulary-tags", []),
             })
 
-        return sorted(session_games, key=lambda g: g["order_in_session"])
+        return session_games

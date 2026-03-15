@@ -18,17 +18,17 @@
         <div class="objectives-grid">
             <div class="objective-box">
                 <h3>{% trans "Grammar objectives" %}</h3>
-                <p>{{ session.grammar_objectives }}</p>
+                <p>{{ session.grammar_objectives|default:"—" }}</p>
             </div>
 
             <div class="objective-box">
                 <h3>{% trans "Action objectives" %}</h3>
-                <p>{{ session.action_objectives }}</p>
+                <p>{{ session.action_objectives|default:"—" }}</p>
             </div>
 
             <div class="objective-box">
                 <h3>{% trans "Lexical objectives" %}</h3>
-                <p>{{ session.lexical_objectives }}</p>
+                <p>{{ session.lexical_objectives|default:"—" }}</p>
             </div>
         </div>
 
@@ -48,11 +48,17 @@
 
                         <div class="game-content">
                             <h3>{{ item.game_name }}</h3>
-                            <p><strong>{% trans "Stage" %}:</strong> {{ item.stage_name }}</p>
+
+                            {% if item.stage_name %}
+                                <p><strong>{% trans "Stage" %}:</strong> {{ item.stage_name }}</p>
+                            {% endif %}
+
                             <p>{{ item.game_description }}</p>
+
                             {% if item.notes %}
                                 <p><strong>{% trans "Notes" %}:</strong> {{ item.notes }}</p>
                             {% endif %}
+
                             <p class="game-open-hint">{% trans "Click to view full details" %}</p>
                         </div>
 
