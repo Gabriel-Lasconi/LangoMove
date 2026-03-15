@@ -25,6 +25,34 @@ def pronunciation_studio_view(request):
     elif item_type == "phrases":
         vocabulary_items = []
 
+    language_options = sorted(
+        {
+            (item.get("language_name") or item.get("language_code") or "").strip()
+            for item in (vocabulary_items + phrase_items)
+            if (item.get("language_name") or item.get("language_code") or "").strip()
+        },
+        key=lambda value: value.lower(),
+    )
+
+    pos_options = sorted(
+        {
+            (item.get("part_of_speech") or "").strip()
+            for item in vocabulary_items
+            if (item.get("part_of_speech") or "").strip()
+        },
+        key=lambda value: value.lower(),
+    )
+
+    topic_options = sorted(
+        {
+            topic.strip()
+            for item in (vocabulary_items + phrase_items)
+            for topic in (item.get("topic_names") or [])
+            if topic and topic.strip()
+        },
+        key=lambda value: value.lower(),
+    )
+
     return render(
         request,
         "website/pronunciation_studio.html",
@@ -33,5 +61,8 @@ def pronunciation_studio_view(request):
             "missing_only": missing_only,
             "vocabulary_items": vocabulary_items,
             "phrase_items": phrase_items,
+            "language_options": language_options,
+            "pos_options": pos_options,
+            "topic_options": topic_options,
         },
     )

@@ -147,6 +147,7 @@ class AirtableContentService:
     def get_all_vocabulary(self) -> list[dict]:
         records = self.client.list_records(settings.AIRTABLE_TABLES["vocabulary"])
         languages_map = self.get_languages_map()
+        vocabulary_topics, _ = self.get_topic_reverse_maps()
         result = []
 
         for record in records:
@@ -167,6 +168,7 @@ class AirtableContentService:
                 "language_code": language.get("code", ""),
                 "language_name": language.get("name", ""),
                 "flashcard_pdf": fields.get("flashcard-pdf", []),
+                "topic_names": vocabulary_topics.get(record["id"], []),
             })
 
         return result
@@ -174,6 +176,7 @@ class AirtableContentService:
     def get_all_phrases(self) -> list[dict]:
         records = self.client.list_records(settings.AIRTABLE_TABLES["phrases"])
         languages_map = self.get_languages_map()
+        _, phrase_topics = self.get_topic_reverse_maps()
         result = []
 
         for record in records:
@@ -192,6 +195,7 @@ class AirtableContentService:
                 "audio_status": fields.get("audio-status", ""),
                 "language_code": language.get("code", ""),
                 "language_name": language.get("name", ""),
+                "topic_names": phrase_topics.get(record["id"], []),
             })
 
         return result
@@ -327,3 +331,27 @@ class AirtableContentService:
             })
 
         return session_games
+
+    def get_topic_reverse_maps(self) -> tuple[dict, dict]:
+        """
+        Builds:
+        - vocabulary_record_id -> [topic names]
+        - phrase_record_id -> [topic names]
+        based on the reciprocal linked fields in the topics table.
+        """
+        records = self.client.list_records(settings.AIRTABLE_TABLES["topics"])
+
+        vocabulary_topics = {}
+        phrase_topics = {}
+
+        for record in records:
+            fields = record.get("fields", {})
+            topic_name = fields.get("name", "")
+
+            for vocabulary_id in fields.get("vocabulary", []):
+                vocabulary_topics.setdefault(vocabulary_id, []).append(topic_name)
+
+            for phrase_id in fields.get("phrases", []):
+                phrase_topics.setdefault(phrase_id, []).append(topic_name)
+
+        return vocabulary_topics, phrase_topics
