@@ -12,23 +12,28 @@
 .filter-group {
     display: grid;
     gap: 12px;
+    min-width: 0;
 }
 
 .filter-label {
     font-weight: 800;
     color: var(--text);
+    line-height: 1.2;
+    margin: 0;
 }
 
 .chip-row {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .chip {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-height: 40px;
     padding: 10px 14px;
     border-radius: 999px;
     background: var(--surface-soft);
@@ -39,6 +44,8 @@
     cursor: pointer;
     font-family: inherit;
     font-size: 0.95rem;
+    line-height: 1;
+    white-space: nowrap;
 }
 
 .chip:hover {
@@ -52,8 +59,56 @@
     color: white;
 }
 
-.pronunciation-filters-panel {
-    gap: 18px;
+.pronunciation-page-header {
+    margin-bottom: 22px;
+}
+
+.pronunciation-filter-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.pronunciation-filter-top {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.pronunciation-filter-advanced {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.pronunciation-filter-bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.pronunciation-filter-card,
+.pronunciation-search-card,
+.pronunciation-actions-card {
+    background: #ffffff;
+    border: 1px solid rgba(125, 117, 183, 0.12);
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(40, 44, 90, 0.05);
+    padding: 18px 18px 16px;
+    min-width: 0;
+    height: 100%;
+}
+
+.pronunciation-filter-card-wide {
+    width: 100%;
+}
+
+.pronunciation-filter-card .filter-label,
+.pronunciation-search-card .filter-label,
+.pronunciation-actions-card .filter-label {
+    margin-bottom: 12px;
 }
 
 .pronunciation-search-wrap {
@@ -63,19 +118,129 @@
 .pronunciation-search-input {
     width: 100%;
     min-height: 48px;
-    padding: 12px 16px;
+    padding: 0 16px;
     border-radius: 16px;
     border: 1px solid var(--border);
-    background: linear-gradient(180deg, #fbfbfe 0%, #f6f8fd 100%);
+    background: var(--surface-soft);
     color: var(--text);
-    font-family: inherit;
+    font: inherit;
     font-size: 0.98rem;
+    line-height: 1.2;
     outline: none;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.pronunciation-search-input::placeholder {
+    color: var(--muted);
+    opacity: 1;
 }
 
 .pronunciation-search-input:focus {
-    border-color: rgba(124, 121, 184, 0.65);
-    box-shadow: 0 0 0 4px rgba(124, 121, 184, 0.12);
-    background: white;
+    border-color: rgba(125, 117, 183, 0.45);
+    box-shadow: 0 0 0 4px rgba(125, 117, 183, 0.12);
+    background: #ffffff;
+}
+
+.pronunciation-actions-card .chip-row {
+    align-items: flex-start;
+}
+
+.pronunciation-actions-card .chip {
+    min-width: 0;
+}
+
+.pronunciation-results-card {
+    margin-bottom: 24px;
+}
+
+.pronunciation-results-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pronunciation-results-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pronunciation-active-filters {
+    row-gap: 8px;
+}
+
+@media (max-width: 1100px) {
+    .pronunciation-filter-top {
+        grid-template-columns: 1fr;
+    }
+
+    .pronunciation-filter-bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .filters-panel {
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .pronunciation-filter-card,
+    .pronunciation-search-card,
+    .pronunciation-actions-card {
+        padding: 16px;
+        border-radius: 18px;
+    }
+
+    .chip-row {
+        gap: 8px;
+    }
+
+    .chip {
+        min-height: 38px;
+        padding: 9px 13px;
+        font-size: 0.92rem;
+    }
+
+    .pronunciation-search-input {
+        min-height: 46px;
+        padding: 0 14px;
+        font-size: 0.95rem;
+    }
+}
+
+.pronunciation-results-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pronunciation-results-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+#pronunciation-results-count,
+#pronunciation-results-subtitle {
+    font-size: 1rem;
+    line-height: 1.2;
+    margin: 0;
+}
+
+#pronunciation-results-count {
+    font-weight: 800;
+    color: var(--text);
+}
+
+#pronunciation-results-subtitle {
+    font-weight: 500;
+    color: var(--muted);
 }

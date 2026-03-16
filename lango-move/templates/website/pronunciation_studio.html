@@ -5,112 +5,106 @@
 {% block title %}{% trans "Pronunciation Studio" %} | LangoMove{% endblock %}
 
 {% block content %}
-<section
-    class="page-section"
-    id="pronunciation-page"
-    data-label-all="{% trans 'All' %}"
-    data-label-type="{% trans 'Type' %}"
-    data-label-audio="{% trans 'Audio' %}"
-    data-label-language="{% trans 'Language' %}"
-    data-label-pos="{% trans 'Part of speech' %}"
-    data-label-topic="{% trans 'Topic' %}"
-    data-label-items="{% trans 'items' %}"
-    data-label-item="{% trans 'item' %}"
-    data-label-visible-with-current-filters="{% trans 'visible with current filters' %}"
->
+<section class="page-section">
     <div class="container">
-        <div class="section-header">
+        <div class="section-header pronunciation-page-header">
             <h1 id="ps-title">{% trans "Pronunciation Studio" %}</h1>
             <p id="ps-subtitle">
                 {% trans "Review vocabulary and phrases, filter by language, topic, and part of speech, and quickly spot missing audio." %}
             </p>
         </div>
 
-        <div class="filters-panel pronunciation-filters-panel">
-            <div class="filter-group">
-                <div class="filter-label" id="ps-filter-type-label">{% trans "Type" %}</div>
-                <div class="chip-row" id="type-filters">
-                    <button type="button" class="chip active" data-type="all">{% trans "All" %}</button>
-                    <button type="button" class="chip" data-type="vocabulary">{% trans "Vocabulary" %}</button>
-                    <button type="button" class="chip" data-type="phrases">{% trans "Phrases" %}</button>
+        <section class="pronunciation-filter-shell">
+            <div class="pronunciation-filter-top">
+                <div class="pronunciation-filter-card">
+                    <div class="filter-label" id="ps-filter-type-label">{% trans "Type" %}</div>
+                    <div class="chip-row" id="type-filters">
+                        <button type="button" class="chip active" data-type="all">{% trans "All" %}</button>
+                        <button type="button" class="chip" data-type="vocabulary">{% trans "Vocabulary" %}</button>
+                        <button type="button" class="chip" data-type="phrases">{% trans "Phrases" %}</button>
+                    </div>
+                </div>
+
+                <div class="pronunciation-filter-card">
+                    <div class="filter-label" id="ps-filter-audio-label">{% trans "Audio" %}</div>
+                    <div class="chip-row" id="audio-filters">
+                        <button type="button" class="chip active" data-audio="all">{% trans "All" %}</button>
+                        <button type="button" class="chip" data-audio="ready">{% trans "Audio ready" %}</button>
+                        <button type="button" class="chip" data-audio="missing">{% trans "Missing audio" %}</button>
+                    </div>
+                </div>
+
+                <div class="pronunciation-filter-card">
+                    <div class="filter-label" id="ps-filter-language-label">{% trans "Language" %}</div>
+                    <div class="chip-row" id="language-filters">
+                        <button type="button" class="chip active" data-language="all">{% trans "All" %}</button>
+                        {% for language in language_options %}
+                            <button type="button" class="chip" data-language="{{ language|lower }}">
+                                {{ language }}
+                            </button>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 
-            <div class="filter-group">
-                <div class="filter-label" id="ps-filter-audio-label">{% trans "Audio" %}</div>
-                <div class="chip-row" id="audio-filters">
-                    <button type="button" class="chip active" data-audio="all">{% trans "All" %}</button>
-                    <button type="button" class="chip" data-audio="ready">{% trans "Audio ready" %}</button>
-                    <button type="button" class="chip" data-audio="missing">{% trans "Missing audio" %}</button>
+            <div class="pronunciation-filter-advanced" id="vocabulary-only-filters">
+                <div class="pronunciation-filter-card pronunciation-filter-card-wide" id="pos-filter-group">
+                    <div class="filter-label" id="ps-filter-pos-label">{% trans "Part of speech" %}</div>
+                    <div class="chip-row" id="pos-filters">
+                        <button type="button" class="chip active" data-pos="all">{% trans "All" %}</button>
+                        {% for pos in pos_options %}
+                            <button type="button" class="chip" data-pos="{{ pos|lower }}">
+                                {{ pos }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="pronunciation-filter-card pronunciation-filter-card-wide" id="topic-filter-group">
+                    <div class="filter-label" id="ps-filter-topic-label">{% trans "Topics" %}</div>
+                    <div class="chip-row" id="topic-filters">
+                        <button type="button" class="chip active" data-topic="all">{% trans "All" %}</button>
+                        {% for topic in topic_options %}
+                            <button type="button" class="chip" data-topic="{{ topic|lower }}">
+                                {{ topic }}
+                            </button>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 
-            <div class="filter-group">
-                <div class="filter-label" id="ps-filter-language-label">{% trans "Language" %}</div>
-                <div class="chip-row" id="language-filters">
-                    <button type="button" class="chip active" data-language="all">{% trans "All" %}</button>
-                    {% for language in language_options %}
-                        <button type="button" class="chip" data-language="{{ language|lower }}">
-                            {{ language }}
-                        </button>
-                    {% endfor %}
+            <div class="pronunciation-filter-bottom">
+                <div class="pronunciation-search-card">
+                    <div class="filter-label" id="ps-filter-search-label">{% trans "Search" %}</div>
+                    <div class="pronunciation-search-wrap">
+                        <input
+                            id="pronunciation-search"
+                            class="pronunciation-search-input"
+                            type="text"
+                            placeholder="{% trans 'Search word, phrase, translation, category, topic...' %}"
+                        >
+                    </div>
+                </div>
+
+                <div class="pronunciation-actions-card">
+                    <div class="filter-label">{% trans "Actions" %}</div>
+                    <div class="chip-row">
+                        <button type="button" class="chip" id="pronunciation-reset-filters">{% trans "Reset filters" %}</button>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="filter-group">
-                <div class="filter-label" id="ps-filter-pos-label">{% trans "Part of speech" %}</div>
-                <div class="chip-row" id="pos-filters">
-                    <button type="button" class="chip active" data-pos="all">{% trans "All" %}</button>
-                    {% for pos in pos_options %}
-                        <button type="button" class="chip" data-pos="{{ pos|lower }}">
-                            {{ pos }}
-                        </button>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="filter-group">
-                <div class="filter-label" id="ps-filter-topic-label">{% trans "Topics" %}</div>
-                <div class="chip-row" id="topic-filters">
-                    <button type="button" class="chip active" data-topic="all">{% trans "All" %}</button>
-                    {% for topic in topic_options %}
-                        <button type="button" class="chip" data-topic="{{ topic|lower }}">
-                            {{ topic }}
-                        </button>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="filter-group">
-                <div class="filter-label" id="ps-filter-search-label">{% trans "Search" %}</div>
-                <div class="pronunciation-search-wrap">
-                    <input
-                        id="pronunciation-search"
-                        class="pronunciation-search-input"
-                        type="text"
-                        placeholder="{% trans 'Search word, phrase, translation, category, topic...' %}"
-                    >
-                </div>
-            </div>
-
-            <div class="filter-group">
-                <div class="filter-label">{% trans "Actions" %}</div>
-                <div class="chip-row">
-                    <button type="button" class="chip" id="pronunciation-reset-filters">{% trans "Reset filters" %}</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="margin-bottom: 24px;">
-            <div class="card-body" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
-                <div>
+        <div class="card pronunciation-results-card">
+            <div class="card-body pronunciation-results-body">
+                <div class="pronunciation-results-left">
                     <strong id="pronunciation-results-count">0 {% trans "items" %}</strong>
-                    <span class="modal-muted" id="pronunciation-results-subtitle" style="margin-left: 8px;">
+                    <span class="modal-muted" id="pronunciation-results-subtitle">
                         {% trans "visible with current filters" %}
                     </span>
                 </div>
 
-                <div class="modal-pill-row" id="pronunciation-active-filters">
+                <div class="modal-pill-row pronunciation-active-filters" id="pronunciation-active-filters">
                     <span class="modal-pill" id="active-type-pill">{% trans "Type" %}: {% trans "All" %}</span>
                     <span class="modal-pill" id="active-audio-pill">{% trans "Audio" %}: {% trans "All" %}</span>
                     <span class="modal-pill" id="active-language-pill">{% trans "Language" %}: {% trans "All" %}</span>
@@ -203,8 +197,8 @@
                         data-audio-state="{% if item.audio_file and item.audio_file.0.url %}ready{% else %}missing{% endif %}"
                         data-language="{{ item.language_name|default:item.language_code|default:''|lower }}"
                         data-pos=""
-                        data-topics="{% for topic in item.topic_names %}{{ topic|lower }}{% if not forloop.last %}|{% endif %}{% endfor %}"
-                        data-search="{{ item.text|default:''|lower }} {{ item.text_fr|default:''|lower }} {{ item.phrase_type|default:''|lower }} {{ item.language_name|default:''|lower }} {{ item.language_code|default:''|lower }} {{ item.phonetic|default:''|lower }} {% for topic in item.topic_names %}{{ topic|lower }} {% endfor %}"
+                        data-topics=""
+                        data-search="{{ item.text|default:''|lower }} {{ item.text_fr|default:''|lower }} {{ item.phrase_type|default:''|lower }} {{ item.language_name|default:''|lower }} {{ item.language_code|default:''|lower }} {{ item.phonetic|default:''|lower }}"
                     >
                         <div class="modal-item-top">
                             <div>
@@ -234,14 +228,6 @@
                             {% endif %}
                         </div>
 
-                        {% if item.topic_names %}
-                            <div class="modal-pill-row" style="margin-top: 10px;">
-                                {% for topic in item.topic_names %}
-                                    <span class="tag">{{ topic }}</span>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-
                         {% if item.phonetic %}
                             <div class="modal-muted">{{ item.phonetic }}</div>
                         {% endif %}
@@ -262,6 +248,10 @@
         </div>
     </div>
 </section>
+
+<style>
+
+</style>
 
 <script src="{% static 'js/pronunciation_studio.js' %}"></script>
 {% endblock %}
