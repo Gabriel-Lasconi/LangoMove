@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.users",
     "apps.website",
+    "apps.core",
     "apps.curriculum.apps.CurriculumConfig",
 ]
 

@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="Databases working independent of airtable">
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/migrations/0002_coursetopicphrase_coursetopicvocabulary_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/migrations/0003_remove_agegroup_airtable_record_id_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/migrations/0004_remove_phrasetranslation_audio_url_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/core/management/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/core/management/commands/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/core/management/commands/export_seed_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/core/management/commands/import_seed_data.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lango-move/email.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/curriculum/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,7 +220,7 @@
       <workItem from="1773512835304" duration="13543000" />
       <workItem from="1773591418949" duration="1417000" />
       <workItem from="1773600877607" duration="6649000" />
-      <workItem from="1773681505839" duration="32905000" />
+      <workItem from="1773681505839" duration="33896000" />
     </task>
     <task id="LOCAL-00001" summary="update of login and registration">
       <option name="closed" value="true" />
@@ -438,7 +438,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773770313860</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Databases working independent of airtable">
+      <option name="closed" value="true" />
+      <created>1773770642219</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1773770642219</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
