@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Course moderation | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container">
+        <div class="section-header">
+            <h1>Course moderation</h1>
+            <p>Review submitted courses and decide whether to publish them.</p>
+        </div>
+
+        <div class="grid" style="gap: 18px;">
+            {% for course in courses %}
+                <article class="card">
+                    <div class="card-body">
+                        <h3>{{ course.title }}</h3>
+                        <p>{{ course.description }}</p>
+
+                        <div class="modal-pill-row" style="margin-top: 10px;">
+                            <span class="modal-pill">{{ course.language.name }}</span>
+                            {% if course.age_group %}
+                                <span class="modal-pill">{{ course.age_group.label|default:course.age_group.name }}</span>
+                            {% endif %}
+                            <span class="modal-pill">{{ course.get_status_display }}</span>
+                        </div>
+
+                        <p style="margin-top: 12px;">
+                            Submitted by:
+                            {% if course.created_by %}{{ course.created_by.username }}{% else %}Unknown{% endif %}
+                        </p>
+
+                        <div class="form-actions" style="margin-top: 18px;">
+                            <a href="{% url 'course-moderation-detail' course.pk %}" class="button">Review course</a>
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="card">
+                    <div class="card-body">
+                        <p>No courses available for moderation.</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

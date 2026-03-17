@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -38,19 +39,13 @@ class AgeGroup(TimeStampedModel):
 
 
 class Topic(TimeStampedModel):
-    STATUS_CHOICES = [
-        ("draft", "Draft"),
-        ("published", "Published"),
-        ("archived", "Archived"),
-    ]
-
     name = models.CharField(max_length=200, unique=True)
     name_fr = models.CharField(max_length=200, blank=True)
     slug = models.SlugField(max_length=200, unique=True)
     description = models.TextField(blank=True)
     icon = models.CharField(max_length=100, blank=True)
     display_order = models.PositiveIntegerField(default=9999)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    status = models.CharField(max_length=50, blank=True, default="published")
 
     class Meta:
         ordering = ["display_order", "name"]
@@ -59,13 +54,14 @@ class Topic(TimeStampedModel):
         return self.name
 
 
-class Course(TimeStampedModel):
-    STATUS_CHOICES = [
-        ("draft", "Draft"),
-        ("published", "Published"),
-        ("archived", "Archived"),
-    ]
+class CourseStatus(models.TextChoices):
+    DRAFT = "draft", "Draft"
+    PUBLISHED = "published", "Published"
+    REJECTED = "rejected", "Rejected"
+    ARCHIVED = "archived", "Archived"
 
+
+class Course(TimeStampedModel):
     title = models.CharField(max_length=255)
     language = models.ForeignKey(
         Language,
@@ -76,13 +72,39 @@ class Course(TimeStampedModel):
         AgeGroup,
         on_delete=models.PROTECT,
         related_name="courses",
+        null=True,
+        blank=True,
     )
+    sessions_count = models.PositiveIntegerField(default=0)
     minutes_per_session = models.PositiveIntegerField(default=0)
     description = models.TextField(blank=True)
     card_image = models.URLField(blank=True, max_length=1000)
     slug = models.SlugField(max_length=255, unique=True)
     display_order = models.PositiveIntegerField(default=9999)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+
+    status = models.CharField(
+        max_length=20,
+        choices=CourseStatus.choices,
+        default=CourseStatus.DRAFT,
+        db_index=True,
+    )
+
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="courses_created",
+    )
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="courses_approved",
+    )
+    approved_at = models.DateTimeField(null=True, blank=True)
+    moderation_notes = models.TextField(blank=True)
 
     class Meta:
         ordering = ["display_order", "title"]
@@ -90,14 +112,12 @@ class Course(TimeStampedModel):
     def __str__(self):
         return self.title
 
+    @property
+    def is_published(self):
+        return self.status == CourseStatus.PUBLISHED
+
 
 class Game(TimeStampedModel):
-    STATUS_CHOICES = [
-        ("draft", "Draft"),
-        ("published", "Published"),
-        ("archived", "Archived"),
-    ]
-
     name = models.CharField(max_length=255, unique=True)
     name_fr = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
@@ -107,7 +127,7 @@ class Game(TimeStampedModel):
     materials_needed = models.TextField(blank=True)
     variants = models.TextField(blank=True)
     slug = models.SlugField(max_length=255, unique=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    status = models.CharField(max_length=50, blank=True, default="published")
 
     class Meta:
         ordering = ["name"]
@@ -117,12 +137,6 @@ class Game(TimeStampedModel):
 
 
 class CourseTopic(TimeStampedModel):
-    STATUS_CHOICES = [
-        ("draft", "Draft"),
-        ("published", "Published"),
-        ("archived", "Archived"),
-    ]
-
     course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -142,7 +156,7 @@ class CourseTopic(TimeStampedModel):
     grammar_objectives = models.TextField(blank=True)
     lexical_objectives = models.TextField(blank=True)
     action_objectives = models.TextField(blank=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    status = models.CharField(max_length=50, blank=True, default="published")
 
     class Meta:
         ordering = ["course", "sequence_number", "title"]
@@ -216,7 +230,7 @@ class VocabularyTranslation(TimeStampedModel):
     part_of_speech = models.CharField(max_length=100, blank=True)
     phonetic = models.CharField(max_length=255, blank=True)
     audio_file = models.FileField(upload_to="pronunciations/vocabulary/", blank=True, null=True)
-    flashcard_pdf_url = models.URLField(blank=True)
+    flashcard_pdf = models.FileField(upload_to="flashcards/vocabulary/", blank=True, null=True)
     notes = models.TextField(blank=True)
 
     class Meta:

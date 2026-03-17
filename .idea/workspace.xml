@@ -5,11 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="exporting data to Render">
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/migrations/0005_alter_course_card_image_alter_game_main_image_url.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/website/views/course_submission.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lango-move/email.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_build_sessions.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_create.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_moderation_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_moderation_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_submission_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/curriculum/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/apps/curriculum/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/curriculum/query_services.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/query_services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/views/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/views/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/static/css/course_components.css" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/static/css/course_components.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/website/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/website/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,9 +32,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
-        <option value="HTML File" />
         <option value="CSS File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -219,7 +231,7 @@
       <workItem from="1773512835304" duration="13543000" />
       <workItem from="1773591418949" duration="1417000" />
       <workItem from="1773600877607" duration="6649000" />
-      <workItem from="1773681505839" duration="34980000" />
+      <workItem from="1773681505839" duration="41143000" />
     </task>
     <task id="LOCAL-00001" summary="update of login and registration">
       <option name="closed" value="true" />
@@ -461,7 +473,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773773282513</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="exporting data to Render">
+      <option name="closed" value="true" />
+      <created>1773773997401</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1773773997401</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

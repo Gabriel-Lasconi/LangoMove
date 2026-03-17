@@ -1,8 +1,10 @@
 from django.contrib import admin
+from django.utils import timezone
 
-from .models import (
+from apps.curriculum.models import (
     AgeGroup,
     Course,
+    CourseStatus,
     CourseTopic,
     CourseTopicGame,
     CourseTopicPhrase,
@@ -15,6 +17,24 @@ from .models import (
     VocabularyConcept,
     VocabularyTranslation,
 )
+
+
+@admin.action(description="Publish selected courses")
+def publish_courses(modeladmin, request, queryset):
+    queryset.update(
+        status=CourseStatus.PUBLISHED,
+        approved_by=request.user,
+        approved_at=timezone.now(),
+    )
+
+
+@admin.action(description="Move selected courses to draft")
+def draft_courses(modeladmin, request, queryset):
+    queryset.update(
+        status=CourseStatus.DRAFT,
+        approved_by=None,
+        approved_at=None,
+    )
 
 
 @admin.register(Language)
@@ -65,13 +85,17 @@ class CourseAdmin(admin.ModelAdmin):
         "minutes_per_session",
         "display_order",
         "status",
+        "created_by",
+        "approved_by",
+        "approved_at",
         "created_at",
         "updated_at",
     )
     search_fields = ("title", "slug", "description")
     list_filter = ("language", "age_group", "status")
     ordering = ("display_order", "title")
-    autocomplete_fields = ("language", "age_group")
+    autocomplete_fields = ("language", "age_group", "created_by", "approved_by")
+    actions = [publish_courses, draft_courses]
 
 
 @admin.register(Game)

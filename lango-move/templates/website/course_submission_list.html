@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Course submissions | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container">
+        <div class="section-header">
+            <h1>Course submissions</h1>
+            <p>View and manage your submitted courses.</p>
+        </div>
+
+        <div class="form-actions" style="margin-bottom: 20px;">
+            <a href="{% url 'course-create' %}" class="button">Create new course</a>
+            {% if request.user.role == "admin" %}
+                <a href="{% url 'course-moderation-list' %}" class="button-secondary">Moderation panel</a>
+            {% endif %}
+        </div>
+
+        <div class="grid" style="gap: 18px;">
+            {% for course in courses %}
+                <article class="card">
+                    <div class="card-body">
+                        <h3>{{ course.title }}</h3>
+                        <p>{{ course.description }}</p>
+
+                        <div class="modal-pill-row" style="margin-top: 10px;">
+                            <span class="modal-pill">{{ course.language.name }}</span>
+                            {% if course.age_group %}
+                                <span class="modal-pill">{{ course.age_group.label|default:course.age_group.name }}</span>
+                            {% endif %}
+                            <span class="modal-pill">{{ course.get_status_display }}</span>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 18px;">
+                            <a href="{% url 'course-edit' course.pk %}" class="button-secondary">Edit</a>
+                            {% if request.user.role == "admin" %}
+                                <a href="{% url 'course-moderation-detail' course.pk %}" class="button">Moderate</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="card">
+                    <div class="card-body">
+                        <p>No submitted courses yet.</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

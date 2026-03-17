@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{% if edit_mode %}Edit course{% else %}Create course{% endif %} | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container" style="max-width: 860px;">
+        <div class="section-header">
+            <h1>{% if edit_mode %}Edit course{% else %}Create course{% endif %}</h1>
+            <p>
+                {% if edit_mode %}
+                    Update the course basics first, then configure the sessions.
+                {% else %}
+                    Submit the course basics first. In the next step you will configure the sessions, topics, and games.
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="post" class="auth-form">
+                    {% csrf_token %}
+
+                    <div class="auth-field">
+                        <label for="{{ form.title.id_for_label }}">Title</label>
+                        {{ form.title }}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.language_name.id_for_label }}">Language</label>
+                        {{ form.language_name }}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.age_group.id_for_label }}">Age group</label>
+                        {{ form.age_group }}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.sessions_count.id_for_label }}">Number of sessions</label>
+                        {{ form.sessions_count }}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.minutes_per_session.id_for_label }}">Minutes per session</label>
+                        {{ form.minutes_per_session }}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.card_image.id_for_label }}">Card image URL</label>
+                        {{ form.card_image }}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.description.id_for_label }}">Description</label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="button">
+                            {% if edit_mode %}Continue to sessions{% else %}Continue to sessions{% endif %}
+                        </button>
+                        <a href="{% url 'course-submission-list' %}" class="button-secondary">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

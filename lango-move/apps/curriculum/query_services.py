@@ -1,5 +1,6 @@
 from apps.curriculum.models import (
     Course,
+    CourseStatus,
     CourseTopic,
     CourseTopicGame,
     PhraseTranslation,
@@ -12,7 +13,7 @@ class CurriculumQueryService:
         return (
             Course.objects
             .select_related("language", "age_group")
-            .filter(status="published")
+            .filter(status=CourseStatus.PUBLISHED)
             .order_by("display_order", "title")
         )
 
@@ -20,7 +21,7 @@ class CurriculumQueryService:
         return (
             Course.objects
             .select_related("language", "age_group")
-            .filter(status="published", slug=slug)
+            .filter(status=CourseStatus.PUBLISHED, slug=slug)
             .first()
         )
 
@@ -36,7 +37,11 @@ class CurriculumQueryService:
         return (
             CourseTopic.objects
             .select_related("course", "topic", "course__language", "course__age_group")
-            .filter(status="published", slug=slug)
+            .filter(
+                status="published",
+                slug=slug,
+                course__status=CourseStatus.PUBLISHED,
+            )
             .first()
         )
 
@@ -104,3 +109,26 @@ class CurriculumQueryService:
             for name in list(vocabulary_topics) + list(phrase_topics)
             if name and name.strip()
         })
+
+    def get_user_visible_courses(self, user):
+        queryset = Course.objects.select_related("language", "age_group")
+
+        if getattr(user, "is_authenticated", False) and getattr(user, "role", None) == "admin":
+            return queryset.order_by("display_order", "title")
+
+        return queryset.filter(status=CourseStatus.PUBLISHED).order_by("display_order", "title")
+
+    def get_courses_created_by_user(self, user):
+        return (
+            Course.objects
+            .select_related("language", "age_group", "created_by", "approved_by")
+            .filter(created_by=user)
+            .order_by("-created_at", "title")
+        )
+
+    def get_all_courses_for_moderation(self):
+        return (
+            Course.objects
+            .select_related("language", "age_group", "created_by", "approved_by")
+            .order_by("status", "-created_at", "title")
+        )

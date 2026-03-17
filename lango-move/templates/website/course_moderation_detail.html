@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Moderate course | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container" style="max-width: 860px;">
+        <div class="section-header">
+            <h1>Moderate course</h1>
+            <p>Review the course and decide whether to keep it as draft, publish it, or reject it.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2 style="margin-bottom: 8px;">{{ course.title }}</h2>
+                <p>{{ course.description }}</p>
+
+                <div class="modal-pill-row" style="margin: 16px 0;">
+                    <span class="modal-pill">{{ course.language.name }}</span>
+                    {% if course.age_group %}
+                        <span class="modal-pill">{{ course.age_group.label|default:course.age_group.name }}</span>
+                    {% endif %}
+                    <span class="modal-pill">{{ course.minutes_per_session }} min</span>
+                </div>
+
+                <p>
+                    Submitted by:
+                    {% if course.created_by %}{{ course.created_by.username }}{% else %}Unknown{% endif %}
+                </p>
+
+                <form method="post" class="auth-form" style="margin-top: 24px;">
+                    {% csrf_token %}
+
+                    <div class="auth-field">
+                        <label for="{{ form.status.id_for_label }}">Status</label>
+                        {{ form.status }}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.display_order.id_for_label }}">Display order</label>
+                        {{ form.display_order }}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.moderation_notes.id_for_label }}">Moderation notes</label>
+                        {{ form.moderation_notes }}
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="button">Save moderation decision</button>
+                        <a href="{% url 'course-moderation-list' %}" class="button-secondary">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

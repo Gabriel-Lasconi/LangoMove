@@ -107,6 +107,17 @@
             </div>
         </div>
 
+        <div class="courses-actions">
+            <a href="{% url 'course-create' %}" class="btn btn-primary">
+                Submit course
+            </a>
+            {% if user.is_staff %}
+            <a href="{% url 'course-moderation-list' %}" class="btn btn-secondary">
+                Moderation
+            </a>
+            {% endif %}
+        </div>
+
         <div class="grid course-grid" id="course-grid">
             {% for course in courses %}
                 <article class="card course-card-v2 course-item"

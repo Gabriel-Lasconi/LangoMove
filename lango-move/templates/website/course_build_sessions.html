@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Build course sessions | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container" style="max-width: 980px;">
+        <div class="section-header">
+            <h1>Build sessions for {{ course.title }}</h1>
+            <p>Choose the topic and between 3 and 5 games for each session.</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ formset.management_form }}
+
+            <div class="grid" style="gap: 18px;">
+                {% for session_number, form in session_forms %}
+                    <article class="card">
+                        <div class="card-body">
+                            <h3 style="margin-bottom: 16px;">Session {{ session_number }}</h3>
+
+                            <div class="auth-field">
+                                <label>{{ form.topic.label }}</label>
+                                {{ form.topic }}
+                            </div>
+
+                            <div class="auth-field">
+                                <label>{{ form.title.label }}</label>
+                                {{ form.title }}
+                            </div>
+
+                            <div class="auth-field">
+                                <label>{{ form.grammar_objectives.label }}</label>
+                                {{ form.grammar_objectives }}
+                            </div>
+
+                            <div class="auth-field">
+                                <label>{{ form.lexical_objectives.label }}</label>
+                                {{ form.lexical_objectives }}
+                            </div>
+
+                            <div class="auth-field">
+                                <label>{{ form.action_objectives.label }}</label>
+                                {{ form.action_objectives }}
+                            </div>
+
+                            <div class="auth-field">
+                                <label>Games</label>
+                                <p style="margin: 0 0 12px; color: #6b7280; font-size: 0.95rem;">
+                                    Select at least 3 games and at most 5.
+                                </p>
+
+                                <div class="session-games-grid">
+                                    <div class="auth-field">
+                                        <label for="{{ form.game_1.id_for_label }}">Game 1</label>
+                                        {{ form.game_1 }}
+                                    </div>
+
+                                    <div class="auth-field">
+                                        <label for="{{ form.game_2.id_for_label }}">Game 2</label>
+                                        {{ form.game_2 }}
+                                    </div>
+
+                                    <div class="auth-field">
+                                        <label for="{{ form.game_3.id_for_label }}">Game 3</label>
+                                        {{ form.game_3 }}
+                                    </div>
+
+                                    <div class="auth-field">
+                                        <label for="{{ form.game_4.id_for_label }}">Game 4</label>
+                                        {{ form.game_4 }}
+                                    </div>
+
+                                    <div class="auth-field">
+                                        <label for="{{ form.game_5.id_for_label }}">Game 5</label>
+                                        {{ form.game_5 }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if form.non_field_errors %}
+                                <div class="form-error">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+
+            <div class="form-actions" style="margin-top: 24px;">
+                <button type="submit" class="button">Save course sessions</button>
+                <a href="{% url 'course-submission-list' %}" class="button-secondary">Back</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<style>
+.session-games-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 18px;
+}
+
+@media (max-width: 768px) {
+    .session-games-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

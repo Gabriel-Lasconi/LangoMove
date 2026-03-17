@@ -478,3 +478,44 @@
         font-size: 1.2rem;
     }
 }
+
+/* Container — align LEFT and visually attach to filters box */
+.courses-actions {
+    display: flex;
+    justify-content: flex-start;   /* LEFT aligned */
+    gap: 10px;
+    margin: 0 0 14px 6px;          /* slight inset to align with card padding */
+}
+
+/* Base button — match site style */
+.courses-actions .btn {
+    padding: 10px 20px;
+    border-radius: 999px;          /* pill like "View course" */
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 16px rgba(120, 110, 200, 0.15);
+}
+
+/* Primary — matches your purple */
+.btn-primary {
+    background: linear-gradient(135deg, #7b74e8, #6b63ff);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(120, 110, 200, 0.25);
+}
+
+/* Secondary — matches filter chips style */
+.btn-secondary {
+    background: #ececf6;
+    color: #5a5a7a;
+}
+
+.btn-secondary:hover {
+    background: #e2e2f0;
+}
