@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="exporting data to Render">
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/migrations/0005_alter_course_card_image_alter_game_main_image_url.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lango-move/email.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/curriculum/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +219,7 @@
       <workItem from="1773512835304" duration="13543000" />
       <workItem from="1773591418949" duration="1417000" />
       <workItem from="1773600877607" duration="6649000" />
-      <workItem from="1773681505839" duration="34236000" />
+      <workItem from="1773681505839" duration="34980000" />
     </task>
     <task id="LOCAL-00001" summary="update of login and registration">
       <option name="closed" value="true" />
@@ -449,7 +453,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773773021273</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="exporting data to Render">
+      <option name="closed" value="true" />
+      <created>1773773282513</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1773773282513</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
