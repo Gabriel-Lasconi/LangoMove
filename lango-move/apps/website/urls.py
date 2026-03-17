@@ -1,10 +1,11 @@
 from django.urls import path
+
 from apps.website.views import (
-    home_view,
     course_detail_view,
-    session_detail_view,
     game_detail_json_view,
+    home_view,
     pronunciation_studio_view,
+    session_detail_view,
 )
 
 urlpatterns = [

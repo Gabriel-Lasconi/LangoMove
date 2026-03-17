@@ -12,7 +12,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Load local environment variables for development.
 # On Render, real environment variables from the dashboard will be used.
-load_dotenv(BASE_DIR / "airtable.env")
 load_dotenv(BASE_DIR / "email.env")
 
 # -----------------------------------------------------------------------------
@@ -21,7 +20,6 @@ load_dotenv(BASE_DIR / "email.env")
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-change-this-later")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
-
 
 ALLOWED_HOSTS = [
     host.strip()
@@ -50,6 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.users",
     "apps.website",
+    "apps.curriculum.apps.CurriculumConfig",
 ]
 
 # -----------------------------------------------------------------------------
@@ -199,22 +198,3 @@ if not DEBUG:
 # -----------------------------------------------------------------------------
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# -----------------------------------------------------------------------------
-# Airtable
-# -----------------------------------------------------------------------------
-
-AIRTABLE_API_TOKEN = os.getenv("AIRTABLE_API_TOKEN", "")
-AIRTABLE_BASE_ID = os.getenv("AIRTABLE_BASE_ID", "")
-
-AIRTABLE_TABLES = {
-    "languages": os.getenv("AIRTABLE_TABLE_LANGUAGES", "languages"),
-    "age_groups": os.getenv("AIRTABLE_TABLE_AGE_GROUPS", "age-groups"),
-    "topics": os.getenv("AIRTABLE_TABLE_TOPICS", "topics"),
-    "courses": os.getenv("AIRTABLE_TABLE_COURSES", "courses"),
-    "sessions": os.getenv("AIRTABLE_TABLE_SESSIONS", "sessions"),
-    "games": os.getenv("AIRTABLE_TABLE_GAMES", "games"),
-    "session_requests": os.getenv("AIRTABLE_TABLE_SESSION_REQUESTS", "session-requests"),
-    "vocabulary": os.getenv("AIRTABLE_TABLE_VOCABULARY", "vocabulary"),
-    "phrases": os.getenv("AIRTABLE_TABLE_PHRASES", "phrases"),
-}

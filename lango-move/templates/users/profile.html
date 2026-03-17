@@ -16,12 +16,37 @@
                 <div class="profile-sidebar-body">
                     <span class="auth-kicker">Your account</span>
 
-                    {% if profile_user.photo %}
-                        <img src="{{ profile_user.photo.url }}" alt="{{ profile_user.username }}" class="profile-avatar">
-                    {% else %}
-                        <div class="profile-avatar profile-avatar-placeholder">
-                            {{ profile_user.username|first|upper }}
+                    {% if edit_mode %}
+                        <div class="profile-avatar-edit-wrap">
+                            <label for="{{ form.photo.id_for_label }}" class="profile-avatar-edit-trigger" title="Change profile photo">
+                                {% if profile_user.photo %}
+                                    <img
+                                        src="{{ profile_user.photo.url }}"
+                                        alt="{{ profile_user.username }}"
+                                        class="profile-avatar"
+                                        id="profile-avatar-preview"
+                                    >
+                                {% else %}
+                                    <div class="profile-avatar profile-avatar-placeholder" id="profile-avatar-preview-placeholder">
+                                        {{ profile_user.username|first|upper }}
+                                    </div>
+                                {% endif %}
+
+                                <span class="profile-avatar-edit-badge">Edit photo</span>
+                            </label>
+
+                            <p class="profile-avatar-edit-help">
+                                Click the photo to upload a new one.
+                            </p>
                         </div>
+                    {% else %}
+                        {% if profile_user.photo %}
+                            <img src="{{ profile_user.photo.url }}" alt="{{ profile_user.username }}" class="profile-avatar">
+                        {% else %}
+                            <div class="profile-avatar profile-avatar-placeholder">
+                                {{ profile_user.username|first|upper }}
+                            </div>
+                        {% endif %}
                     {% endif %}
 
                     <h2 class="profile-name">{{ profile_user.username }}</h2>
@@ -64,6 +89,21 @@
                                     <div class="auth-alert">{{ form.non_field_errors }}</div>
                                 {% endif %}
 
+                                <div class="profile-hidden-photo-input">
+                                    {{ form.photo }}
+                                    {% if form.photo.errors %}
+                                        <div class="auth-error">{{ form.photo.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="profile-edit-tip">
+                                    <div class="profile-edit-tip-icon">✦</div>
+                                    <div>
+                                        <strong>Profile photo</strong>
+                                        <span>Use the avatar card on the left to change your picture.</span>
+                                    </div>
+                                </div>
+
                                 <div class="profile-form-grid">
                                     <div class="auth-field">
                                         <label for="{{ form.username.id_for_label }}">Username</label>
@@ -79,34 +119,6 @@
                                         {% if form.email.errors %}
                                             <div class="auth-error">{{ form.email.errors }}</div>
                                         {% endif %}
-                                    </div>
-
-                                    <div class="auth-field auth-field-full">
-                                        <label for="{{ form.photo.id_for_label }}">Profile photo</label>
-                                        <div class="profile-upload-box">
-                                            {% if profile_user.photo %}
-                                                <div class="profile-upload-current">
-                                                    <span class="profile-upload-label">Current photo</span>
-                                                    <div class="profile-upload-current-row">
-                                                        <img src="{{ profile_user.photo.url }}" alt="{{ profile_user.username }}" class="profile-upload-thumb">
-                                                        <div class="profile-upload-filename">
-                                                            {{ profile_user.photo.name|cut:"profiles/" }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-
-                                            <div class="profile-upload-new">
-                                                <label class="profile-upload-button" for="{{ form.photo.id_for_label }}">
-                                                    Choose file
-                                                </label>
-                                                {{ form.photo }}
-                                            </div>
-
-                                            {% if form.photo.errors %}
-                                                <div class="auth-error">{{ form.photo.errors }}</div>
-                                            {% endif %}
-                                        </div>
                                     </div>
 
                                     <div class="auth-field">
@@ -520,6 +532,40 @@ document.addEventListener("DOMContentLoaded", function () {
             closeModal();
         }
     });
+
+    const photoInput = document.getElementById("{{ form.photo.id_for_label|default:'' }}");
+    const avatarPreview = document.getElementById("profile-avatar-preview");
+    const avatarPlaceholder = document.getElementById("profile-avatar-preview-placeholder");
+
+    if (photoInput) {
+        photoInput.addEventListener("change", function (event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imageUrl = e.target.result;
+
+                const currentPreview = document.getElementById("profile-avatar-preview");
+                const currentPlaceholder = document.getElementById("profile-avatar-preview-placeholder");
+
+                if (currentPreview && currentPreview.tagName === "IMG") {
+                    currentPreview.src = imageUrl;
+                    return;
+                }
+
+                if (currentPlaceholder) {
+                    const img = document.createElement("img");
+                    img.src = imageUrl;
+                    img.alt = "{{ profile_user.username|escapejs }}";
+                    img.className = "profile-avatar";
+                    img.id = "profile-avatar-preview";
+                    currentPlaceholder.replaceWith(img);
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 });
 </script>
 {% endblock %}

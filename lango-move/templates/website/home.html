@@ -10,7 +10,7 @@
             <span class="hero-kicker">{% trans "LangoMove Prototype" %}</span>
             <h1>{% trans "Language learning through movement, games, and structured sessions" %}</h1>
             <p>
-                {% trans "Discover complete language courses connected to Airtable, organised by age group and session length. Explore sessions, activities, and build a scalable prototype for the future LangoMove platform." %}
+                {% trans "Discover complete language courses organised by age group and session length. Explore topics, games, and activities through the LangoMove platform." %}
             </p>
 
             <div class="hero-actions">
@@ -40,7 +40,7 @@
                     <span class="hero-flag">🇬🇧</span>
                     <div>
                         <h3>{% trans "English through movement" %}</h3>
-                        <p>{% trans "Structured sessions, reusable games, Airtable-powered content" %}</p>
+                        <p>{% trans "Structured learning paths, reusable games, and scalable content" %}</p>
                     </div>
                 </div>
 
@@ -71,7 +71,7 @@
         <div class="section-header">
             <h2>{% trans "Published Courses" %}</h2>
             <p>
-                {% trans "Filter courses by age group or language. These cards are loaded from Airtable and can lead to course pages, sessions, and activity sequences." %}
+                {% trans "Filter courses by age group or language. These cards lead to course pages, topics, and activity sequences." %}
             </p>
         </div>
 
@@ -110,57 +110,57 @@
         <div class="grid course-grid" id="course-grid">
             {% for course in courses %}
                 <article class="card course-card-v2 course-item"
-                     data-age-group="{{ course.age_group_name }}"
-                     data-language="{{ course.language_name }}">
-                <div class="course-card-v2-topline"></div>
+                    data-age-group="{{ course.age_group_name }}"
+                    data-language="{{ course.language_name }}">
+                    <div class="course-card-v2-topline"></div>
 
-                <div class="card-body course-card-v2-body">
-                    <div class="course-card-v2-header">
-                        <div class="course-card-v2-flag">
-                            {{ course.language_flag|default:"🌍" }}
+                    <div class="card-body course-card-v2-body">
+                        <div class="course-card-v2-header">
+                            <div class="course-card-v2-flag">
+                                {{ course.language_flag|default:"🌍" }}
+                            </div>
+
+                            <div class="course-card-v2-header-text">
+                                <h3 class="course-card-v2-title">{{ course.display_title }}</h3>
+                                <p class="course-card-v2-description">{{ course.description }}</p>
+                            </div>
                         </div>
 
-                        <div class="course-card-v2-header-text">
-                            <h3 class="course-card-v2-title">{{ course.display_title|default:course.title }}</h3>
-                            <p class="course-card-v2-description">{{ course.description }}</p>
-                        </div>
-                    </div>
-
-                    <div class="course-card-v2-tags">
-                        <span class="course-pill">{{ course.language_name }}</span>
-                        <span class="course-pill course-pill-soft">{{ course.age_group_name }}</span>
-                    </div>
-
-                    <div class="course-card-v2-stats">
-                        <div class="course-stat-box">
-                            <span class="course-stat-label">{% trans "Sessions" %}</span>
-                            <strong class="course-stat-value">{{ course.sessions_count }}</strong>
+                        <div class="course-card-v2-tags">
+                            <span class="course-pill">{{ course.language_name }}</span>
+                            <span class="course-pill course-pill-soft">{{ course.age_group_name }}</span>
                         </div>
 
-                        <div class="course-stat-box">
-                            <span class="course-stat-label">{% trans "Minutes per session" %}</span>
-                            <strong class="course-stat-value">{{ course.minutes_per_session }}</strong>
+                        <div class="course-card-v2-stats">
+                            <div class="course-stat-box">
+                                <span class="course-stat-label">{% trans "Sessions" %}</span>
+                                <strong class="course-stat-value">{{ course.sessions_count }}</strong>
+                            </div>
+
+                            <div class="course-stat-box">
+                                <span class="course-stat-label">{% trans "Minutes per session" %}</span>
+                                <strong class="course-stat-value">{{ course.minutes_per_session }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="course-card-v2-target">
+                            <span class="course-target-label">{% trans "Target group" %}</span>
+                            <span class="course-target-value">{{ course.age_group_name }}</span>
+                        </div>
+
+                        <div class="course-card-v2-actions">
+                            <a class="button course-card-v2-button" href="{% url 'course-detail' course.slug %}">
+                                {% trans "View course" %}
+                            </a>
                         </div>
                     </div>
-
-                    <div class="course-card-v2-target">
-                        <span class="course-target-label">{% trans "Target group" %}</span>
-                        <span class="course-target-value">{{ course.age_group_name }}</span>
-                    </div>
-
-                    <div class="course-card-v2-actions">
-                        <a class="button course-card-v2-button" href="{% url 'course-detail' course.slug %}">
-                            {% trans "View course" %}
-                        </a>
-                    </div>
-                </div>
-            </article>
+                </article>
             {% empty %}
                 <article class="card">
                     <div class="card-body">
                         <h3>{% trans "No matching courses found" %}</h3>
                         <p class="course-description">
-                            {% trans "Try removing one of the filters or check Airtable to make sure your course records are marked as published." %}
+                            {% trans "Try removing one of the filters or check that your course records are marked as published." %}
                         </p>
                     </div>
                 </article>
@@ -181,7 +181,7 @@
         <div class="section-header">
             <h2>{% trans "About this prototype" %}</h2>
             <p>
-                {% trans "This version connects Django to Airtable and turns your database into an actual website structure: courses, sessions, and linked games. It is a strong foundation for a richer LangoMove platform." %}
+                {% trans "This version uses Django as the main application database and turns the content into a real website structure: courses, topics, and linked games. It is a strong foundation for a richer LangoMove platform." %}
             </p>
         </div>
     </div>

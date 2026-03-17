@@ -76,10 +76,3 @@ def send_verification_email(request, user):
     )
 
     response.raise_for_status()
-
-    print("\n" + "=" * 80)
-    print("BREVO ACTIVATION LINK:")
-    print(activation_url)
-    print("BREVO RESPONSE:")
-    print(response.text)
-    print("=" * 80 + "\n")

@@ -1,7 +1,6 @@
 from django import forms
-from django.conf import settings
 
-from apps.integrations.airtable.client import AirtableClient
+from apps.curriculum.models import AgeGroup, CourseTopic, Language
 from apps.users.models import ClassParticipation, User, UserRole
 
 
@@ -25,7 +24,9 @@ class UserAccountForm(forms.ModelForm):
             "phone": forms.TextInput(attrs={"placeholder": "Phone number"}),
             "city": forms.TextInput(attrs={"placeholder": "City"}),
             "country": forms.TextInput(attrs={"placeholder": "Country"}),
-            "bio": forms.Textarea(attrs={"rows": 4, "placeholder": "Tell us a bit about yourself"}),
+            "bio": forms.Textarea(
+                attrs={"rows": 4, "placeholder": "Tell us a bit about yourself"}
+            ),
         }
 
 
@@ -76,86 +77,39 @@ class ClassParticipationForm(forms.ModelForm):
         self.fields["children_group"].choices = self.get_children_group_choices()
 
     def get_language_choices(self):
-        try:
-            airtable = AirtableClient()
-            records = airtable.list_records(settings.AIRTABLE_TABLES["languages"])
-
-            choices = [("", "---------")]
-            seen = set()
-
-            for record in records:
-                fields = record.get("fields", {})
-                name = (fields.get("name") or "").strip()
-
-                if name and name not in seen:
-                    choices.append((name, name))
-                    seen.add(name)
-
-            return choices
-        except Exception:
-            return [("", "---------")]
+        languages = Language.objects.order_by("name")
+        return [
+            ("", "---------"),
+            *[(language.name, language.name) for language in languages],
+        ]
 
     def get_session_choices(self):
-        try:
-            airtable = AirtableClient()
-            records = airtable.list_records(settings.AIRTABLE_TABLES["sessions"])
+        course_topics = (
+            CourseTopic.objects.select_related("course")
+            .order_by("course__title", "sequence_number", "title")
+        )
 
-            sessions = []
-            seen = set()
+        seen = set()
+        choices = [("", "---------")]
 
-            for record in records:
-                fields = record.get("fields", {})
-                full_title = (fields.get("full-title") or "").strip()
-                session_number = fields.get("session-number")
+        for topic in course_topics:
+            label = topic.title.strip() if topic.title else ""
+            if not label or label in seen:
+                continue
+            seen.add(label)
+            choices.append((label, label))
 
-                if not full_title:
-                    continue
-
-                number = int(session_number) if session_number is not None else 9999
-                unique_key = (number, full_title)
-
-                if unique_key in seen:
-                    continue
-
-                seen.add(unique_key)
-                sessions.append((number, full_title))
-
-            sessions.sort(key=lambda x: x[0])
-
-            return [("", "---------")] + [(title, title) for _, title in sessions]
-        except Exception:
-            return [("", "---------")]
+        return choices
 
     def get_children_group_choices(self):
-        try:
-            airtable = AirtableClient()
-            records = airtable.list_records(settings.AIRTABLE_TABLES["age_groups"])
-
-            groups = []
-            seen = set()
-
-            for record in records:
-                fields = record.get("fields", {})
-                label = (fields.get("label") or "").strip()
-                display_order = fields.get("display-order")
-
-                if not label:
-                    continue
-
-                order = int(display_order) if display_order is not None else 9999
-                unique_key = (order, label)
-
-                if unique_key in seen:
-                    continue
-
-                seen.add(unique_key)
-                groups.append((order, label))
-
-            groups.sort(key=lambda x: x[0])
-
-            return [("", "---------")] + [(label, label) for _, label in groups]
-        except Exception:
-            return [("", "---------")]
+        groups = AgeGroup.objects.order_by("display_order", "name")
+        return [
+            ("", "---------"),
+            *[
+                (group.label or group.name, group.label or group.name)
+                for group in groups
+            ],
+        ]
 
     def save(self, commit=True):
         instance = super().save(commit=False)
