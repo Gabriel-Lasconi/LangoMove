@@ -4,34 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="Fixed pronunciation_studio.html filters front-end">
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/management/commands/generate_pronunciation_audio.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/query_services.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/services.py" afterDir="false" />
+    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="Databases working independent of airtable">
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/migrations/__init__.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lango-move/email.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/integrations/airtable/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/integrations/airtable/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/integrations/airtable/mappers.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/integrations/airtable/services.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/integrations/airtable/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/forms/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/forms/profile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/services/email_verification.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/services/email_verification.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/management/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/management/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/management/commands/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/management/commands/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/management/commands/generate_pronunciation_audio.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/views/courses.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/views/courses.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/views/home.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/views/home.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/views/pronunciation.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/views/pronunciation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/config/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/config/settings/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/locale/fr/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/locale/fr/LC_MESSAGES/django.mo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/locale/fr/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/locale/fr/LC_MESSAGES/django.po" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/static/css/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/static/css/profile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/templates/users/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/users/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/templates/website/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/website/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/templates/website/pronunciation_studio.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/website/pronunciation_studio.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +82,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lango-move/apps/curriculum/migrations" />
       <recent name="$PROJECT_DIR$/lango-move" />
       <recent name="$PROJECT_DIR$/lango-move/requirements" />
     </key>
@@ -240,7 +218,7 @@
       <workItem from="1773512835304" duration="13543000" />
       <workItem from="1773591418949" duration="1417000" />
       <workItem from="1773600877607" duration="6649000" />
-      <workItem from="1773681505839" duration="29076000" />
+      <workItem from="1773681505839" duration="32255000" />
     </task>
     <task id="LOCAL-00001" summary="update of login and registration">
       <option name="closed" value="true" />
@@ -434,7 +412,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773698664727</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Databases working independent of airtable">
+      <option name="closed" value="true" />
+      <created>1773764051882</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1773764051882</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -462,7 +448,8 @@
     <MESSAGE value="updated filters for pronunciation_studio.html" />
     <MESSAGE value="Fixed front-end issues in home.html and course_detail.html" />
     <MESSAGE value="Fixed pronunciation_studio.html filters front-end" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed pronunciation_studio.html filters front-end" />
+    <MESSAGE value="Databases working independent of airtable" />
+    <option name="LAST_COMMIT_MESSAGE" value="Databases working independent of airtable" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/LangoMove$main.coverage" NAME="main Coverage Results" MODIFIED="1773159705124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
