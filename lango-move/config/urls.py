@@ -9,6 +9,7 @@ urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
     path("users/", include("apps.users.urls")),
     path("admin/", admin.site.urls),
+    path("schools/", include("apps.schools.urls")),
     path("", include("apps.website.urls")),
 ]
 

@@ -82,6 +82,7 @@ def dashboard_view(request):
     )
 
 
+
 @login_required
 def volunteer_dashboard_view(request):
     profile = request.user
@@ -163,3 +164,4 @@ def create_class_participation_view(request):
             "selected_teacher_id": selected_teacher_id,
         },
     )
+

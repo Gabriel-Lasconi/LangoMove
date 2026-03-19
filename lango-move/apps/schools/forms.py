@@ -1,12 +1,32 @@
 from django import forms
-from django.utils import timezone
 
-from apps.schools.models import ClassTopicEvaluation, Classroom
 from apps.curriculum.models import Course, CourseTopic, Topic
+from apps.schools.models import ClassTopicEvaluation, Classroom
 from apps.users.models import UserRole
 
 
 class ClassTopicEvaluationForm(forms.ModelForm):
+    classroom = forms.ModelChoiceField(
+        queryset=Classroom.objects.none(),
+        required=True,
+        empty_label="---------",
+    )
+    topic = forms.ModelChoiceField(
+        queryset=Topic.objects.order_by("name"),
+        required=True,
+        empty_label="---------",
+    )
+    course = forms.ModelChoiceField(
+        queryset=Course.objects.none(),
+        required=False,
+        empty_label="---------",
+    )
+    course_topic = forms.ModelChoiceField(
+        queryset=CourseTopic.objects.none(),
+        required=False,
+        empty_label="---------",
+    )
+
     class Meta:
         model = ClassTopicEvaluation
         fields = [
@@ -26,8 +46,8 @@ class ClassTopicEvaluationForm(forms.ModelForm):
         ]
         widgets = {
             "evaluation_date": forms.DateInput(attrs={"type": "date"}),
-            "strengths": forms.Textarea(attrs={"rows": 3, "placeholder": "Strengths observed"}),
-            "weaknesses": forms.Textarea(attrs={"rows": 3, "placeholder": "Weaknesses observed"}),
+            "strengths": forms.Textarea(attrs={"rows": 4, "placeholder": "Strengths observed"}),
+            "weaknesses": forms.Textarea(attrs={"rows": 4, "placeholder": "Weaknesses observed"}),
             "notes": forms.Textarea(attrs={"rows": 4, "placeholder": "Additional notes"}),
         }
 
@@ -35,46 +55,108 @@ class ClassTopicEvaluationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.user = user
 
-        self.fields["evaluation_date"].initial = timezone.now().date()
-        self.fields["course"].required = False
-        self.fields["course_topic"].required = False
+        allowed_classrooms = self.get_allowed_classrooms()
+        self.fields["classroom"].queryset = allowed_classrooms
 
-        if not user:
-            return
+        selected_classroom = None
+        classroom_value = self.data.get("classroom") or self.initial.get("classroom")
 
-        allowed_classrooms = Classroom.objects.none()
+        if classroom_value:
+            try:
+                selected_classroom = allowed_classrooms.get(pk=classroom_value)
+            except (Classroom.DoesNotExist, ValueError, TypeError):
+                selected_classroom = None
+        elif self.instance and self.instance.pk and self.instance.classroom_id:
+            selected_classroom = self.instance.classroom
 
-        if user.role == UserRole.TEACHER:
-            allowed_classrooms = Classroom.objects.filter(teacher=user)
+        if selected_classroom and selected_classroom.course:
+            self.fields["course"].queryset = Course.objects.filter(pk=selected_classroom.course_id)
+            self.fields["course"].initial = selected_classroom.course
+            self.fields["course"].widget.attrs["readonly"] = True
+            self.fields["course"].widget.attrs["disabled"] = True
 
-        elif user.role == UserRole.VOLUNTEER:
-            allowed_classrooms = Classroom.objects.filter(
-                volunteer_assignments__volunteer=user,
-                volunteer_assignments__is_active=True,
+            self.fields["course_topic"].queryset = (
+                CourseTopic.objects
+                .filter(course=selected_classroom.course)
+                .order_by("sequence_number", "title")
+            )
+        else:
+            self.fields["course"].queryset = Course.objects.none()
+            self.fields["course_topic"].queryset = CourseTopic.objects.none()
+
+    def get_allowed_classrooms(self):
+        if not self.user:
+            return Classroom.objects.none()
+
+        if self.user.role == UserRole.ADMIN:
+            return (
+                Classroom.objects
+                .select_related("school", "teacher", "course", "age_group")
+                .order_by("school__name", "name")
             )
 
-        elif user.role == UserRole.ADMIN:
-            allowed_classrooms = Classroom.objects.all()
+        if self.user.role == UserRole.TEACHER:
+            return (
+                Classroom.objects
+                .filter(teacher=self.user)
+                .select_related("school", "teacher", "course", "age_group")
+                .order_by("school__name", "name")
+            )
 
-        self.fields["classroom"].queryset = allowed_classrooms.distinct().select_related("school", "age_group")
-        self.fields["topic"].queryset = Topic.objects.order_by("display_order", "name")
-        self.fields["course"].queryset = Course.objects.order_by("title")
-        self.fields["course_topic"].queryset = CourseTopic.objects.order_by("course__title", "sequence_number", "title")
+        if self.user.role == UserRole.VOLUNTEER:
+            return (
+                Classroom.objects
+                .filter(
+                    volunteer_assignments__volunteer=self.user,
+                    volunteer_assignments__is_active=True,
+                )
+                .select_related("school", "teacher", "course", "age_group")
+                .distinct()
+                .order_by("school__name", "name")
+            )
+
+        return Classroom.objects.none()
+
+    def clean_classroom(self):
+        classroom = self.cleaned_data["classroom"]
+        allowed_ids = set(self.get_allowed_classrooms().values_list("id", flat=True))
+
+        if classroom.id not in allowed_ids:
+            raise forms.ValidationError("You are not allowed to evaluate this classroom.")
+
+        return classroom
 
     def clean(self):
         cleaned_data = super().clean()
         classroom = cleaned_data.get("classroom")
+        course_topic = cleaned_data.get("course_topic")
 
-        if self.user and classroom:
-            if self.user.role == UserRole.TEACHER and classroom.teacher_id != self.user.id:
-                raise forms.ValidationError("You can only evaluate your own classes.")
+        if classroom and classroom.course:
+            cleaned_data["course"] = classroom.course
 
-            if self.user.role == UserRole.VOLUNTEER:
-                is_assigned = classroom.volunteer_assignments.filter(
-                    volunteer=self.user,
-                    is_active=True,
-                ).exists()
-                if not is_assigned:
-                    raise forms.ValidationError("You can only evaluate classes where you are assigned as volunteer.")
+            if course_topic and course_topic.course_id != classroom.course_id:
+                self.add_error(
+                    "course_topic",
+                    "Selected course topic does not belong to the classroom course.",
+                )
+        elif course_topic:
+            self.add_error(
+                "course_topic",
+                "You cannot select a course topic without a classroom course.",
+            )
 
         return cleaned_data
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+
+        if self.user:
+            instance.evaluated_by = self.user
+
+        if instance.classroom and instance.classroom.course:
+            instance.course = instance.classroom.course
+
+        if commit:
+            instance.save()
+
+        return instance

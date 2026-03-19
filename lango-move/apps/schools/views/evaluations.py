@@ -21,13 +21,16 @@ def my_schools_and_classes_view(request):
             teacher_memberships__teacher=user,
             teacher_memberships__is_active=True,
         ).distinct()
-        teacher_classrooms = Classroom.objects.filter(teacher=user).select_related("school", "age_group")
+
+        teacher_classrooms = Classroom.objects.filter(
+            teacher=user
+        ).select_related("school", "age_group", "course")
 
     elif user.role == UserRole.VOLUNTEER:
         volunteer_classrooms = Classroom.objects.filter(
             volunteer_assignments__volunteer=user,
             volunteer_assignments__is_active=True,
-        ).select_related("school", "age_group").distinct()
+        ).select_related("school", "age_group", "teacher", "course").distinct()
 
         volunteer_schools = School.objects.filter(
             classrooms__volunteer_assignments__volunteer=user,
@@ -36,13 +39,23 @@ def my_schools_and_classes_view(request):
 
     elif user.role == UserRole.ADMIN:
         teacher_schools = School.objects.all()
-        teacher_classrooms = Classroom.objects.select_related("school", "age_group", "teacher")
+        teacher_classrooms = Classroom.objects.select_related(
+            "school", "age_group", "teacher", "course"
+        )
         volunteer_schools = School.objects.all()
-        volunteer_classrooms = Classroom.objects.select_related("school", "age_group", "teacher")
+        volunteer_classrooms = Classroom.objects.select_related(
+            "school", "age_group", "teacher", "course"
+        )
 
     recent_evaluations = ClassTopicEvaluation.objects.filter(
         evaluated_by=user
-    ).select_related("classroom", "classroom__school", "topic").order_by("-evaluation_date", "-created_at")[:10]
+    ).select_related(
+        "classroom",
+        "classroom__school",
+        "topic",
+        "course",
+        "course_topic",
+    ).order_by("-evaluation_date", "-created_at")[:10]
 
     return render(
         request,
@@ -59,23 +72,28 @@ def my_schools_and_classes_view(request):
 
 @login_required
 def create_class_evaluation_view(request):
-    if request.user.role not in [UserRole.TEACHER, UserRole.VOLUNTEER, UserRole.ADMIN]:
-        messages.error(request, "You do not have permission to submit evaluations.")
-        return redirect("home")
+    initial = {}
+
+    classroom_id = request.GET.get("classroom")
+    if classroom_id:
+        initial["classroom"] = classroom_id
 
     if request.method == "POST":
         form = ClassTopicEvaluationForm(request.POST, user=request.user)
         if form.is_valid():
-            evaluation = form.save(commit=False)
-            evaluation.evaluated_by = request.user
-            evaluation.save()
-            messages.success(request, "Evaluation submitted successfully.")
-            return redirect("my-schools-and-classes")
+            form.save()
+            messages.success(request, "Evaluation created successfully.")
+            return redirect("dashboard")
     else:
-        form = ClassTopicEvaluationForm(user=request.user)
+        form = ClassTopicEvaluationForm(
+            user=request.user,
+            initial=initial,
+        )
 
     return render(
         request,
-        "website/create_class_evaluation.html",
-        {"form": form},
+        "schools/create_class_evaluation.html",
+        {
+            "form": form,
+        },
     )

@@ -12,9 +12,10 @@ from apps.website.views import (
     course_edit_view,
     course_moderation_list_view,
     course_moderation_detail_view,
-    my_schools_and_classes_view,
-    create_class_evaluation_view,
 )
+urlpatterns = [
+
+]
 
 urlpatterns = [
     path("", home_view, name="home"),
@@ -30,7 +31,4 @@ urlpatterns = [
 
     path("moderation/courses/", course_moderation_list_view, name="course-moderation-list"),
     path("moderation/courses/<int:pk>/", course_moderation_detail_view, name="course-moderation-detail"),
-
-    path("my-schools/", my_schools_and_classes_view, name="my-schools-and-classes"),
-    path("evaluations/new/", create_class_evaluation_view, name="create-class-evaluation"),
 ]

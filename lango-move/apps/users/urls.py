@@ -16,10 +16,9 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path("dashboard/", dashboard_view, name="dashboard"),
     path("classes/create/", create_class_participation_view, name="create-class-participation"),
+    path("volunteer-dashboard/", volunteer_dashboard_view, name="volunteer-dashboard"),
 
     path("activate/<uidb64>/<token>/", activate_account_view, name="activate-account"),
     path("activation-pending/<int:user_id>/", registration_pending_view, name="registration-pending"),
     path("resend-activation/", resend_activation_view, name="resend-activation"),
-    path("volunteer-dashboard/", volunteer_dashboard_view, name="volunteer-dashboard"),
-
 ]

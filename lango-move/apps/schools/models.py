@@ -70,6 +70,13 @@ class Classroom(models.Model):
         blank=True,
         related_name="managed_classrooms",
     )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="classrooms",
+    )
     notes = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
 
@@ -92,6 +99,14 @@ class Classroom(models.Model):
     def clean(self):
         if self.teacher and self.teacher.role != UserRole.TEACHER:
             raise ValidationError({"teacher": "Selected user must have the teacher role."})
+
+        if self.course and self.age_group and self.course.age_group_id and self.course.age_group_id != self.age_group_id:
+            raise ValidationError(
+                {"course": "Selected course does not match the classroom age group."}
+            )
+
+        if self.course and self.school and not self.school.is_active:
+            raise ValidationError({"school": "You cannot assign a course to an inactive school."})
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -260,16 +275,48 @@ class ClassTopicEvaluation(models.Model):
         return f"{self.classroom} - {self.topic} - {self.evaluation_date}"
 
     def clean(self):
+        errors = {}
+
         if self.evaluated_by and self.evaluated_by.role not in [
             UserRole.TEACHER,
             UserRole.VOLUNTEER,
             UserRole.ADMIN,
         ]:
-            raise ValidationError({"evaluated_by": "Only teacher, volunteer, or admin can submit evaluations."})
+            errors["evaluated_by"] = "Only teacher, volunteer, or admin can submit evaluations."
 
-        if self.course_topic and self.course and self.course_topic.course_id != self.course_id:
-            raise ValidationError({"course_topic": "Selected session does not belong to the selected course."})
+        if self.classroom_id:
+            classroom_course = self.classroom.course
+
+            if self.course_id and classroom_course and self.course_id != classroom_course.id:
+                errors["course"] = "Selected course must match the course assigned to the classroom."
+
+            if self.course_topic_id and classroom_course and self.course_topic.course_id != classroom_course.id:
+                errors["course_topic"] = "Selected course topic does not belong to the classroom course."
+
+            if self.course_topic_id and self.course_id and self.course_topic.course_id != self.course_id:
+                errors["course_topic"] = "Selected course topic does not belong to the selected course."
+
+            if (
+                self.evaluated_by
+                and self.evaluated_by.role == UserRole.TEACHER
+                and self.classroom.teacher_id != self.evaluated_by.id
+            ):
+                errors["classroom"] = "Teachers can only evaluate classrooms they teach."
+
+            if self.evaluated_by and self.evaluated_by.role == UserRole.VOLUNTEER:
+                is_assigned = ClassroomVolunteerAssignment.objects.filter(
+                    classroom=self.classroom,
+                    volunteer=self.evaluated_by,
+                    is_active=True,
+                ).exists()
+                if not is_assigned:
+                    errors["classroom"] = "Volunteers can only evaluate classrooms they are assigned to."
+
+        if errors:
+            raise ValidationError(errors)
 
     def save(self, *args, **kwargs):
+        if self.classroom and self.classroom.course:
+            self.course = self.classroom.course
         self.full_clean()
         super().save(*args, **kwargs)
