@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "apps.website",
     "apps.core",
     "apps.curriculum.apps.CurriculumConfig",
+    "apps.schools",
 ]
 
 # -----------------------------------------------------------------------------

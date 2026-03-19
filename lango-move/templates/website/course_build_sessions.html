@@ -4,8 +4,8 @@
 
 {% block content %}
 <section class="page-section">
-    <div class="container" style="max-width: 980px;">
-        <div class="section-header">
+    <div class="container course-builder-container">
+        <div class="section-header course-builder-header">
             <h1>Build sessions for {{ course.title }}</h1>
             <p>Choose the topic and between 3 and 5 games for each session.</p>
         </div>
@@ -14,65 +14,74 @@
             {% csrf_token %}
             {{ formset.management_form }}
 
-            <div class="grid" style="gap: 18px;">
+            <div class="course-builder-list">
                 {% for session_number, form in session_forms %}
-                    <article class="card">
-                        <div class="card-body">
-                            <h3 style="margin-bottom: 16px;">Session {{ session_number }}</h3>
+                    <article class="course-session-panel">
+                        <div class="course-session-panel-header">
+                            <div>
+                                <span class="course-session-kicker">Session {{ session_number }}</span>
+                                <h2 class="course-session-title">
+                                    {{ form.title.value|default:"Untitled session" }}
+                                </h2>
+                            </div>
+                        </div>
 
-                            <div class="auth-field">
-                                <label>{{ form.topic.label }}</label>
-                                {{ form.topic }}
+                        <div class="course-session-panel-body">
+                            <div class="builder-main-fields">
+                                <div class="builder-field">
+                                    <label for="{{ form.topic.id_for_label }}">{{ form.topic.label }}</label>
+                                    {{ form.topic }}
+                                </div>
+
+                                <div class="builder-field">
+                                    <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                                    {{ form.title }}
+                                </div>
+
+                                <div class="builder-field">
+                                    <label for="{{ form.grammar_objectives.id_for_label }}">{{ form.grammar_objectives.label }}</label>
+                                    {{ form.grammar_objectives }}
+                                </div>
+
+                                <div class="builder-field">
+                                    <label for="{{ form.lexical_objectives.id_for_label }}">{{ form.lexical_objectives.label }}</label>
+                                    {{ form.lexical_objectives }}
+                                </div>
+
+                                <div class="builder-field">
+                                    <label for="{{ form.action_objectives.id_for_label }}">{{ form.action_objectives.label }}</label>
+                                    {{ form.action_objectives }}
+                                </div>
                             </div>
 
-                            <div class="auth-field">
-                                <label>{{ form.title.label }}</label>
-                                {{ form.title }}
-                            </div>
+                            <div class="builder-games-section">
+                                <div class="builder-games-header">
+                                    <h3>Games</h3>
+                                    <p>Select at least 3 games and at most 5.</p>
+                                </div>
 
-                            <div class="auth-field">
-                                <label>{{ form.grammar_objectives.label }}</label>
-                                {{ form.grammar_objectives }}
-                            </div>
-
-                            <div class="auth-field">
-                                <label>{{ form.lexical_objectives.label }}</label>
-                                {{ form.lexical_objectives }}
-                            </div>
-
-                            <div class="auth-field">
-                                <label>{{ form.action_objectives.label }}</label>
-                                {{ form.action_objectives }}
-                            </div>
-
-                            <div class="auth-field">
-                                <label>Games</label>
-                                <p style="margin: 0 0 12px; color: #6b7280; font-size: 0.95rem;">
-                                    Select at least 3 games and at most 5.
-                                </p>
-
-                                <div class="session-games-grid">
-                                    <div class="auth-field">
+                                <div class="builder-games-grid">
+                                    <div class="builder-field">
                                         <label for="{{ form.game_1.id_for_label }}">Game 1</label>
                                         {{ form.game_1 }}
                                     </div>
 
-                                    <div class="auth-field">
+                                    <div class="builder-field">
                                         <label for="{{ form.game_2.id_for_label }}">Game 2</label>
                                         {{ form.game_2 }}
                                     </div>
 
-                                    <div class="auth-field">
+                                    <div class="builder-field">
                                         <label for="{{ form.game_3.id_for_label }}">Game 3</label>
                                         {{ form.game_3 }}
                                     </div>
 
-                                    <div class="auth-field">
+                                    <div class="builder-field">
                                         <label for="{{ form.game_4.id_for_label }}">Game 4</label>
                                         {{ form.game_4 }}
                                     </div>
 
-                                    <div class="auth-field">
+                                    <div class="builder-field">
                                         <label for="{{ form.game_5.id_for_label }}">Game 5</label>
                                         {{ form.game_5 }}
                                     </div>
@@ -80,7 +89,7 @@
                             </div>
 
                             {% if form.non_field_errors %}
-                                <div class="form-error">
+                                <div class="builder-error-box">
                                     {{ form.non_field_errors }}
                                 </div>
                             {% endif %}
@@ -88,26 +97,258 @@
                     </article>
                 {% endfor %}
             </div>
-
-            <div class="form-actions" style="margin-top: 24px;">
-                <button type="submit" class="button">Save course sessions</button>
-                <a href="{% url 'course-submission-list' %}" class="button-secondary">Back</a>
+            <div class="course-builder-footer-actions">
+                <button type="submit" class="button button-primary">
+                    Save course sessions
+                </button>
+                <a href="{% url 'course-submission-list' %}" class="button button-ghost">
+                    Back
+                </a>
             </div>
         </form>
     </div>
 </section>
 
 <style>
-.session-games-grid {
+.course-builder-container {
+    max-width: 900px;
+}
+
+.course-builder-header {
+    margin-bottom: 28px;
+}
+
+.course-builder-list {
+    display: grid;
+    gap: 24px;
+}
+
+.course-session-panel {
+    background: #ffffff;
+    border: 1px solid #e6e8f2;
+    border-radius: 28px;
+    box-shadow: 0 10px 30px rgba(34, 35, 58, 0.06);
+    overflow: hidden;
+}
+
+.course-session-panel-header {
+    padding: 24px 28px 18px;
+    border-bottom: 1px solid #eef0f7;
+    background: linear-gradient(to bottom, #fcfcff, #f8f8fd);
+}
+
+.course-session-kicker {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #7d79b8;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+}
+
+.course-session-title {
+    margin: 0;
+    font-size: 1.65rem;
+    line-height: 1.2;
+    color: #232435;
+}
+
+.course-session-panel-body {
+    padding: 24px 28px 28px;
+}
+
+.builder-main-fields {
+    display: grid;
+    gap: 16px;
+}
+
+.builder-field {
+    display: block;
+}
+
+.builder-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #26263a;
+}
+
+.builder-field input,
+.builder-field select,
+.builder-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d9ddea;
+    border-radius: 18px;
+    background: #f7f8fc;
+    color: #26263a;
+    font-size: 1rem;
+    padding: 14px 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.builder-field input,
+.builder-field select {
+    min-height: 56px;
+}
+
+.builder-field textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.builder-field input:focus,
+.builder-field select:focus,
+.builder-field textarea:focus {
+    outline: none;
+    border-color: #8a84d6;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(138, 132, 214, 0.12);
+}
+
+.builder-games-section {
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid #eef0f7;
+}
+
+.builder-games-header {
+    margin-bottom: 14px;
+}
+
+.builder-games-header h3 {
+    margin: 0 0 6px;
+    font-size: 1.1rem;
+    color: #232435;
+}
+
+.builder-games-header p {
+    margin: 0;
+    color: #6b7285;
+    font-size: 0.95rem;
+}
+
+.builder-games-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px 18px;
+    gap: 16px 18px;
+}
+
+.builder-error-box {
+    margin-top: 18px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid #f2c4c7;
+    background: #fdeff0;
+    color: #a33a45;
+    font-size: 0.95rem;
+}
+
+.course-builder-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
 }
 
 @media (max-width: 768px) {
-    .session-games-grid {
+    .course-builder-container {
+        max-width: 100%;
+    }
+
+    .course-session-panel-header,
+    .course-session-panel-body {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .course-session-title {
+        font-size: 1.35rem;
+    }
+
+    .builder-games-grid {
         grid-template-columns: 1fr;
     }
+
+    .course-builder-footer-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .course-builder-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    }
+    }
+
+/* Mobile */
+@media (max-width: 768px) {
+    .course-builder-footer-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .button-primary,
+    .button-ghost {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Primary button */
+.button-primary {
+    background: linear-gradient(135deg, #8a84d6, #6f6acb);
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 16px 30px;
+
+    font-weight: 700;
+    font-size: 1.05rem;   /* ⬅️ bigger than before */
+    line-height: 1;
+
+    box-shadow: 0 8px 18px rgba(111, 106, 203, 0.28);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(111, 106, 203, 0.35);
+}
+
+/* Ghost / secondary button */
+.button-ghost {
+    background: #ececf5;     /* site gray */
+    color: #5c5f8a;
+    border: none;
+    border-radius: 999px;
+
+    padding: 16px 26px;
+
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+    transition: background 0.15s ease, transform 0.1s ease;
+    cursor: pointer;
+}
+
+.button-ghost:hover {
+    background: #e2e3f1;
+    transform: translateY(-1px);
 }
 </style>
 {% endblock %}

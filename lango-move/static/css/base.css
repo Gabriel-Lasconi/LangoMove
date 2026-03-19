@@ -57,3 +57,41 @@ code {
         width: min(var(--container), calc(100% - 28px));
     }
 }
+/* === Alert messages === */
+
+.alert {
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+/* SUCCESS — green */
+.alert-success {
+    background: #e9f8ef;
+    border-color: #b7e6c7;
+    color: #1f7a3f;
+}
+
+/* ERROR — red */
+.alert-error,
+.alert-danger {
+    background: #fdecec;
+    border-color: #f5c2c7;
+    color: #a52834;
+}
+
+/* WARNING — yellow */
+.alert-warning {
+    background: #fff8e5;
+    border-color: #ffe3a3;
+    color: #8a6d1f;
+}
+
+/* INFO — blue */
+.alert-info {
+    background: #eef4ff;
+    border-color: #c9d9ff;
+    color: #2c4db0;
+}

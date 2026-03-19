@@ -1,5 +1,6 @@
 from .home import home_view
 from .courses import course_detail_view, session_detail_view, game_detail_json_view
+from .evaluations import my_schools_and_classes_view, create_class_evaluation_view
 from .pronunciation import pronunciation_studio_view
 from .course_submission import (
     course_build_sessions_view,

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Volunteer dashboard | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section volunteer-dashboard-page">
+    <div class="container volunteer-dashboard-container">
+        <div class="section-header volunteer-dashboard-header">
+            <h1>Volunteer dashboard</h1>
+            <p>See your schools, your assigned classes, and create evaluations for each class.</p>
+        </div>
+
+        <div class="volunteer-dashboard-top-actions">
+            <a href="{% url 'dashboard' %}" class="volunteer-back-link">
+                ← Back to profile
+            </a>
+        </div>
+
+        {% if school_groups %}
+            <div class="volunteer-school-list">
+                {% for group in school_groups %}
+                    <section class="card volunteer-school-card">
+                        <div class="card-body volunteer-school-card-body">
+                            <div class="volunteer-school-header">
+                                <div>
+                                    <h2>{{ group.school.name }}</h2>
+                                    <p>
+                                        {% if group.school.city %}
+                                            {{ group.school.city }}
+                                        {% else %}
+                                            School
+                                        {% endif %}
+                                    </p>
+                                </div>
+
+                                <div class="volunteer-school-tags">
+                                    <span class="tag">{{ group.classrooms|length }} class{{ group.classrooms|length|pluralize }}</span>
+                                    {% if group.school.contact_email %}
+                                        <span class="tag">{{ group.school.contact_email }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if group.classrooms %}
+                                <div class="volunteer-classroom-grid">
+                                    {% for classroom in group.classrooms %}
+                                        <article class="volunteer-classroom-card">
+                                            <div class="volunteer-classroom-top">
+                                                <div>
+                                                    <h3>{{ classroom.name }}</h3>
+                                                    <p>{{ classroom.school.name }}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="volunteer-classroom-tags">
+                                                {% if classroom.age_group %}
+                                                    <span class="tag">{{ classroom.age_group.label|default:classroom.age_group.name }}</span>
+                                                {% endif %}
+
+                                                {% if classroom.academic_year %}
+                                                    <span class="tag">{{ classroom.academic_year }}</span>
+                                                {% endif %}
+
+                                                {% if classroom.teacher %}
+                                                    <span class="tag">Teacher: {{ classroom.teacher.username }}</span>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="volunteer-classroom-actions">
+                                                <a href="{% url 'create-class-evaluation' %}?classroom={{ classroom.id }}" class="button">
+                                                    Create evaluation
+                                                </a>
+                                            </div>
+                                        </article>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="profile-empty-state">
+                                    No classes assigned in this school yet.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </section>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="profile-empty-state">
+                        You do not have any assigned volunteer schools or classes yet.
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="card volunteer-evaluations-card">
+            <div class="card-body">
+                <div class="profile-section-heading">
+                    <div>
+                        <h2>Recent evaluations</h2>
+                        <p>Your most recent submitted evaluations.</p>
+                    </div>
+                </div>
+
+                {% if recent_evaluations %}
+                    <div class="profile-linked-grid">
+                        {% for evaluation in recent_evaluations %}
+                            <div class="profile-linked-card">
+                                <h3>{{ evaluation.classroom.name }}</h3>
+                                <p>{{ evaluation.classroom.school.name }}</p>
+
+                                <div class="profile-linked-tags">
+                                    <span class="tag">{{ evaluation.topic.name }}</span>
+                                    <span class="tag">{{ evaluation.evaluation_date }}</span>
+                                    {% if evaluation.follow_up_needed %}
+                                        <span class="tag">Follow-up needed</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="profile-empty-state">
+                        No evaluations submitted yet.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

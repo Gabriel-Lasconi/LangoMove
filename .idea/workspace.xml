@@ -4,24 +4,33 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="exporting data to Render">
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/website/views/course_submission.py" afterDir="false" />
+    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="a user can propose courses in the website, an admin can approve courses">
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/schools/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/schools/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/schools/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/schools/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/schools/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/apps/website/views/evaluations.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lango-move/email.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_build_sessions.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_create.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_moderation_detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_moderation_list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/course_submission_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/users/volunteer_dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/create_class_evaluation.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lango-move/templates/website/my_schools_and_classes.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/curriculum/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/curriculum/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/curriculum/query_services.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/curriculum/query_services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/models/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/models/profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/views/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/views/dashboard.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/apps/website/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/apps/website/views/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/views/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/config/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/config/settings/base.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/static/css/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/static/css/base.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/static/css/course_components.css" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/static/css/course_components.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/templates/website/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/website/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/static/css/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/static/css/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/staticfiles/css/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/staticfiles/css/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/users/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/users/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/website/course_build_sessions.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/website/course_build_sessions.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +240,8 @@
       <workItem from="1773512835304" duration="13543000" />
       <workItem from="1773591418949" duration="1417000" />
       <workItem from="1773600877607" duration="6649000" />
-      <workItem from="1773681505839" duration="41143000" />
+      <workItem from="1773681505839" duration="44040000" />
+      <workItem from="1773828783787" duration="11735000" />
     </task>
     <task id="LOCAL-00001" summary="update of login and registration">
       <option name="closed" value="true" />
@@ -481,7 +491,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773773997401</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="a user can propose courses in the website, an admin can approve courses">
+      <option name="closed" value="true" />
+      <created>1773790435063</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1773790435063</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -511,7 +529,8 @@
     <MESSAGE value="Fixed pronunciation_studio.html filters front-end" />
     <MESSAGE value="Databases working independent of airtable" />
     <MESSAGE value="exporting data to Render" />
-    <option name="LAST_COMMIT_MESSAGE" value="exporting data to Render" />
+    <MESSAGE value="a user can propose courses in the website, an admin can approve courses" />
+    <option name="LAST_COMMIT_MESSAGE" value="a user can propose courses in the website, an admin can approve courses" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/LangoMove$main.coverage" NAME="main Coverage Results" MODIFIED="1773159705124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -553,3 +553,51 @@
         grid-template-columns: 1fr;
     }
 }
+.profile-linked-info-card {
+    margin-top: 22px;
+}
+
+.profile-linked-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+
+.profile-linked-card {
+    background: #f8f8fd;
+    border: 1px solid #e7e9f4;
+    border-radius: 18px;
+    padding: 18px;
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.profile-linked-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(64, 72, 109, 0.08);
+}
+
+.profile-linked-card h3 {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #222334;
+}
+
+.profile-linked-card p {
+    margin: 0 0 12px;
+    color: #6a7086;
+    font-size: 0.96rem;
+}
+
+.profile-linked-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+@media (max-width: 900px) {
+    .profile-linked-grid {
+        grid-template-columns: 1fr;
+    }
+}

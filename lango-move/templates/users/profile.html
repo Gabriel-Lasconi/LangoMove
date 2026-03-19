@@ -64,6 +64,16 @@
                             <p>{{ profile_user.bio }}</p>
                         </div>
                     {% endif %}
+
+                    {% if profile_user.role == "volunteer" %}
+                        <div class="profile-dashboard-box">
+                            <h3>Volunteer dashboard</h3>
+                            <p>See your schools, your assigned classes, and quickly create evaluations.</p>
+                            <a href="{% url 'volunteer-dashboard' %}" class="button profile-dashboard-button">
+                                Open volunteer dashboard
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
             </aside>
 
@@ -253,6 +263,46 @@
                     </div>
                 {% endif %}
 
+                {% if profile_user.role == "teacher" or profile_user.role == "volunteer" or profile_user.role == "admin" %}
+                    <div class="card profile-linked-info-card">
+                        <div class="card-body">
+                            <div class="profile-section-heading profile-section-heading-with-actions">
+                                <div>
+                                    <h2>Recent evaluations</h2>
+                                    <p>The latest class evaluations you submitted.</p>
+                                </div>
+
+                                <div class="form-actions profile-header-actions">
+                                    <a href="{% url 'create-class-evaluation' %}" class="button">Create evaluation</a>
+                                </div>
+                            </div>
+
+                            {% if recent_evaluations %}
+                                <div class="profile-linked-grid">
+                                    {% for evaluation in recent_evaluations %}
+                                        <div class="profile-linked-card">
+                                            <h3>{{ evaluation.classroom.name }}</h3>
+                                            <p>{{ evaluation.classroom.school.name }}</p>
+
+                                            <div class="profile-linked-tags">
+                                                <span class="tag">{{ evaluation.topic.name }}</span>
+                                                <span class="tag">{{ evaluation.evaluation_date }}</span>
+                                                {% if evaluation.follow_up_needed %}
+                                                    <span class="tag">Follow-up needed</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="profile-empty-state">
+                                    No evaluations submitted yet.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
                 {% if profile_user.role == "volunteer" or profile_user.role == "teacher" or profile_user.role == "admin" %}
                     <div class="card profile-history-card">
                         <div class="card-body">
@@ -286,6 +336,9 @@
                                                 <div class="profile-history-top-tags">
                                                     {% if item.language %}
                                                         <span class="tag">{{ item.language }}</span>
+                                                    {% endif %}
+                                                    {% if item.classroom %}
+                                                        <span class="tag">{{ item.classroom.name }}</span>
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -376,6 +429,13 @@
                                                             {% endif %}
                                                         </div>
                                                     </div>
+
+                                                    {% if item.classroom %}
+                                                        <div class="modal-meta-card">
+                                                            <span class="modal-meta-label">Classroom</span>
+                                                            <div class="modal-meta-value">{{ item.classroom.name }}</div>
+                                                        </div>
+                                                    {% endif %}
                                                 </div>
 
                                                 {% if item.teacher %}
@@ -534,8 +594,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     const photoInput = document.getElementById("{{ form.photo.id_for_label|default:'' }}");
-    const avatarPreview = document.getElementById("profile-avatar-preview");
-    const avatarPlaceholder = document.getElementById("profile-avatar-preview-placeholder");
 
     if (photoInput) {
         photoInput.addEventListener("change", function (event) {

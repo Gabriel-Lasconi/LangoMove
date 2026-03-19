@@ -1,17 +1,19 @@
 from django.urls import path
 
 from apps.website.views import (
-    course_build_sessions_view,
-    course_create_view,
-    course_detail_view,
-    course_edit_view,
-    course_moderation_detail_view,
-    course_moderation_list_view,
-    course_submission_list_view,
-    game_detail_json_view,
     home_view,
     pronunciation_studio_view,
+    course_detail_view,
     session_detail_view,
+    game_detail_json_view,
+    course_submission_list_view,
+    course_create_view,
+    course_build_sessions_view,
+    course_edit_view,
+    course_moderation_list_view,
+    course_moderation_detail_view,
+    my_schools_and_classes_view,
+    create_class_evaluation_view,
 )
 
 urlpatterns = [
@@ -28,4 +30,7 @@ urlpatterns = [
 
     path("moderation/courses/", course_moderation_list_view, name="course-moderation-list"),
     path("moderation/courses/<int:pk>/", course_moderation_detail_view, name="course-moderation-detail"),
+
+    path("my-schools/", my_schools_and_classes_view, name="my-schools-and-classes"),
+    path("evaluations/new/", create_class_evaluation_view, name="create-class-evaluation"),
 ]

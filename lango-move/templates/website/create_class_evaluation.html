@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block title %}Create evaluation | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container evaluation-page-container">
+        <div class="section-header evaluation-page-header">
+            <h1>Create class evaluation</h1>
+            <p>Evaluate a class for a specific topic.</p>
+        </div>
+
+        <div class="card evaluation-card">
+            <div class="card-body evaluation-card-body">
+                <form method="post" class="evaluation-form">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-error evaluation-alert">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="evaluation-form-grid">
+                        <div class="evaluation-field">
+                            <label for="{{ form.classroom.id_for_label }}">{{ form.classroom.label }}</label>
+                            {{ form.classroom }}
+                            {% if form.classroom.errors %}
+                                <div class="form-error">{{ form.classroom.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="evaluation-field">
+                            <label for="{{ form.topic.id_for_label }}">{{ form.topic.label }}</label>
+                            {{ form.topic }}
+                            {% if form.topic.errors %}
+                                <div class="form-error">{{ form.topic.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="evaluation-field">
+                            <label for="{{ form.course.id_for_label }}">{{ form.course.label }}</label>
+                            {{ form.course }}
+                            {% if form.course.errors %}
+                                <div class="form-error">{{ form.course.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="evaluation-field">
+                            <label for="{{ form.course_topic.id_for_label }}">{{ form.course_topic.label }}</label>
+                            {{ form.course_topic }}
+                            {% if form.course_topic.errors %}
+                                <div class="form-error">{{ form.course_topic.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="evaluation-field evaluation-field-full">
+                            <label for="{{ form.evaluation_date.id_for_label }}">{{ form.evaluation_date.label }}</label>
+                            {{ form.evaluation_date }}
+                            {% if form.evaluation_date.errors %}
+                                <div class="form-error">{{ form.evaluation_date.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="evaluation-section">
+                        <h2>Scores</h2>
+                        <div class="evaluation-form-grid">
+                            <div class="evaluation-field">
+                                <label for="{{ form.score_participation.id_for_label }}">{{ form.score_participation.label }}</label>
+                                {{ form.score_participation }}
+                                {% if form.score_participation.errors %}
+                                    <div class="form-error">{{ form.score_participation.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="evaluation-field">
+                                <label for="{{ form.score_comprehension.id_for_label }}">{{ form.score_comprehension.label }}</label>
+                                {{ form.score_comprehension }}
+                                {% if form.score_comprehension.errors %}
+                                    <div class="form-error">{{ form.score_comprehension.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="evaluation-field">
+                                <label for="{{ form.score_speaking.id_for_label }}">{{ form.score_speaking.label }}</label>
+                                {{ form.score_speaking }}
+                                {% if form.score_speaking.errors %}
+                                    <div class="form-error">{{ form.score_speaking.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="evaluation-field">
+                                <label for="{{ form.score_behavior.id_for_label }}">{{ form.score_behavior.label }}</label>
+                                {{ form.score_behavior }}
+                                {% if form.score_behavior.errors %}
+                                    <div class="form-error">{{ form.score_behavior.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="evaluation-section">
+                        <h2>Comments</h2>
+
+                        <div class="evaluation-field">
+                            <label for="{{ form.strengths.id_for_label }}">{{ form.strengths.label }}</label>
+                            {{ form.strengths }}
+                            {% if form.strengths.errors %}
+                                <div class="form-error">{{ form.strengths.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="evaluation-field">
+                            <label for="{{ form.weaknesses.id_for_label }}">{{ form.weaknesses.label }}</label>
+                            {{ form.weaknesses }}
+                            {% if form.weaknesses.errors %}
+                                <div class="form-error">{{ form.weaknesses.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="evaluation-field">
+                            <label for="{{ form.notes.id_for_label }}">{{ form.notes.label }}</label>
+                            {{ form.notes }}
+                            {% if form.notes.errors %}
+                                <div class="form-error">{{ form.notes.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="evaluation-checkbox-row">
+                            {{ form.follow_up_needed }}
+                            <label for="{{ form.follow_up_needed.id_for_label }}">{{ form.follow_up_needed.label }}</label>
+                        </div>
+                        {% if form.follow_up_needed.errors %}
+                            <div class="form-error">{{ form.follow_up_needed.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="evaluation-actions">
+                        <button type="submit" class="course-action-btn course-action-btn-primary">
+                            Submit evaluation
+                        </button>
+                        <a href="{% url 'my-schools-and-classes' %}" class="course-action-btn course-action-btn-secondary">
+                            Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.evaluation-page-container {
+    max-width: 900px;
+}
+
+.evaluation-page-header {
+    margin-bottom: 26px;
+}
+
+.evaluation-card {
+    border-radius: 28px;
+}
+
+.evaluation-card-body {
+    padding: 32px;
+}
+
+.evaluation-form {
+    display: block;
+}
+
+.evaluation-alert {
+    margin-bottom: 18px;
+}
+
+.evaluation-section {
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid #eceef6;
+}
+
+.evaluation-section h2 {
+    margin: 0 0 16px;
+    font-size: 1.15rem;
+    color: #232435;
+}
+
+.evaluation-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 18px;
+}
+
+.evaluation-field {
+    display: block;
+}
+
+.evaluation-field-full {
+    grid-column: 1 / -1;
+}
+
+.evaluation-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #26263a;
+}
+
+.evaluation-field input,
+.evaluation-field select,
+.evaluation-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d9ddea;
+    border-radius: 18px;
+    background: #f7f8fc;
+    color: #26263a;
+    font-size: 1rem;
+    padding: 14px 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.evaluation-field input,
+.evaluation-field select {
+    min-height: 56px;
+}
+
+.evaluation-field textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.evaluation-field input:focus,
+.evaluation-field select:focus,
+.evaluation-field textarea:focus {
+    outline: none;
+    border-color: #8a84d6;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(138, 132, 214, 0.12);
+}
+
+.evaluation-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.evaluation-checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-height: auto;
+    margin: 0;
+}
+
+.evaluation-checkbox-row label {
+    margin: 0;
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #26263a;
+}
+
+.evaluation-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 30px;
+}
+
+.course-action-btn {
+    min-height: 56px;
+    padding: 0 26px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.course-action-btn-primary {
+    min-width: 210px;
+    border: none;
+    color: #ffffff;
+    background: #817cc5;
+    box-shadow: 0 8px 18px rgba(129, 124, 197, 0.22);
+}
+
+.course-action-btn-primary:hover {
+    background: #756fbb;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(129, 124, 197, 0.28);
+}
+
+.course-action-btn-secondary {
+    min-width: 96px;
+    border: 1px solid #d9ddea;
+    background: #ececf5;
+    color: #5f6185;
+}
+
+.course-action-btn-secondary:hover {
+    background: #e3e4f1;
+    border-color: #cfd3e3;
+    transform: translateY(-1px);
+}
+
+.form-error {
+    margin-top: 6px;
+    color: #b13b49;
+    font-size: 0.92rem;
+}
+
+@media (max-width: 768px) {
+    .evaluation-card-body {
+        padding: 22px;
+    }
+
+    .evaluation-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .evaluation-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .course-action-btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
