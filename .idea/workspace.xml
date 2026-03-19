@@ -4,29 +4,60 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="Fixed front-end in volunteer_dashboard.html">
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/schools/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/apps/schools/views/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/email.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/static/css/create_class_evaluation.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lango-move/static/js/create_class_evaluation.js" afterDir="false" />
+    <list default="true" id="36a32b6c-9752-457b-8e86-365b4261161d" name="Changes" comment="class history is out, only evaluations remain">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/schools/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/schools/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/schools/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/schools/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/forms/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/models/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/models/game.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/services/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/tests/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/games/views/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/forms/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/models/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/models/program.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/models/week.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/selectors/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/services/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/tests/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/programs/views/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/forms/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/models/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/models/session.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/selectors/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/services/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/tests/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/sessions/views/__init__.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/apps/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/apps/users/views/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/views/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/apps/users/views/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/users/views/dashboard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/views/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/website/views/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/apps/website/views/evaluations.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/apps/schools/views/evaluations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/config/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lango-move/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lango-move/templates/website/create_class_evaluation.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/schools/create_class_evaluation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/includes/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/programs/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/sessions/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/users/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/users/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/users/volunteer_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/users/volunteer_dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/website/my_schools_and_classes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lango-move/templates/website/pronunciation_studio.html" beforeDir="false" afterPath="$PROJECT_DIR$/lango-move/templates/website/pronunciation_studio.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -234,7 +265,8 @@
       <workItem from="1773591418949" duration="1417000" />
       <workItem from="1773600877607" duration="6649000" />
       <workItem from="1773681505839" duration="44040000" />
-      <workItem from="1773828783787" duration="16815000" />
+      <workItem from="1773828783787" duration="16841000" />
+      <workItem from="1773955705232" duration="3786000" />
     </task>
     <task id="LOCAL-00001" summary="update of login and registration">
       <option name="closed" value="true" />
@@ -508,15 +540,29 @@
       <option name="project" value="LOCAL" />
       <updated>1773947692861</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Classes now have a course assigned and they evaluation can only be made specifically for that course and the topics related with that course">
+      <option name="closed" value="true" />
+      <created>1773950411036</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1773950411036</updated>
+    </task>
+    <task id="LOCAL-00036" summary="class history is out, only evaluations remain">
+      <option name="closed" value="true" />
+      <created>1773960548645</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1773960548646</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="pronunciation is now on" />
-    <MESSAGE value="updated a more efficient pronunciation and solved bugged about language-code in pronunciation_studio.html" />
     <MESSAGE value="profile page for users + class history added in database and front-end" />
     <MESSAGE value="create_class_participation.html is now available for volunteers in order to add follow-ups" />
     <MESSAGE value="added email_verification logic and also fixed problem with UI in creating a class participation with volunteers" />
@@ -540,7 +586,9 @@
     <MESSAGE value="a user can propose courses in the website, an admin can approve courses" />
     <MESSAGE value="added volunteer_dashboard.html and evaluations.py are possible now" />
     <MESSAGE value="Fixed front-end in volunteer_dashboard.html" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed front-end in volunteer_dashboard.html" />
+    <MESSAGE value="Classes now have a course assigned and they evaluation can only be made specifically for that course and the topics related with that course" />
+    <MESSAGE value="class history is out, only evaluations remain" />
+    <option name="LAST_COMMIT_MESSAGE" value="class history is out, only evaluations remain" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/LangoMove$main.coverage" NAME="main Coverage Results" MODIFIED="1773159705124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

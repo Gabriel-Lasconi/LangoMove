@@ -160,13 +160,6 @@
                             {% endif %}
                         </div>
 
-                        {% if item.topic_names %}
-                            <div class="modal-pill-row" style="margin-top: 10px;">
-                                {% for topic in item.topic_names %}
-                                    <span class="tag">{{ topic }}</span>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
 
                         {% if item.phonetic %}
                             <div class="modal-muted">{{ item.phonetic }}</div>

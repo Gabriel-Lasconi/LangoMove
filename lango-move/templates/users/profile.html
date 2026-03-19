@@ -8,7 +8,7 @@
     <div class="container profile-container">
         <div class="section-header profile-page-header">
             <h1>Profile</h1>
-            <p>Manage your personal information and review your class activity history.</p>
+            <p>Manage your personal information and review your class evaluations.</p>
         </div>
 
         <div class="profile-layout">
@@ -266,12 +266,12 @@
                 {% endif %}
 
                 {% if profile_user.role == "teacher" or profile_user.role == "volunteer" or profile_user.role == "admin" %}
-                    <div class="card profile-linked-info-card">
+                    <div class="card profile-history-card">
                         <div class="card-body">
                             <div class="profile-section-heading profile-section-heading-with-actions">
                                 <div>
                                     <h2>Recent evaluations</h2>
-                                    <p>The latest class evaluations you submitted.</p>
+                                    <p>Review evaluations submitted for your classes.</p>
                                 </div>
 
                                 <div class="form-actions profile-header-actions">
@@ -280,85 +280,44 @@
                             </div>
 
                             {% if recent_evaluations %}
-                                <div class="profile-linked-grid">
-                                    {% for evaluation in recent_evaluations %}
-                                        <div class="profile-linked-card">
-                                            <h3>{{ evaluation.classroom.name }}</h3>
-                                            <p>{{ evaluation.classroom.school.name }}</p>
-
-                                            <div class="profile-linked-tags">
-                                                <span class="tag">{{ evaluation.topic.name }}</span>
-                                                <span class="tag">{{ evaluation.evaluation_date }}</span>
-                                                {% if evaluation.follow_up_needed %}
-                                                    <span class="tag">Follow-up needed</span>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                <div class="profile-empty-state">
-                                    No evaluations submitted yet.
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if profile_user.role == "volunteer" or profile_user.role == "teacher" or profile_user.role == "admin" %}
-                    <div class="card profile-history-card">
-                        <div class="card-body">
-                            <div class="profile-section-heading profile-section-heading-with-actions">
-                                <div>
-                                    <h2>Class activity history</h2>
-                                    <p>Review the classes you joined as a volunteer or teacher.</p>
-                                </div>
-
-                                <div class="form-actions profile-header-actions">
-                                    <a href="{% url 'create-class-participation' %}" class="button">Create class</a>
-                                </div>
-                            </div>
-
-                            {% if class_history %}
                                 <div class="profile-history-list">
-                                    {% for item in class_history %}
+                                    {% for evaluation in recent_evaluations %}
                                         <article
                                             class="profile-history-item profile-history-clickable"
                                             tabindex="0"
                                             role="button"
                                             data-history-card
-                                            data-history-target="history-detail-{{ item.id }}"
+                                            data-history-target="evaluation-detail-{{ evaluation.id }}"
                                         >
                                             <div class="profile-history-top">
                                                 <div>
-                                                    <h3>{{ item.school_name }}</h3>
-                                                    <p class="profile-history-date">{{ item.date }}</p>
+                                                    <h3>{{ evaluation.classroom.school.name }}</h3>
+                                                    <p class="profile-history-date">{{ evaluation.evaluation_date }}</p>
                                                 </div>
 
                                                 <div class="profile-history-top-tags">
-                                                    {% if item.language %}
-                                                        <span class="tag">{{ item.language }}</span>
+                                                    {% if evaluation.course %}
+                                                        <span class="tag">{{ evaluation.course.title }}</span>
                                                     {% endif %}
-                                                    {% if item.classroom %}
-                                                        <span class="tag">{{ item.classroom.name }}</span>
-                                                    {% endif %}
+                                                    <span class="tag">{{ evaluation.classroom.name }}</span>
+                                                    <span class="tag">{{ evaluation.topic.name }}</span>
                                                 </div>
                                             </div>
 
                                             <div class="profile-history-meta">
                                                 <div class="profile-history-meta-item">
-                                                    <span>Children group</span>
-                                                    <strong>{{ item.children_group }}</strong>
+                                                    <span>Classroom</span>
+                                                    <strong>{{ evaluation.classroom.name }}</strong>
                                                 </div>
                                                 <div class="profile-history-meta-item">
-                                                    <span>Session</span>
-                                                    <strong>{{ item.session_title }}</strong>
+                                                    <span>Topic</span>
+                                                    <strong>{{ evaluation.topic.name }}</strong>
                                                 </div>
                                                 <div class="profile-history-meta-item">
-                                                    <span>Teacher</span>
+                                                    <span>Submitted by</span>
                                                     <strong>
-                                                        {% if item.teacher %}
-                                                            {{ item.teacher.username }}
+                                                        {% if evaluation.evaluated_by %}
+                                                            {{ evaluation.evaluated_by.username }}
                                                         {% else %}
                                                             —
                                                         {% endif %}
@@ -367,80 +326,90 @@
                                             </div>
 
                                             <div class="profile-history-preview-people">
-                                                {% if item.teacher %}
+                                                {% if evaluation.classroom.teacher %}
                                                     <div class="profile-mini-person">
-                                                        {% if item.teacher.photo %}
-                                                            <img src="{{ item.teacher.photo.url }}" alt="{{ item.teacher.username }}">
+                                                        {% if evaluation.classroom.teacher.photo %}
+                                                            <img src="{{ evaluation.classroom.teacher.photo.url }}" alt="{{ evaluation.classroom.teacher.username }}">
                                                         {% else %}
                                                             <div class="profile-mini-person-placeholder">
-                                                                {{ item.teacher.username|first|upper }}
+                                                                {{ evaluation.classroom.teacher.username|first|upper }}
                                                             </div>
                                                         {% endif %}
-                                                        <span>{{ item.teacher.username }}</span>
+                                                        <span>{{ evaluation.classroom.teacher.username }}</span>
                                                     </div>
                                                 {% endif %}
 
-                                                {% for volunteer in item.volunteers %}
-                                                    <div class="profile-mini-person">
-                                                        {% if volunteer.photo %}
-                                                            <img src="{{ volunteer.photo.url }}" alt="{{ volunteer.username }}">
-                                                        {% else %}
-                                                            <div class="profile-mini-person-placeholder">
-                                                                {{ volunteer.username|first|upper }}
-                                                            </div>
-                                                        {% endif %}
-                                                        <span>{{ volunteer.username }}</span>
-                                                    </div>
+                                                {% for assignment in evaluation.classroom.volunteer_assignments.all %}
+                                                    {% if assignment.volunteer %}
+                                                        <div class="profile-mini-person">
+                                                            {% if assignment.volunteer.photo %}
+                                                                <img src="{{ assignment.volunteer.photo.url }}" alt="{{ assignment.volunteer.username }}">
+                                                            {% else %}
+                                                                <div class="profile-mini-person-placeholder">
+                                                                    {{ assignment.volunteer.username|first|upper }}
+                                                                </div>
+                                                            {% endif %}
+                                                            <span>{{ assignment.volunteer.username }}</span>
+                                                        </div>
+                                                    {% endif %}
                                                 {% endfor %}
                                             </div>
 
                                             <p class="profile-history-open-hint">Click to view full details</p>
 
-                                            <template id="history-detail-{{ item.id }}">
+                                            <template id="evaluation-detail-{{ evaluation.id }}">
                                                 <div class="modal-hero">
                                                     <div class="modal-title-block">
-                                                        <h2>{{ item.school_name }}</h2>
-                                                        <p class="modal-subtitle">{{ item.date }}</p>
+                                                        <h2>{{ evaluation.classroom.school.name }}</h2>
+                                                        <p class="modal-subtitle">{{ evaluation.evaluation_date }}</p>
                                                     </div>
 
-                                                    {% if item.language %}
-                                                        <div class="modal-hero-badge">
-                                                            {{ item.language }}
-                                                        </div>
-                                                    {% endif %}
+                                                    <div class="modal-hero-badge">
+                                                        {{ evaluation.classroom.name }}
+                                                    </div>
                                                 </div>
 
                                                 <div class="modal-meta-grid">
                                                     <div class="modal-meta-card">
-                                                        <span class="modal-meta-label">Children group</span>
-                                                        <div class="modal-meta-value">{{ item.children_group|default:"—" }}</div>
+                                                        <span class="modal-meta-label">Topic</span>
+                                                        <div class="modal-meta-value">{{ evaluation.topic.name }}</div>
                                                     </div>
 
                                                     <div class="modal-meta-card">
-                                                        <span class="modal-meta-label">Session</span>
-                                                        <div class="modal-meta-value">{{ item.session_title|default:"—" }}</div>
-                                                    </div>
-
-                                                    <div class="modal-meta-card">
-                                                        <span class="modal-meta-label">Teacher</span>
+                                                        <span class="modal-meta-label">Course</span>
                                                         <div class="modal-meta-value">
-                                                            {% if item.teacher %}
-                                                                {{ item.teacher.username }}
+                                                            {% if evaluation.course %}
+                                                                {{ evaluation.course.title }}
                                                             {% else %}
                                                                 —
                                                             {% endif %}
                                                         </div>
                                                     </div>
 
-                                                    {% if item.classroom %}
-                                                        <div class="modal-meta-card">
-                                                            <span class="modal-meta-label">Classroom</span>
-                                                            <div class="modal-meta-value">{{ item.classroom.name }}</div>
+                                                    <div class="modal-meta-card">
+                                                        <span class="modal-meta-label">Course topic</span>
+                                                        <div class="modal-meta-value">
+                                                            {% if evaluation.course_topic %}
+                                                                {{ evaluation.course_topic.title }}
+                                                            {% else %}
+                                                                —
+                                                            {% endif %}
                                                         </div>
-                                                    {% endif %}
+                                                    </div>
+
+                                                    <div class="modal-meta-card">
+                                                        <span class="modal-meta-label">Submitted by</span>
+                                                        <div class="modal-meta-value">
+                                                            {% if evaluation.evaluated_by %}
+                                                                {{ evaluation.evaluated_by.username }}
+                                                            {% else %}
+                                                                —
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                                {% if item.teacher %}
+                                                {% if evaluation.classroom.teacher %}
                                                     <div class="modal-section">
                                                         <div class="modal-section-header">
                                                             <h3>Teacher</h3>
@@ -448,19 +417,19 @@
 
                                                         <div class="profile-people-grid">
                                                             <div class="profile-person-card">
-                                                                {% if item.teacher.photo %}
-                                                                    <img src="{{ item.teacher.photo.url }}" alt="{{ item.teacher.username }}" class="profile-person-avatar">
+                                                                {% if evaluation.classroom.teacher.photo %}
+                                                                    <img src="{{ evaluation.classroom.teacher.photo.url }}" alt="{{ evaluation.classroom.teacher.username }}" class="profile-person-avatar">
                                                                 {% else %}
                                                                     <div class="profile-person-avatar profile-person-avatar-placeholder">
-                                                                        {{ item.teacher.username|first|upper }}
+                                                                        {{ evaluation.classroom.teacher.username|first|upper }}
                                                                     </div>
                                                                 {% endif %}
 
                                                                 <div>
-                                                                    <h4>{{ item.teacher.username }}</h4>
-                                                                    <p>{{ item.teacher.email }}</p>
+                                                                    <h4>{{ evaluation.classroom.teacher.username }}</h4>
+                                                                    <p>{{ evaluation.classroom.teacher.email }}</p>
                                                                     <div class="profile-person-tags">
-                                                                        <span class="tag">{{ item.teacher.get_role_display }}</span>
+                                                                        <span class="tag">{{ evaluation.classroom.teacher.get_role_display }}</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -471,32 +440,34 @@
                                                 <div class="modal-section">
                                                     <div class="modal-section-header">
                                                         <h3>Volunteers</h3>
-                                                        <span class="modal-section-count">{{ item.volunteers|length }}</span>
+                                                        <span class="modal-section-count">{{ evaluation.classroom.volunteer_assignments.all|length }}</span>
                                                     </div>
 
-                                                    {% if item.volunteers %}
+                                                    {% if evaluation.classroom.volunteer_assignments.all %}
                                                         <div class="profile-people-grid">
-                                                            {% for volunteer in item.volunteers %}
-                                                                <div class="profile-person-card">
-                                                                    {% if volunteer.photo %}
-                                                                        <img src="{{ volunteer.photo.url }}" alt="{{ volunteer.username }}" class="profile-person-avatar">
-                                                                    {% else %}
-                                                                        <div class="profile-person-avatar profile-person-avatar-placeholder">
-                                                                            {{ volunteer.username|first|upper }}
-                                                                        </div>
-                                                                    {% endif %}
+                                                            {% for assignment in evaluation.classroom.volunteer_assignments.all %}
+                                                                {% if assignment.volunteer %}
+                                                                    <div class="profile-person-card">
+                                                                        {% if assignment.volunteer.photo %}
+                                                                            <img src="{{ assignment.volunteer.photo.url }}" alt="{{ assignment.volunteer.username }}" class="profile-person-avatar">
+                                                                        {% else %}
+                                                                            <div class="profile-person-avatar profile-person-avatar-placeholder">
+                                                                                {{ assignment.volunteer.username|first|upper }}
+                                                                            </div>
+                                                                        {% endif %}
 
-                                                                    <div>
-                                                                        <h4>{{ volunteer.username }}</h4>
-                                                                        <p>{{ volunteer.email }}</p>
-                                                                        <div class="profile-person-tags">
-                                                                            <span class="tag">{{ volunteer.get_role_display }}</span>
-                                                                            {% if volunteer.id == profile_user.id %}
-                                                                                <span class="tag">You</span>
-                                                                            {% endif %}
+                                                                        <div>
+                                                                            <h4>{{ assignment.volunteer.username }}</h4>
+                                                                            <p>{{ assignment.volunteer.email }}</p>
+                                                                            <div class="profile-person-tags">
+                                                                                <span class="tag">{{ assignment.volunteer.get_role_display }}</span>
+                                                                                {% if assignment.volunteer.id == profile_user.id %}
+                                                                                    <span class="tag">You</span>
+                                                                                {% endif %}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                {% endif %}
                                                             {% endfor %}
                                                         </div>
                                                     {% else %}
@@ -504,13 +475,98 @@
                                                     {% endif %}
                                                 </div>
 
-                                                {% if item.notes %}
+                                                <div class="modal-section">
+                                                    <div class="modal-section-header">
+                                                        <h3>Scores</h3>
+                                                    </div>
+
+                                                    <div class="modal-meta-grid">
+                                                        <div class="modal-meta-card">
+                                                            <span class="modal-meta-label">Participation</span>
+                                                            <div class="modal-meta-value">
+                                                                {% if evaluation.score_participation %}
+                                                                    {{ evaluation.get_score_participation_display }}
+                                                                {% else %}
+                                                                    —
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-meta-card">
+                                                            <span class="modal-meta-label">Comprehension</span>
+                                                            <div class="modal-meta-value">
+                                                                {% if evaluation.score_comprehension %}
+                                                                    {{ evaluation.get_score_comprehension_display }}
+                                                                {% else %}
+                                                                    —
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-meta-card">
+                                                            <span class="modal-meta-label">Speaking</span>
+                                                            <div class="modal-meta-value">
+                                                                {% if evaluation.score_speaking %}
+                                                                    {{ evaluation.get_score_speaking_display }}
+                                                                {% else %}
+                                                                    —
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-meta-card">
+                                                            <span class="modal-meta-label">Behavior</span>
+                                                            <div class="modal-meta-value">
+                                                                {% if evaluation.score_behavior %}
+                                                                    {{ evaluation.get_score_behavior_display }}
+                                                                {% else %}
+                                                                    —
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-meta-card">
+                                                            <span class="modal-meta-label">Follow-up needed</span>
+                                                            <div class="modal-meta-value">
+                                                                {% if evaluation.follow_up_needed %}
+                                                                    Yes
+                                                                {% else %}
+                                                                    No
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {% if evaluation.strengths %}
+                                                    <div class="modal-section">
+                                                        <div class="modal-section-header">
+                                                            <h3>Strengths</h3>
+                                                        </div>
+                                                        <div class="modal-rich-card">
+                                                            <p>{{ evaluation.strengths }}</p>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if evaluation.weaknesses %}
+                                                    <div class="modal-section">
+                                                        <div class="modal-section-header">
+                                                            <h3>Weaknesses</h3>
+                                                        </div>
+                                                        <div class="modal-rich-card">
+                                                            <p>{{ evaluation.weaknesses }}</p>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if evaluation.notes %}
                                                     <div class="modal-section">
                                                         <div class="modal-section-header">
                                                             <h3>Notes</h3>
                                                         </div>
                                                         <div class="modal-rich-card">
-                                                            <p>{{ item.notes }}</p>
+                                                            <p>{{ evaluation.notes }}</p>
                                                         </div>
                                                     </div>
                                                 {% endif %}
@@ -520,7 +576,7 @@
                                 </div>
                             {% else %}
                                 <div class="profile-empty-state">
-                                    No class activity has been recorded yet.
+                                    No evaluations submitted yet.
                                 </div>
                             {% endif %}
                         </div>
@@ -535,7 +591,7 @@
     <div class="modal-dialog profile-history-modal-dialog">
         <button class="modal-close" id="history-modal-close" aria-label="Close">×</button>
         <div class="modal-body" id="history-modal-body">
-            <div class="modal-loading">Loading class details...</div>
+            <div class="modal-loading">Loading evaluation details...</div>
         </div>
     </div>
 </div>

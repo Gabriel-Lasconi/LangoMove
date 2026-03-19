@@ -1,13 +1,15 @@
-from collections import OrderedDict
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Prefetch, Q
 from django.shortcuts import redirect, render
+from django.db.models import Q
 
-from apps.schools.models import Classroom, ClassTopicEvaluation, School
-from apps.users.forms.profile import UserAccountForm, ClassParticipationForm
-from apps.users.models import ClassParticipation, UserRole
+from apps.users.forms.profile import UserAccountForm
+from apps.users.models import UserRole
+from apps.schools.models import ClassTopicEvaluation, Classroom
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+from apps.schools.models import Classroom, ClassTopicEvaluation
 
 
 @login_required
@@ -28,46 +30,90 @@ def dashboard_view(request):
     else:
         form = UserAccountForm(instance=profile)
 
-    class_history = []
-    recent_evaluations = ClassTopicEvaluation.objects.none()
+    teacher_schools = []
+    teacher_classrooms = []
+    volunteer_schools = []
+    volunteer_classrooms = []
+    related_evaluations = ClassTopicEvaluation.objects.none()
 
-    if profile.role in [UserRole.VOLUNTEER, UserRole.TEACHER, UserRole.ADMIN]:
-        participations = (
-            ClassParticipation.objects.filter(
-                Q(volunteers=profile) | Q(teacher=profile)
+    if profile.role == UserRole.TEACHER:
+        teacher_classrooms = (
+            Classroom.objects.filter(teacher=profile)
+            .select_related("school", "age_group", "course")
+            .order_by("school__name", "name")
+        )
+        teacher_schools = list({c.school for c in teacher_classrooms})
+
+        related_evaluations = (
+            ClassTopicEvaluation.objects
+            .filter(classroom__teacher=profile)
+            .select_related(
+                "classroom",
+                "classroom__school",
+                "classroom__teacher",
+                "topic",
+                "course",
+                "course_topic",
+                "evaluated_by",
             )
-            .select_related("teacher", "school", "classroom", "classroom__school", "classroom__age_group")
-            .prefetch_related("volunteers")
-            .distinct()
-            .order_by("-date", "-id")
+            .prefetch_related("classroom__volunteer_assignments__volunteer")
+            .order_by("-evaluation_date", "-created_at")
         )
 
-        for participation in participations:
-            volunteers = list(participation.volunteers.all())
+    elif profile.role == UserRole.VOLUNTEER:
+        volunteer_classrooms = (
+            Classroom.objects.filter(
+                volunteer_assignments__volunteer=profile,
+                volunteer_assignments__is_active=True,
+            )
+            .select_related("school", "age_group", "teacher", "course")
+            .distinct()
+            .order_by("school__name", "name")
+        )
+        volunteer_schools = list({c.school for c in volunteer_classrooms})
 
-            class_history.append({
-                "id": participation.id,
-                "school_name": participation.resolved_school_name,
-                "date": participation.date,
-                "children_group": participation.resolved_children_group,
-                "language": participation.language,
-                "session_title": participation.session_title,
-                "teacher": participation.teacher,
-                "volunteers": volunteers,
-                "notes": participation.notes,
-                "school": participation.school,
-                "classroom": participation.classroom,
-            })
+        related_evaluations = (
+            ClassTopicEvaluation.objects
+            .filter(
+                classroom__volunteer_assignments__volunteer=profile,
+                classroom__volunteer_assignments__is_active=True,
+            )
+            .select_related(
+                "classroom",
+                "classroom__school",
+                "classroom__teacher",
+                "topic",
+                "course",
+                "course_topic",
+                "evaluated_by",
+            )
+            .prefetch_related("classroom__volunteer_assignments__volunteer")
+            .distinct()
+            .order_by("-evaluation_date", "-created_at")
+        )
 
-        recent_evaluations = ClassTopicEvaluation.objects.filter(
-            evaluated_by=profile
-        ).select_related(
-            "classroom",
-            "classroom__school",
-            "topic",
-            "course",
-            "course_topic",
-        ).order_by("-evaluation_date", "-created_at")[:5]
+    elif profile.role == UserRole.ADMIN:
+        teacher_classrooms = Classroom.objects.select_related("school", "age_group", "teacher", "course")
+        volunteer_classrooms = teacher_classrooms
+        teacher_schools = list({c.school for c in teacher_classrooms})
+        volunteer_schools = teacher_schools
+
+        related_evaluations = (
+            ClassTopicEvaluation.objects
+            .select_related(
+                "classroom",
+                "classroom__school",
+                "classroom__teacher",
+                "topic",
+                "course",
+                "course_topic",
+                "evaluated_by",
+            )
+            .prefetch_related("classroom__volunteer_assignments__volunteer")
+            .order_by("-evaluation_date", "-created_at")
+        )
+
+    recent_evaluations = related_evaluations[:10]
 
     return render(
         request,
@@ -76,92 +122,58 @@ def dashboard_view(request):
             "profile_user": profile,
             "form": form,
             "edit_mode": edit_mode,
-            "class_history": class_history,
+            "teacher_schools": teacher_schools,
+            "teacher_classrooms": teacher_classrooms,
+            "volunteer_schools": volunteer_schools,
+            "volunteer_classrooms": volunteer_classrooms,
             "recent_evaluations": recent_evaluations,
         },
     )
-
 
 
 @login_required
 def volunteer_dashboard_view(request):
-    profile = request.user
+    user = request.user
 
-    if profile.role not in [UserRole.VOLUNTEER, UserRole.ADMIN]:
-        messages.error(request, "This page is only available for volunteers.")
-        return redirect("dashboard")
-
-    classroom_queryset = (
+    classrooms = (
         Classroom.objects.filter(
-            volunteer_assignments__volunteer=profile,
+            volunteer_assignments__volunteer=user,
             volunteer_assignments__is_active=True,
-            is_active=True,
         )
-        .select_related("school", "age_group", "teacher")
+        .select_related("school", "teacher", "age_group", "course")
         .distinct()
         .order_by("school__name", "name")
     )
 
-    schools_map = OrderedDict()
+    recent_evaluations = (
+        ClassTopicEvaluation.objects
+        .filter(classroom__in=classrooms)
+        .select_related(
+            "classroom",
+            "classroom__school",
+            "classroom__teacher",
+            "topic",
+            "course",
+            "course_topic",
+            "evaluated_by",
+        )
+        .prefetch_related("classroom__volunteer_assignments__volunteer")
+        .order_by("-evaluation_date", "-created_at")[:20]
+    )
 
-    for classroom in classroom_queryset:
+    school_map = {}
+    for classroom in classrooms:
         school = classroom.school
-        if school.id not in schools_map:
-            schools_map[school.id] = {
+        if school.id not in school_map:
+            school_map[school.id] = {
                 "school": school,
                 "classrooms": [],
             }
-        schools_map[school.id]["classrooms"].append(classroom)
+        school_map[school.id]["classrooms"].append(classroom)
 
-    recent_evaluations = ClassTopicEvaluation.objects.filter(
-        evaluated_by=profile
-    ).select_related(
-        "classroom",
-        "classroom__school",
-        "topic",
-    ).order_by("-evaluation_date", "-created_at")[:8]
+    context = {
+        "school_groups": list(school_map.values()),
+        "recent_evaluations": recent_evaluations,
+    }
 
-    return render(
-        request,
-        "users/volunteer_dashboard.html",
-        {
-            "profile_user": profile,
-            "school_groups": list(schools_map.values()),
-            "recent_evaluations": recent_evaluations,
-        },
-    )
-
-
-@login_required
-def create_class_participation_view(request):
-    if request.method == "POST":
-        form = ClassParticipationForm(request.POST, user=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Class participation created successfully.")
-            return redirect("dashboard")
-    else:
-        form = ClassParticipationForm(user=request.user)
-
-    selected_volunteer_ids = [str(v) for v in (form["volunteers"].value() or [])]
-    selected_teacher_id = str(form["teacher"].value() or "")
-
-    volunteer_options = (
-        form.fields["volunteers"].queryset
-        .exclude(id=request.user.id)
-        .order_by("username")
-    )
-    teacher_options = form.fields["teacher"].queryset.order_by("username")
-
-    return render(
-        request,
-        "users/create_class_participation.html",
-        {
-            "form": form,
-            "volunteer_options": volunteer_options,
-            "teacher_options": teacher_options,
-            "selected_volunteer_ids": selected_volunteer_ids,
-            "selected_teacher_id": selected_teacher_id,
-        },
-    )
-
+    return render(request, "users/volunteer_dashboard.html", context)
