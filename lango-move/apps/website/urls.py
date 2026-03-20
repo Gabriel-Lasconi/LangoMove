@@ -12,6 +12,7 @@ from apps.website.views import (
     course_edit_view,
     course_moderation_list_view,
     course_moderation_detail_view,
+    games_studio_view,
 )
 urlpatterns = [
 
@@ -23,6 +24,7 @@ urlpatterns = [
     path("sessions/<slug:slug>/", session_detail_view, name="session-detail"),
     path("api/games/<slug:slug>/", game_detail_json_view, name="game-detail-json"),
     path("pronunciation-studio/", pronunciation_studio_view, name="pronunciation-studio"),
+    path("games-studio/", games_studio_view, name="games-studio"),
 
     path("course-submissions/", course_submission_list_view, name="course-submission-list"),
     path("course-submissions/new/", course_create_view, name="course-create"),

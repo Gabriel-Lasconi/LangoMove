@@ -5,6 +5,8 @@ from apps.curriculum.models import (
     CourseTopicGame,
     PhraseTranslation,
     VocabularyTranslation,
+    Game,
+    Topic
 )
 
 
@@ -132,3 +134,23 @@ class CurriculumQueryService:
             .select_related("language", "age_group", "created_by", "approved_by")
             .order_by("status", "-created_at", "title")
         )
+
+    def get_all_games(self):
+        return (
+            Game.objects
+            .prefetch_related("topics")
+            .order_by("name")
+        )
+
+    def get_game_difficulty_options(self):
+        return [
+            {"value": value, "label": label}
+            for value, label in Game._meta.get_field("difficulty").choices
+        ]
+
+    def get_game_topic_options(self):
+        return sorted({
+            topic.name.strip()
+            for topic in Topic.objects.filter(games__isnull=False).distinct()
+            if topic.name and topic.name.strip()
+        })

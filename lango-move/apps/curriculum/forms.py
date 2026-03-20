@@ -5,31 +5,43 @@ from django.utils.text import slugify
 from apps.curriculum.models import AgeGroup, Course, CourseStatus, CourseTopic, Game, Language, Topic
 
 
-LANGUAGE_CODE_MAP = {
-    "english": "en",
-    "french": "fr",
-    "german": "de",
-    "spanish": "es",
-    "italian": "it",
-    "portuguese": "pt",
-    "dutch": "nl",
-    "romanian": "ro",
-    "russian": "ru",
-    "ukrainian": "uk",
-    "arabic": "ar",
-    "turkish": "tr",
-    "bulgarian": "bg",
-    "greek": "el",
-    "polish": "pl",
-    "czech": "cs",
-    "swedish": "sv",
-    "danish": "da",
-    "norwegian": "no",
-    "finnish": "fi",
-    "hungarian": "hu",
-    "japanese": "ja",
-    "chinese": "zh",
-    "korean": "ko",
+LANGUAGE_METADATA = {
+    "english": {"code": "en", "flag": "🇬🇧"},
+    "mandarin": {"code": "zh", "flag": "🇨🇳"},
+    "chinese": {"code": "zh", "flag": "🇨🇳"},
+    "hindi": {"code": "hi", "flag": "🇮🇳"},
+    "spanish": {"code": "es", "flag": "🇪🇸"},
+    "french": {"code": "fr", "flag": "🇫🇷"},
+    "arabic": {"code": "ar", "flag": "🇸🇦"},
+    "bengali": {"code": "bn", "flag": "🇧🇩"},
+    "portuguese": {"code": "pt", "flag": "🇵🇹"},
+    "russian": {"code": "ru", "flag": "🇷🇺"},
+    "urdu": {"code": "ur", "flag": "🇵🇰"},
+    "indonesian": {"code": "id", "flag": "🇮🇩"},
+    "german": {"code": "de", "flag": "🇩🇪"},
+    "japanese": {"code": "ja", "flag": "🇯🇵"},
+    "swahili": {"code": "sw", "flag": "🇹🇿"},
+    "marathi": {"code": "mr", "flag": "🇮🇳"},
+    "telugu": {"code": "te", "flag": "🇮🇳"},
+    "turkish": {"code": "tr", "flag": "🇹🇷"},
+    "tamil": {"code": "ta", "flag": "🇮🇳"},
+    "korean": {"code": "ko", "flag": "🇰🇷"},
+    "vietnamese": {"code": "vi", "flag": "🇻🇳"},
+    "italian": {"code": "it", "flag": "🇮🇹"},
+    "persian": {"code": "fa", "flag": "🇮🇷"},
+    "farsi": {"code": "fa", "flag": "🇮🇷"},
+    "polish": {"code": "pl", "flag": "🇵🇱"},
+    "dutch": {"code": "nl", "flag": "🇳🇱"},
+    "romanian": {"code": "ro", "flag": "🇷🇴"},
+    "greek": {"code": "el", "flag": "🇬🇷"},
+    "ukrainian": {"code": "uk", "flag": "🇺🇦"},
+    "czech": {"code": "cs", "flag": "🇨🇿"},
+    "swedish": {"code": "sv", "flag": "🇸🇪"},
+    "danish": {"code": "da", "flag": "🇩🇰"},
+    "norwegian": {"code": "no", "flag": "🇳🇴"},
+    "finnish": {"code": "fi", "flag": "🇫🇮"},
+    "hungarian": {"code": "hu", "flag": "🇭🇺"},
+    "bulgarian": {"code": "bg", "flag": "🇧🇬"},
 }
 
 
@@ -58,8 +70,8 @@ def get_or_create_language_from_name(language_name: str) -> Language:
     if existing:
         return existing
 
-    code = LANGUAGE_CODE_MAP.get(normalized_name.lower())
-    if not code:
+    metadata = LANGUAGE_METADATA.get(normalized_name.lower())
+    if not metadata:
         raise forms.ValidationError(
             "This language is not yet supported for automatic creation. "
             "Please ask an admin to add it first."
@@ -69,9 +81,9 @@ def get_or_create_language_from_name(language_name: str) -> Language:
 
     return Language.objects.create(
         name=normalized_name.title(),
-        code=code,
+        code=metadata["code"],
         slug=slug,
-        flag="🌍",
+        flag=metadata["flag"],
     )
 
 

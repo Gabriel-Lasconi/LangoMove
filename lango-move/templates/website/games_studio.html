@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Games Studio | LangoMove{% endblock %}
+
+{% block content %}
+<section id="games-studio-page" class="page-section games-studio-page">
+    <div class="container games-studio-container">
+        <div class="section-header games-studio-header">
+            <h1>Games Studio</h1>
+            <p>
+                Explore all games in the database, filter by difficulty or topic, and quickly review
+                materials, duration, and variants.
+            </p>
+        </div>
+
+        <div class="games-toolbar">
+            <div class="card games-filter-card">
+                <div class="card-body">
+                    <h3>Difficulty</h3>
+                    <div class="games-chip-row" id="difficulty-filters">
+                        <button type="button" class="games-chip active" data-difficulty="all">All</button>
+                        {% for option in difficulty_options %}
+                            <button type="button" class="games-chip" data-difficulty="{{ option.value }}">
+                                {{ option.label }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card games-filter-card">
+                <div class="card-body">
+                    <h3>Topic</h3>
+                    <div class="games-chip-row" id="topic-filters">
+                        <button type="button" class="games-chip active" data-topic="all">All</button>
+                        {% for topic in topic_options %}
+                            <button type="button" class="games-chip" data-topic="{{ topic|lower }}">
+                                {{ topic }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card games-filter-card games-search-card">
+                <div class="card-body">
+                    <h3>Search</h3>
+                    <input
+                        type="text"
+                        id="games-search"
+                        class="games-search-input"
+                        placeholder="Search game name, description, materials..."
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="card games-summary-card">
+            <div class="card-body games-summary-body">
+                <div class="games-summary-count">
+                    <strong id="games-visible-count">{{ games|length }}</strong> games visible
+                </div>
+                <div class="games-summary-active" id="games-active-filters">
+                    Difficulty: All · Topic: All
+                </div>
+            </div>
+        </div>
+
+        <div class="games-list" id="games-grid">
+            {% for game in games %}
+                <article
+                    class="card games-studio-card"
+                    data-game-card
+                    data-difficulty="{{ game.difficulty }}"
+                    data-topics="{% for topic in game.topics %}{{ topic|lower }}{% if not forloop.last %}|{% endif %}{% endfor %}"
+                    data-search="{{ game.name|lower }} {{ game.description|lower }} {{ game.materials_needed|lower }} {{ game.variants|lower }}"
+                >
+                    <div class="games-studio-card-inner">
+                        <div class="games-studio-card-media">
+                            {% if game.main_image_url %}
+                                <div class="games-studio-image-wrap">
+                                    <img
+                                        src="{{ game.main_image_url }}"
+                                        alt="{{ game.name }}"
+                                        class="games-studio-image"
+                                        onerror="this.parentElement.innerHTML='🎯'; this.parentElement.classList.add('games-studio-image-placeholder');"
+                                    >
+                                </div>
+                            {% else %}
+                                <div class="games-studio-image-wrap games-studio-image-placeholder">🎯</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="games-studio-card-content">
+                            <div class="games-studio-card-top">
+                                <div class="games-studio-title-block">
+                                    <h2>{{ game.name }}</h2>
+                                    {% if game.description %}
+                                        <p class="games-studio-description">{{ game.description }}</p>
+                                    {% endif %}
+                                </div>
+
+                                <div class="games-studio-badges">
+                                    <span class="games-studio-pill">{{ game.difficulty_label }}</span>
+                                    {% if game.duration_minutes %}
+                                        <span class="games-studio-pill">{{ game.duration_minutes }} min</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if game.topics %}
+                                <div class="games-studio-tags">
+                                    {% for topic in game.topics %}
+                                        <span class="games-studio-pill">{{ topic }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <div class="games-studio-details">
+                                {% if game.materials_needed %}
+                                    <div class="games-studio-detail-box">
+                                        <h3>Materials</h3>
+                                        <p>{{ game.materials_needed }}</p>
+                                    </div>
+                                {% endif %}
+
+                                {% if game.variants %}
+                                    <div class="games-studio-detail-box">
+                                        <h3>Variants</h3>
+                                        <p>{{ game.variants }}</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+
+        <div class="profile-empty-state" id="games-empty-state" style="display: none;">
+            No games match the current filters.
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const cards = Array.from(document.querySelectorAll("[data-game-card]"));
+    const difficultyButtons = Array.from(document.querySelectorAll("#difficulty-filters .games-chip"));
+    const topicButtons = Array.from(document.querySelectorAll("#topic-filters .games-chip"));
+    const searchInput = document.getElementById("games-search");
+    const visibleCount = document.getElementById("games-visible-count");
+    const activeFilters = document.getElementById("games-active-filters");
+    const emptyState = document.getElementById("games-empty-state");
+
+    let selectedDifficulty = "all";
+    let selectedTopic = "all";
+    let searchTerm = "";
+
+    function titleCase(value) {
+        if (!value || value === "all") return "All";
+        return value
+            .split(" ")
+            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+            .join(" ");
+    }
+
+    function updateActiveState(buttons, activeValue, attr) {
+        buttons.forEach((button) => {
+            button.classList.toggle("active", button.dataset[attr] === activeValue);
+        });
+    }
+
+    function applyFilters() {
+        let visible = 0;
+
+        cards.forEach((card) => {
+            const difficulty = card.dataset.difficulty || "";
+            const topics = (card.dataset.topics || "").split("|").filter(Boolean);
+            const search = card.dataset.search || "";
+
+            const difficultyMatch = selectedDifficulty === "all" || difficulty === selectedDifficulty;
+            const topicMatch = selectedTopic === "all" || topics.includes(selectedTopic);
+            const searchMatch = !searchTerm || search.includes(searchTerm);
+
+            const shouldShow = difficultyMatch && topicMatch && searchMatch;
+            card.style.display = shouldShow ? "" : "none";
+
+            if (shouldShow) visible += 1;
+        });
+
+        visibleCount.textContent = visible;
+        activeFilters.textContent = `Difficulty: ${titleCase(selectedDifficulty)} · Topic: ${titleCase(selectedTopic)}`;
+        emptyState.style.display = visible === 0 ? "" : "none";
+    }
+
+    difficultyButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            selectedDifficulty = this.dataset.difficulty;
+            updateActiveState(difficultyButtons, selectedDifficulty, "difficulty");
+            applyFilters();
+        });
+    });
+
+    topicButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            selectedTopic = this.dataset.topic;
+            updateActiveState(topicButtons, selectedTopic, "topic");
+            applyFilters();
+        });
+    });
+
+    searchInput.addEventListener("input", function () {
+        searchTerm = this.value.trim().toLowerCase();
+        applyFilters();
+    });
+
+    applyFilters();
+});
+</script>
+{% endblock %}

@@ -21,6 +21,14 @@
             <div class="volunteer-school-list">
                 {% for group in school_groups %}
                     <section class="card volunteer-school-card">
+                        {% if group.school.cover_image %}
+                            <div class="volunteer-school-cover">
+                                <img src="{{ group.school.cover_image.url }}" alt="{{ group.school.name }}">
+                            </div>
+                        {% else %}
+                            <div class="volunteer-school-cover volunteer-school-cover-placeholder"></div>
+                        {% endif %}
+
                         <div class="card-body volunteer-school-card-body">
                             <div class="volunteer-school-header">
                                 <div>
@@ -83,6 +91,7 @@
                         </div>
                     </section>
                 {% endfor %}
+
             </div>
         {% else %}
             <div class="card volunteer-empty-card">

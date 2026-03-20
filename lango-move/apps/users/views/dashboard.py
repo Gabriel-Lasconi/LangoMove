@@ -1,15 +1,13 @@
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.db.models import Q
+from django.utils import timezone
 
 from apps.users.forms.profile import UserAccountForm
 from apps.users.models import UserRole
 from apps.schools.models import ClassTopicEvaluation, Classroom
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
-from apps.schools.models import Classroom, ClassTopicEvaluation
 
 
 @login_required
@@ -36,6 +34,8 @@ def dashboard_view(request):
     volunteer_classrooms = []
     related_evaluations = ClassTopicEvaluation.objects.none()
 
+    seven_days_ago = timezone.now().date() - timedelta(days=7)
+
     if profile.role == UserRole.TEACHER:
         teacher_classrooms = (
             Classroom.objects.filter(teacher=profile)
@@ -46,7 +46,10 @@ def dashboard_view(request):
 
         related_evaluations = (
             ClassTopicEvaluation.objects
-            .filter(classroom__teacher=profile)
+            .filter(
+                classroom__teacher=profile,
+                evaluation_date__gte=seven_days_ago,
+            )
             .select_related(
                 "classroom",
                 "classroom__school",
@@ -77,6 +80,7 @@ def dashboard_view(request):
             .filter(
                 classroom__volunteer_assignments__volunteer=profile,
                 classroom__volunteer_assignments__is_active=True,
+                evaluation_date__gte=seven_days_ago,
             )
             .select_related(
                 "classroom",
@@ -100,6 +104,7 @@ def dashboard_view(request):
 
         related_evaluations = (
             ClassTopicEvaluation.objects
+            .filter(evaluation_date__gte=seven_days_ago)
             .select_related(
                 "classroom",
                 "classroom__school",
@@ -113,7 +118,7 @@ def dashboard_view(request):
             .order_by("-evaluation_date", "-created_at")
         )
 
-    recent_evaluations = related_evaluations[:10]
+    recent_evaluations = related_evaluations
 
     return render(
         request,
@@ -158,7 +163,7 @@ def volunteer_dashboard_view(request):
             "evaluated_by",
         )
         .prefetch_related("classroom__volunteer_assignments__volunteer")
-        .order_by("-evaluation_date", "-created_at")[:20]
+        .order_by("-evaluation_date", "-created_at")
     )
 
     school_map = {}

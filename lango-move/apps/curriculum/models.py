@@ -11,10 +11,13 @@ class TimeStampedModel(models.Model):
 
 
 class Language(TimeStampedModel):
+    name = models.CharField(max_length=120, unique=True)
     code = models.CharField(max_length=10, unique=True)
-    name = models.CharField(max_length=100)
-    flag = models.CharField(max_length=20, blank=True)
-    slug = models.SlugField(max_length=120, unique=True)
+    slug = models.SlugField(max_length=140, unique=True)
+    flag = models.CharField(max_length=10, blank=True, default="🌍")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["name"]
@@ -117,6 +120,12 @@ class Course(TimeStampedModel):
         return self.status == CourseStatus.PUBLISHED
 
 
+class GameDifficulty(models.TextChoices):
+    EASY = "easy", "Easy"
+    MEDIUM = "medium", "Medium"
+    HARD = "hard", "Hard"
+
+
 class Game(TimeStampedModel):
     name = models.CharField(max_length=255, unique=True)
     name_fr = models.CharField(max_length=255, blank=True)
@@ -128,6 +137,19 @@ class Game(TimeStampedModel):
     variants = models.TextField(blank=True)
     slug = models.SlugField(max_length=255, unique=True)
     status = models.CharField(max_length=50, blank=True, default="published")
+
+    difficulty = models.CharField(
+        max_length=20,
+        choices=GameDifficulty.choices,
+        default=GameDifficulty.MEDIUM,
+        db_index=True,
+    )
+
+    topics = models.ManyToManyField(
+        Topic,
+        blank=True,
+        related_name="games",
+    )
 
     class Meta:
         ordering = ["name"]

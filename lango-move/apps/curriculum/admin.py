@@ -97,21 +97,21 @@ class CourseAdmin(admin.ModelAdmin):
     autocomplete_fields = ("language", "age_group", "created_by", "approved_by")
     actions = [publish_courses, draft_courses]
 
-
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "slug",
+        "difficulty",
         "duration_minutes",
         "status",
         "created_at",
         "updated_at",
     )
     search_fields = ("name", "name_fr", "slug", "description", "description_fr")
-    list_filter = ("status",)
+    list_filter = ("status", "difficulty", "topics")
     ordering = ("name",)
-
+    filter_horizontal = ("topics",)
 
 class CourseTopicGameInline(admin.TabularInline):
     model = CourseTopicGame
