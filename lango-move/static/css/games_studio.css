@@ -117,6 +117,7 @@
     text-align: right;
 }
 
+/* ONE COLUMN LIST */
 #games-studio-page .games-list {
     display: flex;
     flex-direction: column;
@@ -130,9 +131,9 @@
 
 #games-studio-page .games-studio-card-inner {
     display: grid;
-    grid-template-columns: 300px minmax(0, 1fr);
-    gap: 30px;
-    padding: 28px;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 24px;
+    padding: 24px;
     align-items: start;
     box-sizing: border-box;
 }
@@ -143,7 +144,7 @@
 
 #games-studio-page .games-studio-image-wrap {
     width: 100%;
-    height: 230px;
+    height: 200px;
     border-radius: 24px;
     overflow: hidden;
     background: linear-gradient(135deg, #eef1f8, #f7f8fc);
@@ -160,29 +161,28 @@
 }
 
 #games-studio-page .games-studio-image-placeholder {
-    font-size: 3.3rem;
+    font-size: 3rem;
     color: #7c80a8;
 }
 
 #games-studio-page .games-studio-card-content {
     min-width: 0;
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 16px;
 }
 
 #games-studio-page .games-studio-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: start;
 }
 
 #games-studio-page .games-studio-title-block {
     width: 100%;
     min-width: 0;
-    flex: 1 1 auto;
 }
 
 #games-studio-page .games-studio-title-block h2 {
@@ -191,8 +191,8 @@
     min-width: 0;
     max-width: none;
     margin: 0 0 10px;
-    font-size: clamp(1.7rem, 2vw, 2.2rem);
-    line-height: 1.12;
+    font-size: clamp(1.9rem, 2vw, 2.35rem);
+    line-height: 1.1;
     color: #232435;
     white-space: normal;
     word-break: normal;
@@ -202,10 +202,14 @@
 
 #games-studio-page .games-studio-description {
     margin: 0;
-    max-width: 860px;
     color: #676d88;
-    line-height: 1.65;
+    line-height: 1.6;
     font-size: 1rem;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 #games-studio-page .games-studio-badges {
@@ -239,10 +243,12 @@
     white-space: nowrap;
 }
 
+/* KEY FIX: adaptive detail layout */
 #games-studio-page .games-studio-details {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 16px;
+    align-items: start;
 }
 
 #games-studio-page .games-studio-detail-box {
@@ -268,6 +274,11 @@
     word-break: break-word;
 }
 
+/* If only one detail box exists, let it stay nicely sized instead of stretching awkwardly */
+#games-studio-page .games-studio-details > .games-studio-detail-box:only-child {
+    max-width: 520px;
+}
+
 #games-studio-page #games-empty-state {
     margin-top: 12px;
 }
@@ -279,11 +290,6 @@
 
     #games-studio-page .games-search-card {
         grid-column: 1 / -1;
-    }
-
-    #games-studio-page .games-studio-card-inner {
-        grid-template-columns: 240px minmax(0, 1fr);
-        gap: 22px;
     }
 }
 
@@ -306,12 +312,11 @@
     }
 
     #games-studio-page .games-studio-image-wrap {
-        height: 210px;
+        height: 220px;
     }
 
     #games-studio-page .games-studio-card-top {
-        flex-direction: column;
-        align-items: flex-start;
+        grid-template-columns: 1fr;
     }
 
     #games-studio-page .games-studio-badges {
@@ -320,6 +325,10 @@
 
     #games-studio-page .games-studio-details {
         grid-template-columns: 1fr;
+    }
+
+    #games-studio-page .games-studio-details > .games-studio-detail-box:only-child {
+        max-width: none;
     }
 }
 
