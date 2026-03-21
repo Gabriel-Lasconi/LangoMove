@@ -22,7 +22,7 @@
                     {% csrf_token %}
 
                     <div class="auth-field">
-                        <label for="{{ form.title.id_for_label }}">Title</label>
+                        <label for="{{ form.title.id_for_label }}">Title (This field is automatically generated)</label>
                         {{ form.title }}
                     </div>
 
@@ -67,4 +67,102 @@
         </div>
     </div>
 </section>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const titleInput = document.getElementById("id_title");
+    const languageInput = document.getElementById("id_language_name");
+    const ageGroupInput = document.getElementById("id_age_group");
+    const sessionsInput = document.getElementById("id_sessions_count");
+    const minutesInput = document.getElementById("id_minutes_per_session");
+
+    const languageCodeMap = {
+        "english": "EN",
+        "mandarin": "ZH",
+        "chinese": "ZH",
+        "hindi": "HI",
+        "spanish": "ES",
+        "french": "FR",
+        "arabic": "AR",
+        "bengali": "BN",
+        "portuguese": "PT",
+        "russian": "RU",
+        "urdu": "UR",
+        "indonesian": "ID",
+        "german": "DE",
+        "japanese": "JA",
+        "swahili": "SW",
+        "marathi": "MR",
+        "telugu": "TE",
+        "turkish": "TR",
+        "tamil": "TA",
+        "korean": "KO",
+        "vietnamese": "VI",
+        "italian": "IT",
+        "persian": "FA",
+        "farsi": "FA",
+        "polish": "PL",
+        "dutch": "NL",
+        "romanian": "RO",
+        "greek": "EL",
+        "ukrainian": "UK",
+        "czech": "CS",
+        "swedish": "SV",
+        "danish": "DA",
+        "norwegian": "NO",
+        "finnish": "FI",
+        "hungarian": "HU",
+        "bulgarian": "BG"
+    };
+
+    function getAgeGroupCode(selectElement) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        if (!selectedOption || !selectedOption.text) return "AGE";
+
+        const text = selectedOption.text.toUpperCase();
+
+        if (text.includes("(CP)")) return "CP";
+        if (text.includes("(GS)")) return "GS";
+        if (text.includes("(PS)")) return "PS";
+        if (text.includes("(MS)")) return "MS";
+        if (text.includes("(CE1)")) return "CE1";
+        if (text.includes("(CE2)")) return "CE2";
+        if (text.includes("(CM1)")) return "CM1";
+        if (text.includes("(CM2)")) return "CM2";
+        if (text.includes("(6E)")) return "6E";
+        if (text.includes("(5E)")) return "5E";
+        if (text.includes("(4E)")) return "4E";
+        if (text.includes("(3E)")) return "3E";
+
+        const raw = text.split("(")[0].trim();
+        if (!raw) return "AGE";
+
+        const compact = raw.replace(/\s+/g, "").replace(/-/g, "");
+        return compact.slice(0, 4) || "AGE";
+    }
+
+    function updateCourseTitle() {
+        const languageValue = (languageInput.value || "").trim().toLowerCase();
+        const languageCode = languageCodeMap[languageValue] || "XX";
+        const ageCode = getAgeGroupCode(ageGroupInput);
+        const sessionsRaw = parseInt(sessionsInput.value || "0", 10);
+        const minutesRaw = parseInt(minutesInput.value || "0", 10);
+
+        const sessions = Math.min(Math.max(isNaN(sessionsRaw) ? 0 : sessionsRaw, 0), 30);
+        const minutes = Math.min(Math.max(isNaN(minutesRaw) ? 0 : minutesRaw, 0), 90);
+
+        titleInput.value = `${languageCode}-${ageCode}-${sessions}-${minutes}`;
+    }
+
+    if (titleInput) {
+        titleInput.setAttribute("readonly", "readonly");
+    }
+
+    if (languageInput) languageInput.addEventListener("input", updateCourseTitle);
+    if (ageGroupInput) ageGroupInput.addEventListener("change", updateCourseTitle);
+    if (sessionsInput) sessionsInput.addEventListener("input", updateCourseTitle);
+    if (minutesInput) minutesInput.addEventListener("input", updateCourseTitle);
+
+    updateCourseTitle();
+});
+</script>
 {% endblock %}

@@ -1,0 +1,218 @@
+.edit-game-page {
+    padding-top: 18px;
+}
+
+.edit-game-container {
+    max-width: 980px;
+}
+
+.edit-game-header {
+    margin-bottom: 28px;
+}
+
+.edit-game-header h1 {
+    margin: 0 0 10px;
+    font-size: clamp(2.3rem, 4vw, 3.2rem);
+    line-height: 1.05;
+    color: #222433;
+}
+
+.edit-game-header p {
+    margin: 0;
+    max-width: 760px;
+    color: #697089;
+    font-size: 1.03rem;
+    line-height: 1.65;
+}
+
+.edit-game-card {
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.edit-game-card .card-body {
+    padding: 30px;
+}
+
+.edit-game-form {
+    display: grid;
+    gap: 18px;
+}
+
+.edit-game-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 20px;
+}
+
+.edit-game-field {
+    display: block;
+    min-width: 0;
+}
+
+.edit-game-field-full {
+    grid-column: 1 / -1;
+}
+
+.edit-game-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: #26263a;
+}
+
+.edit-game-field input,
+.edit-game-field select,
+.edit-game-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d9ddea;
+    border-radius: 18px;
+    background: #f7f8fc;
+    color: #26263a;
+    font-size: 1rem;
+    padding: 14px 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.edit-game-field input,
+.edit-game-field select {
+    min-height: 56px;
+}
+
+.edit-game-field textarea {
+    min-height: 130px;
+    resize: vertical;
+    line-height: 1.55;
+}
+
+.edit-game-field input:focus,
+.edit-game-field select:focus,
+.edit-game-field textarea:focus {
+    outline: none;
+    border-color: #8a84d6;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(138, 132, 214, 0.12);
+}
+
+.edit-game-help {
+    display: block;
+    margin-top: 6px;
+    color: #6b7285;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.edit-game-errors {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid #f2c4c7;
+    background: #fdeff0;
+    color: #a33a45;
+    font-size: 0.92rem;
+}
+
+.edit-game-checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    padding: 16px 18px;
+    border: 1px solid #d9ddea;
+    border-radius: 20px;
+    background: #f7f8fc;
+}
+
+.edit-game-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 28px;
+}
+
+.edit-game-checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: #817cc5;
+}
+
+.edit-game-checkbox-item label {
+    margin: 0;
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: #35384f;
+    cursor: pointer;
+}
+
+.edit-game-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.edit-game-save,
+.edit-game-back {
+    min-height: 56px;
+    padding: 0 28px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.edit-game-save {
+    border: none;
+    color: #ffffff;
+    background: linear-gradient(135deg, #8a84d6, #6f6acb);
+    box-shadow: 0 8px 18px rgba(111, 106, 203, 0.28);
+}
+
+.edit-game-save:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(111, 106, 203, 0.35);
+}
+
+.edit-game-back {
+    background: #ececf5;
+    color: #5c5f8a;
+    border: none;
+}
+
+.edit-game-back:hover {
+    background: #e2e3f1;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .edit-game-card .card-body {
+        padding: 22px;
+    }
+
+    .edit-game-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .edit-game-checkbox-group {
+        grid-template-columns: 1fr;
+    }
+
+    .edit-game-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .edit-game-save,
+    .edit-game-back {
+        width: 100%;
+    }
+}

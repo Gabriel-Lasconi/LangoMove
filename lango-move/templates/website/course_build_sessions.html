@@ -20,9 +20,9 @@
                         <div class="course-session-panel-header">
                             <div>
                                 <span class="course-session-kicker">Session {{ session_number }}</span>
-                                <h2 class="course-session-title">
-                                    {{ form.title.value|default:"Untitled session" }}
-                                </h2>
+                                    <h2 class="course-session-title">
+                                        Session {{ session_number }}
+                                    </h2>
                             </div>
                         </div>
 
@@ -108,7 +108,45 @@
         </form>
     </div>
 </section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const sessionPanels = document.querySelectorAll(".course-session-panel");
 
+    sessionPanels.forEach((panel, index) => {
+        const sessionNumber = index + 1;
+        const topicSelect = panel.querySelector('select[id$="-topic"], select[name$="-topic"]');
+        const titleInput = panel.querySelector('input[id$="-title"], input[name$="-title"]');
+        const heading = panel.querySelector(".course-session-title");
+
+        if (!titleInput) return;
+
+        titleInput.setAttribute("readonly", "readonly");
+
+        function updateSessionTitle() {
+            let generatedTitle = `Session ${sessionNumber}`;
+
+            if (topicSelect && topicSelect.selectedIndex > 0) {
+                const selectedText = topicSelect.options[topicSelect.selectedIndex].text.trim();
+                if (selectedText) {
+                    generatedTitle += ` - ${selectedText}`;
+                }
+            }
+
+            titleInput.value = generatedTitle;
+
+            if (heading) {
+                heading.textContent = generatedTitle;
+            }
+        }
+
+        if (topicSelect) {
+            topicSelect.addEventListener("change", updateSessionTitle);
+        }
+
+        updateSessionTitle();
+    });
+});
+</script>
 <style>
 .course-builder-container {
     max-width: 900px;
@@ -349,6 +387,11 @@
 .button-ghost:hover {
     background: #e2e3f1;
     transform: translateY(-1px);
+}
+.builder-field input[readonly] {
+    background: #f1f2f8;
+    color: #666b84;
+    cursor: not-allowed;
 }
 </style>
 {% endblock %}

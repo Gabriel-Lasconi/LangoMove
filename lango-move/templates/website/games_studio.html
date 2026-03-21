@@ -109,6 +109,14 @@
                                 </div>
                             </div>
 
+                            {% if request.user.is_staff %}
+                                <div class="games-studio-admin-actions">
+                                    <a href="{% url 'edit-game' game.slug %}" class="games-studio-edit-button">
+                                        Edit game
+                                    </a>
+                                </div>
+                            {% endif %}
+
                             {% if game.topics %}
                                 <div class="games-studio-tags">
                                     {% for topic in game.topics %}

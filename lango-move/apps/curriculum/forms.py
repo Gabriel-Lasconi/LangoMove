@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import formset_factory
 from django.utils.text import slugify
+from django import forms
+from apps.curriculum.models import Game, Topic
 
 from apps.curriculum.models import AgeGroup, Course, CourseStatus, CourseTopic, Game, Language, Topic
 
@@ -42,6 +44,27 @@ LANGUAGE_METADATA = {
     "finnish": {"code": "fi", "flag": "🇫🇮"},
     "hungarian": {"code": "hu", "flag": "🇭🇺"},
     "bulgarian": {"code": "bg", "flag": "🇧🇬"},
+}
+
+
+AGE_GROUP_CODE_MAP = {
+    "cp": "CP",
+    "gs": "GS",
+    "grande section": "GS",
+    "petite section": "PS",
+    "moyenne section": "MS",
+    "ce1": "CE1",
+    "ce2": "CE2",
+    "cm1": "CM1",
+    "cm2": "CM2",
+    "6eme": "6E",
+    "6ème": "6E",
+    "5eme": "5E",
+    "5ème": "5E",
+    "4eme": "4E",
+    "4ème": "4E",
+    "3eme": "3E",
+    "3ème": "3E",
 }
 
 
@@ -87,6 +110,43 @@ def get_or_create_language_from_name(language_name: str) -> Language:
     )
 
 
+def get_age_group_code(age_group: AgeGroup | None) -> str:
+    if not age_group:
+        return "AGE"
+
+    candidates = [
+        (age_group.name or "").strip(),
+        (age_group.label or "").strip(),
+        (age_group.education_stage or "").strip(),
+    ]
+
+    for candidate in candidates:
+        lowered = candidate.lower()
+        if lowered in AGE_GROUP_CODE_MAP:
+            return AGE_GROUP_CODE_MAP[lowered]
+
+    raw = (age_group.name or age_group.label or "").strip().upper()
+    if raw:
+        compact = raw.replace(" ", "").replace("-", "")
+        if len(compact) <= 4:
+            return compact
+
+        words = raw.replace("-", " ").split()
+        if len(words) >= 2:
+            initials = "".join(word[0] for word in words[:3])
+            return initials[:4]
+
+        return compact[:4]
+
+    return "AGE"
+
+
+def build_course_title(language: Language, age_group: AgeGroup | None, sessions_count: int, minutes_per_session: int) -> str:
+    language_code = (language.code or "xx").upper()
+    age_group_code = get_age_group_code(age_group)
+    return f"{language_code}-{age_group_code}-{sessions_count}-{minutes_per_session}"
+
+
 class CourseSubmissionForm(forms.ModelForm):
     language_name = forms.CharField(
         max_length=100,
@@ -106,9 +166,14 @@ class CourseSubmissionForm(forms.ModelForm):
             "card_image",
         ]
         widgets = {
-            "title": forms.TextInput(attrs={"placeholder": "Course title"}),
-            "sessions_count": forms.NumberInput(attrs={"min": 1, "max": 50}),
-            "minutes_per_session": forms.NumberInput(attrs={"min": 1}),
+            "title": forms.TextInput(
+                attrs={
+                    "placeholder": "Generated automatically",
+                    "readonly": "readonly",
+                }
+            ),
+            "sessions_count": forms.NumberInput(attrs={"min": 1, "max": 30}),
+            "minutes_per_session": forms.NumberInput(attrs={"min": 1, "max": 90}),
             "description": forms.Textarea(attrs={"rows": 5, "placeholder": "Describe the course"}),
             "card_image": forms.URLInput(attrs={"placeholder": "Optional image URL"}),
         }
@@ -118,6 +183,14 @@ class CourseSubmissionForm(forms.ModelForm):
 
         if self.instance and self.instance.pk and self.instance.language:
             self.fields["language_name"].initial = self.instance.language.name
+
+        self.fields["title"].help_text = "This title is generated automatically from language, age group, sessions, and minutes."
+
+        for age_group in self.fields["age_group"].queryset:
+            code = get_age_group_code(age_group)
+            age_group.display_label = f"{age_group} ({code})"
+
+        self.fields["age_group"].label_from_instance = lambda obj: getattr(obj, "display_label", str(obj))
 
     def clean_language_name(self):
         value = self.cleaned_data["language_name"].strip()
@@ -129,15 +202,56 @@ class CourseSubmissionForm(forms.ModelForm):
         value = self.cleaned_data["sessions_count"]
         if value < 1:
             raise forms.ValidationError("A course must have at least 1 session.")
+        if value > 30:
+            raise forms.ValidationError("A course cannot have more than 30 sessions.")
         return value
+
+    def clean_minutes_per_session(self):
+        value = self.cleaned_data["minutes_per_session"]
+        if value < 1:
+            raise forms.ValidationError("Minutes per session must be at least 1.")
+        if value > 90:
+            raise forms.ValidationError("Minutes per session cannot be more than 90.")
+        return value
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        language_name = cleaned_data.get("language_name")
+        age_group = cleaned_data.get("age_group")
+        sessions_count = cleaned_data.get("sessions_count")
+        minutes_per_session = cleaned_data.get("minutes_per_session")
+
+        if language_name and sessions_count and minutes_per_session:
+            language = get_or_create_language_from_name(language_name)
+            cleaned_data["resolved_language"] = language
+            cleaned_data["title"] = build_course_title(
+                language=language,
+                age_group=age_group,
+                sessions_count=sessions_count,
+                minutes_per_session=minutes_per_session,
+            )
+
+        return cleaned_data
 
     def save(self, commit=True, created_by=None):
         instance = super().save(commit=False)
 
-        language_name = self.cleaned_data["language_name"]
-        instance.language = get_or_create_language_from_name(language_name)
+        language = self.cleaned_data.get("resolved_language")
+        if not language:
+            language_name = self.cleaned_data["language_name"]
+            language = get_or_create_language_from_name(language_name)
 
-        if not instance.slug:
+        instance.language = language
+
+        instance.title = build_course_title(
+            language=language,
+            age_group=self.cleaned_data.get("age_group"),
+            sessions_count=self.cleaned_data["sessions_count"],
+            minutes_per_session=self.cleaned_data["minutes_per_session"],
+        )
+
+        if not instance.slug or instance.slug != slugify(instance.title):
             instance.slug = generate_unique_slug(Course, instance.title, instance.pk)
 
         instance.status = CourseStatus.DRAFT
@@ -169,7 +283,12 @@ class CourseTopicBuilderForm(forms.Form):
     title = forms.CharField(
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={"placeholder": "Session title"}),
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Generated automatically",
+                "readonly": "readonly",
+            }
+        ),
     )
     grammar_objectives = forms.CharField(
         required=False,
@@ -213,14 +332,34 @@ class CourseTopicBuilderForm(forms.Form):
     def __init__(self, *args, session_number=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.session_number = session_number
+        self.fields["title"].help_text = "Generated automatically from the session number and topic."
+
+        initial_topic = None
+        topic_value = self.data.get(self.add_prefix("topic")) or self.initial.get("topic")
+
+        if topic_value:
+            try:
+                initial_topic = Topic.objects.filter(pk=topic_value).first()
+            except (ValueError, TypeError):
+                initial_topic = None
+
+        if not self.initial.get("title"):
+            self.initial["title"] = self.build_session_title(initial_topic)
+
+    def build_session_title(self, topic=None):
+        base = f"Session {self.session_number}" if self.session_number else "Session"
+        if topic and getattr(topic, "name", None):
+            return f"{base} - {topic.name}"
+        return base
 
     def clean(self):
         cleaned_data = super().clean()
         topic = cleaned_data.get("topic")
-        title = cleaned_data.get("title")
 
-        if not topic and not title:
-            raise forms.ValidationError("Each session needs at least a topic or a title.")
+        if not topic:
+            raise forms.ValidationError("Each session needs a topic so the title can be generated automatically.")
+
+        cleaned_data["title"] = self.build_session_title(topic)
 
         selected_games = [
             cleaned_data.get("game_1"),
@@ -258,3 +397,37 @@ CourseTopicBuilderFormSet = formset_factory(
     CourseTopicBuilderForm,
     extra=0,
 )
+
+class GameAdminForm(forms.ModelForm):
+    topics = forms.ModelMultipleChoiceField(
+        queryset=Topic.objects.order_by("display_order", "name"),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    class Meta:
+        model = Game
+        fields = [
+            "name",
+            "name_fr",
+            "description",
+            "description_fr",
+            "main_image_url",
+            "duration_minutes",
+            "difficulty",
+            "materials_needed",
+            "variants",
+            "topics",
+            "status",
+        ]
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Game name"}),
+            "name_fr": forms.TextInput(attrs={"placeholder": "French game name"}),
+            "description": forms.Textarea(attrs={"rows": 4, "placeholder": "Description"}),
+            "description_fr": forms.Textarea(attrs={"rows": 4, "placeholder": "French description"}),
+            "main_image_url": forms.URLInput(attrs={"placeholder": "Image URL"}),
+            "duration_minutes": forms.NumberInput(attrs={"min": 0, "max": 180}),
+            "materials_needed": forms.Textarea(attrs={"rows": 4, "placeholder": "Materials needed"}),
+            "variants": forms.Textarea(attrs={"rows": 5, "placeholder": "Variants"}),
+            "status": forms.TextInput(attrs={"placeholder": "published"}),
+        }

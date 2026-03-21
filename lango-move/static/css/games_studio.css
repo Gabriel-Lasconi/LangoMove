@@ -351,3 +351,30 @@
         height: 180px;
     }
 }
+#games-studio-page .games-studio-admin-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: -4px;
+}
+
+#games-studio-page .games-studio-edit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #ececf5;
+    border: 1px solid #d8dbeb;
+    color: #5f6488;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.18s ease;
+}
+
+#games-studio-page .games-studio-edit-button:hover {
+    background: #817cc5;
+    color: #ffffff;
+    border-color: #817cc5;
+}

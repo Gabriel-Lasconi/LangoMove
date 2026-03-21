@@ -13,10 +13,8 @@ from apps.website.views import (
     course_moderation_list_view,
     course_moderation_detail_view,
     games_studio_view,
+    edit_game_view,
 )
-urlpatterns = [
-
-]
 
 urlpatterns = [
     path("", home_view, name="home"),
@@ -25,6 +23,7 @@ urlpatterns = [
     path("api/games/<slug:slug>/", game_detail_json_view, name="game-detail-json"),
     path("pronunciation-studio/", pronunciation_studio_view, name="pronunciation-studio"),
     path("games-studio/", games_studio_view, name="games-studio"),
+    path("games-studio/<slug:slug>/edit/", edit_game_view, name="edit-game"),
 
     path("course-submissions/", course_submission_list_view, name="course-submission-list"),
     path("course-submissions/new/", course_create_view, name="course-create"),

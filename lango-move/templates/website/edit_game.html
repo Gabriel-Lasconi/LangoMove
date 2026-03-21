@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit game | LangoMove{% endblock %}
+
+{% block content %}
+<section class="page-section edit-game-page">
+    <div class="container edit-game-container">
+        <div class="section-header edit-game-header">
+            <h1>Edit game</h1>
+            <p>Update the information shown in the Games Studio for <strong>{{ game.name }}</strong>.</p>
+        </div>
+
+        <div class="card edit-game-card">
+            <div class="card-body">
+                <form method="post" class="edit-game-form">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="edit-game-errors">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="edit-game-grid">
+                        <div class="edit-game-field">
+                            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}<div class="edit-game-errors">{{ form.name.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field">
+                            <label for="{{ form.name_fr.id_for_label }}">{{ form.name_fr.label }}</label>
+                            {{ form.name_fr }}
+                            {% if form.name_fr.errors %}<div class="edit-game-errors">{{ form.name_fr.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field edit-game-field-full">
+                            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}<div class="edit-game-errors">{{ form.description.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field edit-game-field-full">
+                            <label for="{{ form.description_fr.id_for_label }}">{{ form.description_fr.label }}</label>
+                            {{ form.description_fr }}
+                            {% if form.description_fr.errors %}<div class="edit-game-errors">{{ form.description_fr.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field">
+                            <label for="{{ form.main_image_url.id_for_label }}">{{ form.main_image_url.label }}</label>
+                            {{ form.main_image_url }}
+                            {% if form.main_image_url.errors %}<div class="edit-game-errors">{{ form.main_image_url.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field">
+                            <label for="{{ form.duration_minutes.id_for_label }}">{{ form.duration_minutes.label }}</label>
+                            {{ form.duration_minutes }}
+                            {% if form.duration_minutes.errors %}<div class="edit-game-errors">{{ form.duration_minutes.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field">
+                            <label for="{{ form.difficulty.id_for_label }}">{{ form.difficulty.label }}</label>
+                            {{ form.difficulty }}
+                            {% if form.difficulty.errors %}<div class="edit-game-errors">{{ form.difficulty.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field">
+                            <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+                            {{ form.status }}
+                            {% if form.status.errors %}<div class="edit-game-errors">{{ form.status.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field edit-game-field-full">
+                            <label for="{{ form.materials_needed.id_for_label }}">{{ form.materials_needed.label }}</label>
+                            {{ form.materials_needed }}
+                            {% if form.materials_needed.errors %}<div class="edit-game-errors">{{ form.materials_needed.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field edit-game-field-full">
+                            <label for="{{ form.variants.id_for_label }}">{{ form.variants.label }}</label>
+                            {{ form.variants }}
+                            {% if form.variants.errors %}<div class="edit-game-errors">{{ form.variants.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="edit-game-field edit-game-field-full">
+                            <label>{{ form.topics.label }}</label>
+                            <div class="edit-game-checkbox-group">
+                                {% for checkbox in form.topics %}
+                                    <div class="edit-game-checkbox-item">
+                                        {{ checkbox.tag }}
+                                        <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% if form.topics.errors %}<div class="edit-game-errors">{{ form.topics.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="edit-game-actions">
+                        <button type="submit" class="edit-game-save">Save changes</button>
+                        <a href="{% url 'games-studio' %}" class="edit-game-back">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
